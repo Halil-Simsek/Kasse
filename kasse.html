@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>Pottschatz - Kasse</title>
+<style>
+:root{
+  --bg:#071028;
+  --white:#f0e5df;
+  --muted:#f7f6eb;
+  --btn-h:64px;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;background:linear-gradient(180deg,#2f353b 0%, #373f43 100%);color:var(--white)}
+.app{max-width:1100px;margin:10px auto;padding:12px;display:grid;grid-template-columns:1fr 420px;gap:16px}
+header{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between}
+h1{font-size:20px;margin:0}
+.small{color:var(--muted);font-size:13px}
+
+/* Products panel */
+.products{background:rgba(255,255,255,0.05);padding:14px;border-radius:12px;display:flex;flex-direction:column;gap:12px}
+.products-header{display:flex;justify-content:space-between;align-items:center}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.pbtn{border-radius:10px;display:flex;flex-direction:column;align-items:flex-start;gap:6px;cursor:pointer;min-height:var(--btn-h);padding:10px;border:2px solid rgba(255,255,255,0.05);color:#0a0a0a;transition:0.15s all;}
+.pbtn strong{font-size:16px}
+.pbtn span{font-size:14px}
+.pbtn:active, .pbtn.active{box-shadow:0 0 15px 4px #fff;transform:scale(0.97)}
+.pbtn[data-id="p1"]{background:#b52d1b;color:#f7f6eb;}
+.pbtn[data-id="p2"]{background:#cfcc7c;color:#0a0a0a;}
+.pbtn[data-id="p3"]{background:#aee861;color:#0a0a0a;}
+.pbtn[data-id="p4"]{background:#f0df46;color:#0a0a0a;}
+.pbtn[data-id="p5"]{background:#f7f6eb;color:#0a0a0a;}
+.pbtn[data-id="p6"]{background:#54361e;color:#f0e5df;}
+.pbtn[data-id="p7"]{background:#b34242;color:#f0e5df;}
+.pbtn[data-id="p8"]{background:#ab34eb;color:#f0e5df;}
+.pbtn[data-id="p9"]{background:#1c1c1c;color:#d4652f;}
+.pbtn[data-id="p10"]{background:#1c1c1c;color:#8fbc8f;}
+
+/* Options panel */
+.options{background:rgba(255,255,255,0.10);padding:14px;border-radius:12px;display:flex;flex-direction:column;gap:12px}
+.options-header{font-weight:700;margin-bottom:6px}
+
+/* Order panel */
+.order{background:rgba(255,255,255,0.05);padding:14px;border-radius:12px;display:flex;flex-direction:column;height:80vh;gap:8px}
+.order-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.order-list{flex:1;overflow:auto;padding-right:6px}
+.order-item{display:flex;align-items:center;justify-content:space-between;padding:8px;border-bottom:1px dashed rgba(255,174,1)}
+.item-left{display:flex;gap:10px;align-items:center}
+.qty{background:rgba(0,0,0,1);padding:6px 10px;border-radius:8px;min-width:48px;text-align:center}
+.controls{display:flex;gap:8px}
+.icon-btn{background:transparent;border:1px solid rgba(0,0,0,1);padding:8px;border-radius:8px;cursor:pointer}
+
+.summary{padding:10px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));margin-top:8px}
+.row{display:flex;justify-content:space-between;align-items:center;margin:6px 0}
+.big{font-size:20px;font-weight:700}
+input[type=number], input[type=text]{width:100%;padding:10px;border-radius:8px;border:4px solid rgba(255,255,255,1);background:transparent;color:var(--white);font-size:16px}
+.btn-primary{background:#ffae00;color:#120a05;border:none;padding:12px;border-radius:10px;font-weight:700;cursor:pointer;width:100%}
+.btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);padding:10px;border-radius:8px;color:var(--white);cursor:pointer}
+.btn-danger{background:#b32428;color:#f7f6eb;border:none;padding:12px;border-radius:10px;font-weight:700;width:100%;cursor:pointer}
+
+/* Coins & Bills buttons */
+.money-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}
+.money-btn{padding:10px;border-radius:8px;border:none;background:#333;color:#fff;font-weight:700;font-size:16px;cursor:pointer;transition:0.15s all;}
+.money-btn:active{transform:scale(0.95);box-shadow:0 0 10px 3px #fff;}
+
+#logModal{position:fixed;inset:0;background:rgba(2,6,23,0.8);display:none;align-items:center;justify-content:center;padding:20px;}
+.modal-content{background:#061022;padding:12px;border-radius:12px;max-width:980px;width:100%;max-height:80vh;overflow:auto;border:1px solid rgba(255,255,255,0.04)}
+.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.modal-footer{display:flex;gap:8px;margin-top:8px}
+@media (max-width:880px){.app{grid-template-columns:1fr;}.order{height:60vh}}
+</style>
+</head>
+<body>
+<div class="app" role="application">
+<header>
+<div>
+<h1>Weihnachtsmarkt 2025 — POTTSCHATZ</h1>
+<div class="small">Hausgemachte Köstlichkeiten ⚒ seit 2020 ⚒</div>
+</div>
+<div class="small">AutoSave • Local CSV Export • Druck</div>
+</header>
+
+<section class="products" aria-label="Produkte">
+<div class="products-header">
+<strong>Produkte</strong>
+<div class="small">Tippe, um hinzuzufügen</div>
+</div>
+<div class="grid" id="productsGrid"></div>
+<div class="options">
+<div class="options-header">Optionen</div>
+<div style="display:flex;gap:8px;flex-wrap:wrap">
+<button class="btn-ghost" id="printBtn">Drucken</button>
+<button class="btn-ghost" id="showLogBtn">Erfassungen anzeigen</button>
+<button class="btn-ghost" id="exportCsvBtn">Export CSV</button>
+</div>
+</div>
+</section>
+
+<aside class="order" aria-label="Kassenbereich">
+<button class="btn-danger" id="clearOrderBtn">Bestellung löschen</button>
+<div class="order-header">
+<strong>Bestellung</strong>
+<div class="small">Tippe Mengen manuell an oder + / −</div>
+</div>
+<div class="order-list" id="orderList" role="list" aria-live="polite"></div>
+
+<div class="summary">
+<div class="row">
+<div class="small">Gesamtsumme</div>
+<div class="big" id="totalDisplay">0,00 €</div>
+</div>
+<div class="row">
+<div style="flex:1;margin-right:8px">
+<label class="small">Gegeben (€)</label>
+<input id="givenInput" type="number" step="0.5" min="0" inputmode="decimal" placeholder="0.00">
+</div>
+<div style="width:240px">
+<label class="small">↩️ Rückgeld</label>
+<div id="changeDisplay" class="big">0,00 €</div>
+</div>
+</div>
+
+<div class="money-grid">
+<button class="money-btn" data-value="0.50">🪙 0,50 €</button>
+<button class="money-btn" data-value="1">🪙 1 €</button>
+<button class="money-btn" data-value="5">💶 5 €</button>
+<button class="money-btn" data-value="10">💶 10 €</button>
+<button class="money-btn" data-value="20">💶 20 €</button>
+<button class="money-btn" data-value="50">💶 50 €</button>
+</div>
+
+<button class="btn-primary" id="saveBtn">🤑 Zahlung erfassen</button>
+</aside>
+
+<footer>
+<div>Speichert alle Vorgänge lokal im Browser (LocalStorage). Du kannst die Erfassungen als CSV herunterladen und auf deinem PC sichern.</div>
+</footer>
+
+<div id="logModal">
+<div class="modal-content">
+<div class="modal-header">
+<strong>Erfasste Zahlvorgänge</strong>
+<div><button class="btn-ghost" id="closeLogBtn">Schließen</button></div>
+</div>
+<div id="logList"></div>
+<div class="modal-footer">
+<button class="btn-primary" id="downloadAllBtn">Alle als CSV herunterladen</button>
+<button class="btn-ghost" id="clearLogBtn">Log löschen</button>
+</div>
+</div>
+</div>
+
+<script>
+// Produkte
+const PRODUCTS=[
+{id:'p1',name:'🍛 Chili con Carne',price:6.00},
+{id:'p2',name:'🍲 Käse Lauch Suppe',price:6.00},
+{id:'p3',name:'🌯 Cheeköfte Wrap',price:4.50},
+{id:'p4',name:'🍟 Steakhouse Pommes',price:3.00},
+{id:'p5',name:'🥫 Ketchup, Mayo, ...',price:0.50},
+{id:'p6',name:'🍫 Heiße Schokolade',price:3.00},
+{id:'p7',name:'🍹 Bio Glühwein',price:4.00},
+{id:'p8',name:'💥 Schuss Rum',price:1.00},
+{id:'p9',name:'🌶 ️Hot Pottschatz',price:7.00},
+{id:'p10',name:'🍭 Sweet Pottschatz',price:4.00}
+];
+
+const STORAGE_KEY='pottschatz_kasse_log_v1';
+let order={};
+const fmt=num=>num.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2});
+
+// Render Produkte
+function renderProducts(){
+const grid=document.getElementById('productsGrid'); grid.innerHTML='';
+PRODUCTS.forEach(p=>{
+const btn=document.createElement('button'); btn.className='pbtn'; btn.dataset.id=p.id;
+btn.innerHTML=`<strong>${p.name}</strong><span>${fmt(p.price)} €</span>`;
+btn.addEventListener('click',()=>{
+addProduct(p.id,1);
+btn.classList.add('active');
+setTimeout(()=>btn.classList.remove('active'),200);
+});
+grid.appendChild(btn);
+});
+}
+
+// Order functions
+function addProduct(id,qty){ order[id]=(order[id]||0)+qty; if(order[id]<0) order[id]=0; renderOrder(); }
+function removeItem(id){ delete order[id]; renderOrder(); }
+function calcTotal(){ return Object.keys(order).reduce((sum,id)=>sum+PRODUCTS.find(p=>p.id===id).price*order[id],0); }
+
+function renderOrder(){
+const list=document.getElementById('orderList'); list.innerHTML='';
+const ids=Object.keys(order);
+if(ids.length===0){ list.innerHTML='<div class="small">Wähle Produkte aus, um die Bestellung zu starten.</div>'; }
+ids.forEach(id=>{
+const p=PRODUCTS.find(x=>x.id===id);
+const div=document.createElement('div'); div.className='order-item';
+div.innerHTML=`<div class="item-left"><div style="min-width:180px"><strong>${p.name}</strong><div class="small">${fmt(p.price)} €</div></div>
+<div style="display:flex;align-items:center;gap:8px">
+<button class="icon-btn" aria-label="minus">−</button>
+<div class="qty">${order[id]}</div>
+<button class="icon-btn" aria-label="plus">+</button>
+</div></div>
+<div style="text-align:right"><div>${fmt(p.price*order[id])} €</div><div style="margin-top:6px"><button class="btn-ghost" style="padding:6px 8px" data-remove="${id}">Entfernen</button></div></div>`;
+div.querySelectorAll('.icon-btn')[0].addEventListener('click',()=>addProduct(id,-1));
+div.querySelectorAll('.icon-btn')[1].addEventListener('click',()=>addProduct(id,1));
+div.querySelector('[data-remove]').addEventListener('click',()=>removeItem(id));
+list.appendChild(div);
+});
+document.getElementById('totalDisplay').textContent=fmt(calcTotal())+' €';
+updateChange();
+}
+
+function updateChange(){
+const given=parseFloat(document.getElementById('givenInput').value||0);
+document.getElementById('changeDisplay').textContent=fmt(Math.max(0,given-calcTotal()))+' €';
+}
+
+function loadLog(){ try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');}catch(e){return []} }
+function saveLog(entries){ localStorage.setItem(STORAGE_KEY,JSON.stringify(entries)); }
+function nextOrderNumber(){ const log=loadLog(); return log.length===0?1:Math.max(...log.map(x=>x.orderNr||0))+1; }
+
+function captureSale(){
+const total=calcTotal(); if(total<=0){ alert('Keine Produkte in der Bestellung.'); return; }
+const given=parseFloat(document.getElementById('givenInput').value||0);
+if(given<total && !confirm('Gegeben < Summe. trotzdem erfassen?')) return;
+const now=new Date();
+const entry={
+date:now.toLocaleDateString('de-DE'),
+time:now.toLocaleTimeString('de-DE'),
+orderNr:nextOrderNumber(),
+items:Object.keys(order).map(id=>{ const p=PRODUCTS.find(x=>x.id===id); return {name:p.name,qty:order[id],price:p.price}; }),
+total:total,
+given:given,
+change:Math.max(0,given-total)
+};
+const log=loadLog(); log.push(entry); saveLog(log);
+order={}; document.getElementById('givenInput').value=''; renderOrder();
+alert('Zahlung erfasst — Bestellnr. '+entry.orderNr);
+}
+
+function downloadCsv(){
+const log=loadLog(); if(log.length===0){ alert('Keine Erfassungen vorhanden.'); return; }
+let csv='Datum;Uhrzeit;Bestellnummer;Artikel;Menge;Einzelpreis;Gesamtsumme;Gegeben;Rückgeld\n';
+log.forEach(e=>{ e.items.forEach(it=>{ csv+=`${e.date};${e.time};${e.orderNr};"${it.name}";${it.qty};${it.price.toFixed(2).replace('.',',')};${e.total.toFixed(2).replace('.',',')};${(e.given||0).toFixed(2).replace('.',',')};${e.change.toFixed(2).replace('.',',')}\n`; }); });
+const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+const url=URL.createObjectURL(blob);
+const a=document.createElement('a'); a.href=url; a.download='erfassungen_pottschatz.csv'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+}
+
+function renderLogModal(){
+const modal=document.getElementById('logModal'); const list=document.getElementById('logList');
+const log=loadLog(); list.innerHTML='';
+if(log.length===0){ list.innerHTML='<div class="small">Keine Erfassungen vorhanden.</div>'; }
+log.forEach(e=>{
+const div=document.createElement('div'); div.style.borderBottom='1px dashed rgba(255,255,255,0.03)'; div.style.padding='8px 0';
+let itemsHtml=e.items.map(it=>`${it.qty}× ${it.name} (${it.price.toFixed(2)} €)`).join(', ');
+// HIER WAR DER FEHLER (classsmall" wurde zu class="small" korrigiert)
+div.innerHTML=`<div style="display:flex;justify-content:space-between"><div><strong>#${e.orderNr}</strong> <span class="small">${e.date} ${e.time}</span><div class="small">${itemsHtml}</div></div><div style="text-align:right"><div>${e.total.toFixed(2).replace('.',',')} €</div><div class="small">Gegeben: ${(e.given||0).toFixed(2).replace('.',',')} €</div><div class="small">Rückgeld: ${e.change.toFixed(2).replace('.',',')} €</div></div></div>`;
+list.appendChild(div);
+});
+modal.style.display='flex';
+}
+
+// Event listeners
+document.addEventListener('DOMContentLoaded',()=>{
+renderProducts(); renderOrder();
+document.getElementById('givenInput').addEventListener('input',updateChange);
+document.getElementById('clearOrderBtn').addEventListener('click',()=>{ if(confirm('Bestellung wirklich löschen?')){ order={}; renderOrder(); document.getElementById('givenInput').value=''; }});
+document.getElementById('saveBtn').addEventListener('click',captureSale);
+document.getElementById('exportCsvBtn').addEventListener('click',downloadCsv);
+document.getElementById('showLogBtn').addEventListener('click',renderLogModal);
+document.getElementById('closeLogBtn').addEventListener('click',()=>document.getElementById('logModal').style.display='none');
+document.getElementById('downloadAllBtn').addEventListener('click',downloadCsv);
+
+// HINZUGEFÜGT: Funktion für "Log löschen" Button mit Bestätigung
+document.getElementById('clearLogBtn').addEventListener('click', () => {
+    if (confirm('!!! ACHTUNG !!!\n\nWirklich ALLE erfassten Zahlvorgänge unwiderruflich löschen?')) {
+        saveLog([]); // Speichert ein leeres Array
+        renderLogModal(); // Aktualisiert die (jetzt leere) Ansicht
+        alert('Alle Erfassungen wurden gelöscht.');
+    }
+});
+
+// Money buttons
+document.querySelectorAll('.money-btn').forEach(btn=>{
+btn.addEventListener('click',()=>{
+const val=parseFloat(btn.dataset.value);
+const input=document.getElementById('givenInput');
+input.value=parseFloat(input.value||0)+val;
+updateChange();
+});
+});
+});
+</script>
+</body>
+</html>
