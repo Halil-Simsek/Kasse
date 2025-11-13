@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-<title>Pottschatz - Kasse (V8.26)</title>
+<title>Pottschatz - Kasse (V8.28)</title>
 <style>
 /* --- VARIABLEN (Neue, größere Basis-Schriftgrößen) --- */
 :root {
@@ -43,13 +43,15 @@
   
   --splitter-color: var(--divider-color);
   --splitter-bg: rgba(255, 255, 255, 0.1);
+  
+  --pbtn-glass-border: rgba(255, 255, 255, 0.2); /* Rand für Glas-Effekt */
 }
 /* --- FARBSCHEMATA (Unverändert übernommen) --- */
-[data-theme="theme2"] { --bg-gradient-start: #f1f5f9; --bg-gradient-end: #e2e8f0; --text-primary: #1e293b; --text-muted: #475569; --panel-bg: #ffffff; --panel-bg-alt: #f8fafc; --btn-primary-bg: #3b82f6; --btn-primary-text: #ffffff; --btn-danger-bg: #ef4444; --btn-danger-text: #ffffff; --btn-ghost-border: rgba(0,0,0,0.15); --btn-ghost-text: var(--text-primary); --divider-color: #3b82f6; --input-border: #3b82f6; --modal-bg: #f1f5f9; --text-on-btn: var(--text-on-light); --qty-text-color: var(--text-on-light); --qty-bg-color: #f7f7f7; --money-btn-bg: #bbb; --pbtn-active-shadow: 0 0 10px 4px rgba(0, 0, 0, 0.4); --splitter-bg: rgba(0, 0, 0, 0.1); --splitter-color: #3b82f6; }
-[data-theme="theme3"] { --bg-gradient-start: #141309; --bg-gradient-end: #141309; --text-primary: #ffffff; --text-muted: #f4c00c; --panel-bg: rgba(255,255,255,0.05); --panel-bg-alt: rgba(255,255,255,0.08); --btn-primary-bg: #f4c00c; --btn-primary-text: #141309; --btn-danger-bg: #d93025; --btn-danger-text: #ffffff; --btn-ghost-border: rgba(255,255,255,0.2); --btn-ghost-text: var(--text-primary); --divider-color: #f4c00c; --input-border: #f4c00c; --modal-bg: #1f1e14; --text-on-btn: var(--text-on-dark); --qty-text-color: var(--text-on-dark); --money-btn-bg: #444; --pbtn-active-shadow: 0 0 10px 4px rgba(255, 255, 255, 0.6); --splitter-bg: rgba(255, 255, 255, 0.2); --splitter-color: #f4c00c; }
-[data-theme="theme4"] { --bg-gradient-start: #222629; --bg-gradient-end: #222629; --text-primary: #ffffff; --text-muted: #86C232; --panel-bg: #474b4f; --panel-bg-alt: #3a3e41; --btn-primary-bg: #86C232; --btn-primary-text: #000000; --btn-danger-bg: #c62828; --btn-danger-text: #ffffff; --btn-ghost-border: rgba(255,255,255,0.2); --btn-ghost-text: var(--text-primary); --divider-color: #86C232; --input-border: #86C232; --modal-bg: #3a3e41; --text-on-btn: var(--text-on-dark); --qty-text-color: var(--text-on-dark); --money-btn-bg: #444; --pbtn-active-shadow: 0 0 10px 4px rgba(255, 255, 255, 0.6); --splitter-bg: rgba(255, 255, 255, 0.2); --splitter-color: #86C232; }
-[data-theme="theme5"] { --bg-gradient-start: #fdfcf9; --bg-gradient-end: #fefbec; --text-primary: #44403c; --text-muted: #78716c; --panel-bg: #ffffff; --panel-bg-alt: #fefcfb; --btn-primary-bg: #c05621; --btn-primary-text: #ffffff; --btn-danger-bg: #d9534f; --btn-danger-text: #ffffff; --btn-ghost-border: rgba(0,0,0,0.1); --btn-ghost-text: var(--text-primary); --divider-color: #c05621; --input-border: #c05621; --modal-bg: #fdfcf9; --text-on-btn: var(--text-on-light); --qty-text-color: var(--text-on-light); --qty-bg-color: #f7f7f7; --money-btn-bg: #bbb; --pbtn-active-shadow: 0 0 10px 4px rgba(0, 0, 0, 0.4); --splitter-bg: rgba(0, 0, 0, 0.1); --splitter-color: #c05621; }
-[data-theme="theme6"] { --bg-gradient-start: #f0fdf4; --bg-gradient-end: #dcfce7; --text-primary: #14532d; --text-muted: #166534; --panel-bg: #ffffff; --panel-bg-alt: #fafffb; --btn-primary-bg: #22c55e; --btn-primary-text: #ffffff; --btn-danger-bg: #ef4444; --btn-danger-text: #ffffff; --btn-ghost-border: rgba(0,0,0,0.1); --btn-ghost-text: var(--text-primary); --divider-color: #22c55e; --input-border: #22c55e; --modal-bg: #f0fdf4; --text-on-btn: var(--text-on-light); --qty-text-color: var(--text-on-light); --qty-bg-color: #f7f7f7; --money-btn-bg: #bbb; --pbtn-active-shadow: 0 0 10px 4px rgba(0, 0, 0, 0.4); --splitter-bg: rgba(0, 0, 0, 0.1); --splitter-color: #22c55e; }
+[data-theme="theme2"] { --bg-gradient-start: #f1f5f9; --bg-gradient-end: #e2e8f0; --text-primary: #1e293b; --text-muted: #475569; --panel-bg: #ffffff; --panel-bg-alt: #f8fafc; --btn-primary-bg: #3b82f6; --btn-primary-text: #ffffff; --btn-danger-bg: #ef4444; --btn-danger-text: #ffffff; --btn-ghost-border: rgba(0,0,0,0.15); --btn-ghost-text: var(--text-primary); --divider-color: #3b82f6; --input-border: #3b82f6; --modal-bg: #f1f5f9; --text-on-btn: var(--text-on-light); --qty-text-color: var(--text-on-light); --qty-bg-color: #f7f7f7; --money-btn-bg: #bbb; --pbtn-active-shadow: 0 0 10px 4px rgba(0, 0, 0, 0.4); --splitter-bg: rgba(0, 0, 0, 0.1); --splitter-color: #3b82f6; --pbtn-glass-border: rgba(0, 0, 0, 0.1); }
+[data-theme="theme3"] { --bg-gradient-start: #141309; --bg-gradient-end: #141309; --text-primary: #ffffff; --text-muted: #f4c00c; --panel-bg: rgba(255,255,255,0.05); --panel-bg-alt: rgba(255,255,255,0.08); --btn-primary-bg: #f4c00c; --btn-primary-text: #141309; --btn-danger-bg: #d93025; --btn-danger-text: #ffffff; --btn-ghost-border: rgba(255,255,255,0.2); --btn-ghost-text: var(--text-primary); --divider-color: #f4c00c; --input-border: #f4c00c; --modal-bg: #1f1e14; --text-on-btn: var(--text-on-dark); --qty-text-color: var(--text-on-dark); --money-btn-bg: #444; --pbtn-active-shadow: 0 0 10px 4px rgba(255, 255, 255, 0.6); --splitter-bg: rgba(255, 255, 255, 0.2); --splitter-color: #f4c00c; --pbtn-glass-border: rgba(255, 255, 255, 0.2); }
+[data-theme="theme4"] { --bg-gradient-start: #222629; --bg-gradient-end: #222629; --text-primary: #ffffff; --text-muted: #86C232; --panel-bg: #474b4f; --panel-bg-alt: #3a3e41; --btn-primary-bg: #86C232; --btn-primary-text: #000000; --btn-danger-bg: #c62828; --btn-danger-text: #ffffff; --btn-ghost-border: rgba(255,255,255,0.2); --btn-ghost-text: var(--text-primary); --divider-color: #86C232; --input-border: #86C232; --modal-bg: #3a3e41; --text-on-btn: var(--text-on-dark); --qty-text-color: var(--text-on-dark); --money-btn-bg: #444; --pbtn-active-shadow: 0 0 10px 4px rgba(255, 255, 255, 0.6); --splitter-bg: rgba(255, 255, 255, 0.2); --splitter-color: #86C232; --pbtn-glass-border: rgba(255, 255, 255, 0.2); }
+[data-theme="theme5"] { --bg-gradient-start: #fdfcf9; --bg-gradient-end: #fefbec; --text-primary: #44403c; --text-muted: #78716c; --panel-bg: #ffffff; --panel-bg-alt: #fefcfb; --btn-primary-bg: #c05621; --btn-primary-text: #ffffff; --btn-danger-bg: #d9534f; --btn-danger-text: #ffffff; --btn-ghost-border: rgba(0,0,0,0.1); --btn-ghost-text: var(--text-primary); --divider-color: #c05621; --input-border: #c05621; --modal-bg: #fdfcf9; --text-on-btn: var(--text-on-light); --qty-text-color: var(--text-on-light); --qty-bg-color: #f7f7f7; --money-btn-bg: #bbb; --pbtn-active-shadow: 0 0 10px 4px rgba(0, 0, 0, 0.4); --splitter-bg: rgba(0, 0, 0, 0.1); --splitter-color: #c05621; --pbtn-glass-border: rgba(0, 0, 0, 0.1); }
+[data-theme="theme6"] { --bg-gradient-start: #f0fdf4; --bg-gradient-end: #dcfce7; --text-primary: #14532d; --text-muted: #166534; --panel-bg: #ffffff; --panel-bg-alt: #fafffb; --btn-primary-bg: #22c55e; --btn-primary-text: #ffffff; --btn-danger-bg: #ef4444; --btn-danger-text: #ffffff; --btn-ghost-border: rgba(0,0,0,0.1); --btn-ghost-text: var(--text-primary); --divider-color: #22c55e; --input-border: #22c55e; --modal-bg: #f0fdf4; --text-on-btn: var(--text-on-light); --qty-text-color: var(--text-on-light); --qty-bg-color: #f7f7f7; --money-btn-bg: #bbb; --pbtn-active-shadow: 0 0 10px 4px rgba(0, 0, 0, 0.4); --splitter-bg: rgba(0, 0, 0, 0.1); --splitter-color: #22c55e; --pbtn-glass-border: rgba(0, 0, 0, 0.1); }
 
 
 /* --- GRUND-LAYOUT (OPTIMIERT FÜR IPAD PRO MIT FLEX-SPLIT) --- */
@@ -124,12 +126,17 @@ h1{font-size:24px;margin:0}
     padding-right: 6px; 
 }
 
-/* WICHTIG: Produktschalter Farben & Style */
+/* WICHTIG: Produktschalter Farben & Style (Glassmorphism) */
 .pbtn {
+  /* Glassmorphism/Transparenz */
+  backdrop-filter: blur(8px); /* WICHTIG: Der Glas-Effekt */
+  -webkit-backdrop-filter: blur(8px); /* Für Safari */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Leichter Schatten für Tiefe */
+  
   /* Standard-Farben für alle Themes AUSSER Theme 1 (diese werden unten überschrieben) */
   background: var(--panel-bg-alt); 
   color: var(--text-primary);
-  border: 1px solid var(--btn-ghost-border); 
+  border: 1px solid var(--pbtn-glass-border); /* Transparenter Rand */
   border-radius:12px; /* Etwas runder */
   padding:20px 10px; /* Mehr Padding */
   display: flex;
@@ -141,22 +148,23 @@ h1{font-size:24px;margin:0}
   transition: all 0.1s ease;
 }
 
-/* NEU: Spezifische bunte Farben nur für Theme 1 */
+/* NEU: Spezifische bunte Farben nur für Theme 1 (mit Transparenz für Glass-Effekt) */
 [data-theme="theme1"] .pbtn {
     /* Alle Buttons in Theme 1 haben einen Standard-Rand */
     border-color: rgba(255,255,255,0.1); 
     color: var(--text-primary); /* Fallback für Text */
 }
-[data-theme="theme1"] .pbtn[data-id="p1"]{background:#b52d1b;color:#f7f6eb;} 
-[data-theme="theme1"] .pbtn[data-id="p2"]{background:#cfcc7c;color:#0a0a0a;} 
-[data-theme="theme1"] .pbtn[data-id="p3"]{background:#aee861;color:#0a0a0a;} 
-[data-theme="theme1"] .pbtn[data-id="p4"]{background:#f0df46;color:#0a0a0a;} 
-[data-theme="theme1"] .pbtn[data-id="p5"]{background:#f7f6eb;color:#0a0a0a;} 
-[data-theme="theme1"] .pbtn[data-id="p6"]{background:#54361e;color:#f0e5df;} 
-[data-theme="theme1"] .pbtn[data-id="p7"]{background:#b34242;color:#f0e5df;} 
-[data-theme="theme1"] .pbtn[data-id="p8"]{background:#ab34eb;color:#f0e5df;} 
-[data-theme="theme1"] .pbtn[data-id="p9"]{background:#1c1c1c;color:#d4652f;} 
-[data-theme="theme1"] .pbtn[data-id="p10"]{background:#1c1c1c;color:#8fbc8f;} 
+/* Achtung: Farben sind nun leicht transparent (0.9), um den blur-Effekt zu ermöglichen! */
+[data-theme="theme1"] .pbtn[data-id="p1"]{background:rgba(181, 45, 27, 0.9);color:#f7f6eb; border-color: rgba(255,255,255,0.3);} 
+[data-theme="theme1"] .pbtn[data-id="p2"]{background:rgba(207, 204, 124, 0.9);color:#0a0a0a; border-color: rgba(0,0,0,0.3);} 
+[data-theme="theme1"] .pbtn[data-id="p3"]{background:rgba(174, 232, 97, 0.9);color:#0a0a0a; border-color: rgba(0,0,0,0.3);} 
+[data-theme="theme1"] .pbtn[data-id="p4"]{background:rgba(240, 223, 70, 0.9);color:#0a0a0a; border-color: rgba(0,0,0,0.3);} 
+[data-theme="theme1"] .pbtn[data-id="p5"]{background:rgba(247, 246, 235, 0.9);color:#0a0a0a; border-color: rgba(0,0,0,0.3);} 
+[data-theme="theme1"] .pbtn[data-id="p6"]{background:rgba(84, 54, 30, 0.9);color:#f0e5df; border-color: rgba(255,255,255,0.3);} 
+[data-theme="theme1"] .pbtn[data-id="p7"]{background:rgba(179, 66, 66, 0.9);color:#f0e5df; border-color: rgba(255,255,255,0.3);} 
+[data-theme="theme1"] .pbtn[data-id="p8"]{background:rgba(171, 52, 235, 0.9);color:#f0e5df; border-color: rgba(255,255,255,0.3);} 
+[data-theme="theme1"] .pbtn[data-id="p9"]{background:rgba(28, 28, 28, 0.9);color:#d4652f; border-color: rgba(255,255,255,0.3);} 
+[data-theme="theme1"] .pbtn[data-id="p10"]{background:rgba(28, 28, 28, 0.9);color:#8fbc8f; border-color: rgba(255,255,255,0.3);} 
 
 
 /* Hover/Active States */
@@ -167,7 +175,7 @@ h1{font-size:24px;margin:0}
   background: var(--btn-primary-bg) !important; /* !important, um individuelle Farben zu überschreiben */
   color: var(--btn-primary-text) !important;
   box-shadow: var(--pbtn-active-shadow);
-  border-color: var(--btn-primary-bg);
+  border-color: var(--btn-primary-bg) !important;
 }
 
 .pbtn strong{
@@ -233,9 +241,20 @@ h1{font-size:24px;margin:0}
 /* Bestell-Items auf neue, größere Schriftgröße anpassen */
 .order-item{display:flex;align-items:center;justify-content:space-between;padding:10px;border-bottom:1px dashed var(--divider-color)}
 .order-item strong { font-size: var(--order-font-md); transition: font-size 0.2s; }
-.item-left{display:flex;gap:12px;align-items:center} /* Etwas mehr Abstand */
-.qty{background:var(--qty-bg-color);color: var(--qty-text-color);padding:8px 12px;border-radius:10px;min-width:50px;text-align:center; font-size: var(--order-font-md); transition: font-size 0.2s, background-color 0.3s, color 0.3s;}
-.icon-btn{border: none;padding: 10px 12px;border-radius: 10px;cursor: pointer;font-weight: bold;color: var(--text-on-btn);transition: background-color 0.15s, color 0.3s;min-width: 36px;text-align: center;}
+.item-left{display:flex;gap:12px;align-items:center; flex-grow: 1;} /* Erweitert: nimmt jetzt den gesamten Platz ein */
+
+/* NEU: Flex-Container für Quantity und Buttons, fixiert die Breite */
+.item-controls { 
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0; /* Verhindert das Schrumpfen */
+    min-width: 180px; /* Stellt sicher, dass die Buttons immer Platz haben */
+    justify-content: flex-end; /* Hilft bei der Stabilität, falls Platz übrig ist */
+}
+
+.qty{background:var(--qty-bg-color);color: var(--qty-text-color);padding:8px 12px;border-radius:10px;min-width:50px;text-align:center; font-size: var(--order-font-md); transition: font-size 0.2s, background-color 0.3s, color 0.3s; flex-shrink: 0;}
+.icon-btn{border: none;padding: 10px 12px;border-radius: 10px;cursor: pointer;font-weight: bold;color: var(--text-on-btn);transition: background-color 0.15s, color 0.3s;min-width: 36px;text-align: center; flex-shrink: 0;}
 .order-item button[aria-label="minus"] { background: #CD0000; }
 .order-item button[aria-label="plus"] { background: #228B22; }
 .order-item button[aria-label="remove-item"] { background: transparent; color: var(--text-primary); border: 1px solid var(--btn-ghost-border); padding: 8px 10px; font-size: 18px; font-weight: normal; min-width: auto; }
@@ -681,7 +700,7 @@ function loadTheme() {
   setTheme(preferredTheme);
 }
 
-/* ===== Render Products & Order functions (Unverändert) ===== */
+/* ===== Render Products & Order functions (Optimiert) ===== */
 function renderProducts(){
   const grid=document.getElementById('productsGrid'); grid.innerHTML='';
   PRODUCTS.forEach(p=>{
@@ -708,13 +727,16 @@ function renderOrder(){
     const p=PRODUCTS.find(x=>x.id===id);
     const div=document.createElement('div'); div.className='order-item';
     
-    div.innerHTML=`<div class="item-left"><div style="min-width:180px"><strong>${p.emoji} ${p.name}</strong><div class="small"></div></div>
-    <div style="display:flex;align-items:center;gap:8px">
-    <div class="qty">${order[id]}</div>
-    <button class="icon-btn" aria-label="remove-item" data-remove-id="${id}">🗑</button>
-    <button class="icon-btn" aria-label="minus" data-id="${id}">−</button>
-    <button class="icon-btn" aria-label="plus" data-id="${id}">+</button>
-    </div></div>
+    // HIER IST DIE ANPASSUNG FÜR DIE STABILE BUTTON-POSITION
+    div.innerHTML=`<div class="item-left">
+        <div style="flex-grow:1;"><strong>${p.emoji} ${p.name}</strong><div class="small"></div></div>
+        <div class="item-controls">
+            <div class="qty">${order[id]}</div>
+            <button class="icon-btn" aria-label="remove-item" data-remove-id="${id}">🗑</button>
+            <button class="icon-btn" aria-label="minus" data-id="${id}">−</button>
+            <button class="icon-btn" aria-label="plus" data-id="${id}">+</button>
+        </div>
+    </div>
     <div style="text-align:right">
         <div>${fmt(p.price*order[id])} €</div>
     </div>`;
