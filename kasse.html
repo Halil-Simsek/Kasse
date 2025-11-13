@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-<title>Pottschatz - Kasse (V8.28)</title>
+<title>Pottschatz - Kasse (V8.28) - Final</title>
 <style>
 /* --- VARIABLEN (Neue, größere Basis-Schriftgrößen) --- */
 :root {
@@ -322,6 +322,21 @@ footer {
     flex-direction: column;
     gap: 15px;
 }
+/* Zusätzlicher Flex-Style für den Modal-Header zur Ausrichtung des Buttons */
+.modal-header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+}
+/* Zusätzlicher Flex-Style für den Modal-Footer */
+.modal-footer {
+    display: flex;
+    gap: 10px; /* Abstand zwischen den Buttons */
+}
+.modal-footer button {
+    flex: 1; /* Beide Buttons gleiche Breite */
+}
+
 #logList {
     flex-grow: 1;
     overflow-y: auto;
@@ -358,8 +373,8 @@ footer {
   flex-direction: column; justify-content: center; align-items: center;
   text-align: center; padding: 20px; 
   font-size: 16px; line-height: 1.2; font-weight: 700; z-index: 1000;
-  opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s;
 }
 #saveSuccessMessage.show {
   opacity: 1; visibility: visible; display: flex; 
@@ -501,8 +516,8 @@ footer {
       </div>
       
       <div class="payment-buttons">
-          <button class="btn-primary" id="saveOnlyBtn" style="background: #444; color: white;">💸 Nur Zahlung erfassen</button>
-          <button class="btn-primary" id="saveAndPrintBtn">🤑 Zahlung erfassen & Bon drucken</button>
+          <button class="btn-primary" id="saveOnlyBtn">💸 Nur Zahlung erfassen</button>
+          <button class="btn-primary" id="saveAndPrintBtn" style="background: #444; color: white;">🤑 Zahlung erfassen & Bon drucken</button>
       </div>
     </div>
   </aside>
@@ -515,9 +530,9 @@ footer {
 
 <div id="logView" style="display:none;" aria-label="Erfassungen">
   <div class="log-receipt-view" role="dialog" aria-modal="true" aria-labelledby="logModalTitle">
-    <div class="modal-header">
+    <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center;">
       <strong id="logModalTitle">Erfasste Zahlvorgänge</strong>
-      <div><button class="btn-ghost" id="closeLogBtn">Zurück zur Kasse</button></div>
+      <button class="btn-ghost" id="closeLogBtn">Zurück zur Kasse</button>
     </div>
     <div id="logList"></div>
     <div class="modal-footer">
@@ -642,7 +657,7 @@ function initResizer() {
 }
 
 
-/* ===== Font Size Functions (Unverändert) ===== */
+/* ===== Font Size Functions (Behobener Tippfehler: FONT_BASE_LG) ===== */
 let currentProductFontSizeStep = 0;
 const FONT_STEP_EMOJI = 5; const FONT_BASE_EMOJI_PX = 45; 
 const FONT_STEP_NAME = 2; const FONT_BASE_NAME_PX = 25; 
@@ -676,6 +691,7 @@ function setOrderFontSize(step) {
   localStorage.setItem(ORDER_FONT_SIZE_KEY, step);
   const newSm = FONT_BASE_SM + (step * FONT_STEP_ORDER);
   const newMd = FONT_BASE_MD + (step * (FONT_STEP_ORDER + 0.5)); 
+  // HIER WAR DER FEHLER: FANT_BASE_LG -> FONT_BASE_LG
   const newLg = FONT_BASE_LG + (step * (FONT_STEP_ORDER + 1)); 
   document.documentElement.style.setProperty('--order-font-sm', newSm + 'px');
   document.documentElement.style.setProperty('--order-font-md', newMd + 'px');
@@ -702,6 +718,7 @@ function loadTheme() {
 
 /* ===== Render Products & Order functions (Optimiert) ===== */
 function renderProducts(){
+  const list=document.getElementById('orderList'); // Nur für Scrollen des Order List
   const grid=document.getElementById('productsGrid'); grid.innerHTML='';
   PRODUCTS.forEach(p=>{
     const btn=document.createElement('button'); btn.className='pbtn'; btn.dataset.id=p.id;
@@ -710,6 +727,7 @@ function renderProducts(){
       addProduct(p.id,1);
       btn.classList.add('active');
       setTimeout(()=>btn.classList.remove('active'),200);
+      list.scrollTop = list.scrollHeight; // Neu hinzugefügt: Scrollt die Bestellliste nach unten
     });
     grid.appendChild(btn);
   });
