@@ -1,298 +1,862 @@
 <!doctype html>
-<html lang="de">
+<html lang="de" data-theme="theme1">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-<title>Pottschatz - Kasse</title>
+<title>Pottschatz - Kasse (V8.14 - Text zentriert, Rahmen 1.5px, dynamische Button-Größe)</title>
 <style>
-:root{
-  --bg:#071028;
-  --white:#f0e5df;
-  --muted:#f7f6eb;
-  --btn-h:64px;
+:root {
+  /* Basis Schriftgrößen (steuerbar via JS) */
+  --pbtn-emoji-size: 3.5vmin; 
+  --pbtn-name-size: 2vmin;  
+  /* NEU: Hinzufügen der PX-Fallback-Variablen für die Steuerung durch A++/A-- */
+  --pbtn-emoji-size-px: 36px;
+  --pbtn-name-size-px: 20px;
+    
+  --order-font-sm: 13px;
+  --order-font-md: 16px;
+  --order-font-lg: 20px;
+
+  /* Theme 1: Original (Dark) */
+  --bg-gradient-start: #2f353b;
+  --bg-gradient-end: #373f43;
+  --text-primary: #f0e5df;
+  --text-muted: #f7f6eb;
+  --panel-bg: rgba(255,255,255,0.05);
+  --panel-bg-alt: rgba(255,255,255,0.10);
+  --btn-primary-bg: #ffae00;
+  --btn-primary-text: #120a05;
+  --btn-danger-bg: #b32428;
+  --btn-danger-text: #f7f6eb;
+  --btn-ghost-border: rgba(255,255,255,0.1);
+  --btn-ghost-text: var(--text-primary);
+  --divider-color: rgba(255,174,1); /* Akzentfarbe für Rahmen */
+  --input-border: rgba(255,255,255,1);
+  --modal-bg: #061022;
+  --text-on-dark: #fff; /* Hilfsvariable für dunklen Hintergrund */
+  --text-on-light: #000; /* Hilfsvariable für hellen Hintergrund */
+  --qty-bg-color: #000000; /* Hintergrundfarbe für Menge */
+  --text-on-btn: var(--text-on-dark);
+  --qty-text-color: var(--text-on-dark);
+  --money-btn-bg: #444; /* Hintergrund für Münz-Buttons */
+  --pbtn-active-shadow: 0 0 10px 4px rgba(255, 255, 255, 0.6); 
 }
+
+/* --- FARBSCHEMATA (Anpassungen für Kontrast) --- */
+[data-theme="theme2"] { /* Slate (Hell) */
+  --bg-gradient-start: #f1f5f9; --bg-gradient-end: #e2e8f0; --text-primary: #1e293b; --text-muted: #475569; --panel-bg: #ffffff; --panel-bg-alt: #f8fafc; --btn-primary-bg: #3b82f6; --btn-primary-text: #ffffff; --btn-danger-bg: #ef4444; --btn-danger-text: #ffffff; --btn-ghost-border: rgba(0,0,0,0.15); --btn-ghost-text: var(--text-primary); --divider-color: #3b82f6; /* Akzentfarbe */ --input-border: #3b82f6; --modal-bg: #f1f5f9;
+  --text-on-btn: var(--text-on-light);
+  --qty-text-color: var(--text-on-light);
+  --qty-bg-color: #f7f7f7; 
+  --money-btn-bg: #bbb;
+  --pbtn-active-shadow: 0 0 10px 4px rgba(0, 0, 0, 0.4); 
+}
+[data-theme="theme3"] { /* High Contrast (Dunkel) */
+  --bg-gradient-start: #141309; --bg-gradient-end: #141309; --text-primary: #ffffff; --text-muted: #f4c00c; --panel-bg: rgba(255,255,255,0.05); --panel-bg-alt: rgba(255,255,255,0.08); --btn-primary-bg: #f4c00c; --btn-primary-text: #141309; --btn-danger-bg: #d93025; --btn-danger-text: #ffffff; --btn-ghost-border: rgba(255,255,255,0.2); --btn-ghost-text: var(--text-primary); --divider-color: #f4c00c; /* Akzentfarbe */ --input-border: #f4c00c; --modal-bg: #1f1e14;
+  --text-on-btn: var(--text-on-dark);
+  --qty-text-color: var(--text-on-dark);
+  --money-btn-bg: #444;
+  --pbtn-active-shadow: 0 0 10px 4px rgba(255, 255, 255, 0.6); 
+}
+[data-theme="theme4"] { /* Grün/Grau (Dunkel) */
+  --bg-gradient-start: #222629; --bg-gradient-end: #222629; --text-primary: #ffffff; --text-muted: #86C232; --panel-bg: #474b4f; --panel-bg-alt: #3a3e41; --btn-primary-bg: #86C232; --btn-primary-text: #000000; --btn-danger-bg: #c62828; --btn-danger-text: #ffffff; --btn-ghost-border: rgba(255,255,255,0.2); --btn-ghost-text: var(--text-primary); --divider-color: #86C232; /* Akzentfarbe */ --input-border: #86C232; --modal-bg: #3a3e41;
+  --text-on-btn: var(--text-on-dark);
+  --qty-text-color: var(--text-on-dark);
+  --money-btn-bg: #444;
+  --pbtn-active-shadow: 0 0 10px 4px rgba(255, 255, 255, 0.6); 
+}
+[data-theme="theme5"] { /* Sepia (Hell) */
+  --bg-gradient-start: #fdfcf9; --bg-gradient-end: #fefbec; --text-primary: #44403c; --text-muted: #78716c; --panel-bg: #ffffff; --panel-bg-alt: #fefcfb; --btn-primary-bg: #c05621; --btn-primary-text: #ffffff; --btn-danger-bg: #d9534f; --btn-danger-text: #ffffff; --btn-ghost-border: rgba(0,0,0,0.1); --btn-ghost-text: var(--text-primary); --divider-color: #c05621; /* Akzentfarbe */ --input-border: #c05621; --modal-bg: #fdfcf9;
+  --text-on-btn: var(--text-on-light);
+  --qty-text-color: var(--text-on-light);
+  --qty-bg-color: #f7f7f7; 
+  --money-btn-bg: #bbb;
+  --pbtn-active-shadow: 0 0 10px 4px rgba(0, 0, 0, 0.4); 
+}
+[data-theme="theme6"] { /* Matcha (Hell) */
+  --bg-gradient-start: #f0fdf4; --bg-gradient-end: #dcfce7; --text-primary: #14532d; --text-muted: #166534; --panel-bg: #ffffff; --panel-bg-alt: #fafffb; --btn-primary-bg: #22c55e; --btn-primary-text: #ffffff; --btn-danger-bg: #ef4444; --btn-danger-text: #ffffff; --btn-ghost-border: rgba(0,0,0,0.1); --btn-ghost-text: var(--text-primary); --divider-color: #22c55e; /* Akzentfarbe */ --input-border: #22c55e; --modal-bg: #f0fdf4;
+  --text-on-btn: var(--text-on-light);
+  --qty-text-color: var(--text-on-light);
+  --qty-bg-color: #f7f7f7; 
+  --money-btn-bg: #bbb;
+  --pbtn-active-shadow: 0 0 10px 4px rgba(0, 0, 0, 0.4); 
+}
+
+/* --- Restliches CSS --- */
 *{box-sizing:border-box}
-html,body{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;background:linear-gradient(180deg,#2f353b 0%, #373f43 100%);color:var(--white)}
-.app{max-width:1100px;margin:10px auto;padding:12px;display:grid;grid-template-columns:1fr 420px;gap:16px}
+html,body{
+  height:100%;
+  margin:0;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;
+  background:linear-gradient(180deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+  color:var(--text-primary); 
+  transition: background 0.3s, color 0.3s;
+  overflow-x: hidden; /* WICHTIG: Horizontal Scrollen verhindern */
+}
+.app{
+  max-width:1100px;
+  width: 100%; /* WICHTIG: Setzt max-width nicht mehr als fixe Grenze */
+  margin:10px auto;
+  padding:12px;
+  display:flex;
+  flex-direction:column;
+  gap:16px
+}
+/* Bestellbereich 500px, Produktbereich flexibel */
+#kasseView{display:grid;grid-template-columns:1fr 500px;gap:16px} 
 header{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between}
 h1{font-size:20px;margin:0}
-.small{color:var(--muted);font-size:13px}
+.small{color:var(--text-muted)}
 
-/* Products panel */
-.products{background:rgba(255,255,255,0.05);padding:14px;border-radius:12px;display:flex;flex-direction:column;gap:12px}
-.products-header{display:flex;justify-content:space-between;align-items:center}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-.pbtn{border-radius:10px;display:flex;flex-direction:column;align-items:flex-start;gap:6px;cursor:pointer;min-height:var(--btn-h);padding:10px;border:2px solid rgba(255,255,255,0.05);color:#0a0a0a;transition:0.15s all;}
-.pbtn strong{font-size:16px}
-.pbtn span{font-size:14px}
-.pbtn:active, .pbtn.active{box-shadow:0 0 15px 4px #fff;transform:scale(0.97)}
-.pbtn[data-id="p1"]{background:#b52d1b;color:#f7f6eb;}
-.pbtn[data-id="p2"]{background:#cfcc7c;color:#0a0a0a;}
-.pbtn[data-id="p3"]{background:#aee861;color:#0a0a0a;}
-.pbtn[data-id="p4"]{background:#f0df46;color:#0a0a0a;}
-.pbtn[data-id="p5"]{background:#f7f6eb;color:#0a0a0a;}
-.pbtn[data-id="p6"]{background:#54361e;color:#f0e5df;}
-.pbtn[data-id="p7"]{background:#b34242;color:#f0e5df;}
-.pbtn[data-id="p8"]{background:#ab34eb;color:#f0e5df;}
-.pbtn[data-id="p9"]{background:#1c1c1c;color:#d4652f;}
-.pbtn[data-id="p10"]{background:#1c1c1c;color:#8fbc8f;}
+/* Products Grid Styles */
+.products{ background:var(--panel-bg); padding:14px; border-radius:12px; display:flex; flex-direction:column; gap:16px; height: 85vh; }
+.products-header{display:flex;justify-content:space-between;align-items:center;gap:10px;}
+.grid{ 
+  flex:1; 
+  overflow:auto; 
+  display:grid; 
+  /* WICHTIG: Flexibleres Grid für bessere Skalierung */
+  grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); 
+  gap:10px; 
+  padding-right: 6px; 
+}
+.pbtn{
+  border-radius:10px;
+  display:flex;
+  flex-direction:column;
+  /* KORREKTUR: Text zentrieren */
+  align-items:center;
+  gap:6px;
+  cursor:pointer;
+  /* KORREKTUR: min-height entfernt für dynamische Höhe */
+  padding:15px 10px;
+  /* KORREKTUR: Rahmen Dicke auf 1.5px */
+  border:1.5px solid var(--divider-color); 
+  color:#0a0a0a;
+  transition:0.15s all;
+}
+.pbtn strong{
+    font-weight: 700;
+    display:flex;
+    flex-direction: column; /* Damit Emoji und Name untereinander stehen */
+    align-items: center; /* Zentrierung auch innerhalb von strong */
+    gap: 6px;
+    text-align: center; /* Textzentrierung */
+    width: 100%;
+}
+/* KORRIGIERT: Nutzen von max() zur korrekten Skalierung durch JS und Viewport */
+.pbtn-emoji { 
+    font-size: max(var(--pbtn-emoji-size), var(--pbtn-emoji-size-px)); 
+    line-height: 1; 
+    transition: font-size 0.2s; 
+}
+.pbtn-name { 
+    font-size: max(var(--pbtn-name-size), var(--pbtn-name-size-px)); 
+    line-height: 1.2; 
+    transition: font-size 0.2s; 
+}
+/* KORRIGIERT: Preis-Span skaliert jetzt mit dem Namen */
+.pbtn span{
+    font-size: max(var(--pbtn-name-size), var(--pbtn-name-size-px)); 
+    transition: font-size 0.2s;
+} 
+/* NEU: Aufleuchten/Rahmen beim Klick */
+.pbtn:active, .pbtn.active{ 
+  transform:scale(0.97); 
+  filter: brightness(1.15); 
+  box-shadow: var(--pbtn-active-shadow); /* Nutzt Theme-Variable */
+}
+.pbtn[data-id="p1"]{background:#b52d1b;color:#f7f6eb;} .pbtn[data-id="p2"]{background:#cfcc7c;color:#0a0a0a;} .pbtn[data-id="p3"]{background:#aee861;color:#0a0a0a;} .pbtn[data-id="p4"]{background:#f0df46;color:#0a0a0a;} .pbtn[data-id="p5"]{background:#f7f6eb;color:#0a0a0a;} .pbtn[data-id="p6"]{background:#54361e;color:#f0e5df;} .pbtn[data-id="p7"]{background:#b34242;color:#f0e5df;} .pbtn[data-id="p8"]{background:#ab34eb;color:#f0e5df;} .pbtn[data-id="p9"]{background:#1c1c1c;color:#d4652f;} .pbtn[data-id="p10"]{background:#1c1c1c;color:#8fbc8f;}
 
-/* Options panel */
-.options{background:rgba(255,255,255,0.10);padding:14px;border-radius:12px;display:flex;flex-direction:column;gap:12px}
-.options-header{font-weight:700;margin-bottom:6px}
+/* Order Styles */
+.options{display:flex;flex-direction:column;gap:8px;align-items:flex-end;}
+.options-header{font-weight:700;font-size: 14px;}
+.options-buttons{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.color-switcher {display: flex;gap: 5px;border-left: 1px solid var(--btn-ghost-border);padding-left: 8px;align-items: center;}
+.color-btn {width: 24px;height: 24px;border-radius: 50%;border: 2px solid rgba(255,255,255,0.3);cursor: pointer;transition: transform 0.1s ease;padding: 0;}
+.color-btn:hover { transform: scale(1.1); }
+.color-btn.active {border-color: var(--btn-primary-bg);box-shadow: 0 0 8px var(--btn-primary-bg);}
 
-/* Order panel */
-.order{background:rgba(255,255,255,0.05);padding:14px;border-radius:12px;display:flex;flex-direction:column;height:80vh;gap:8px}
-.order-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-.order-list{flex:1;overflow:auto;padding-right:6px}
-.order-item{display:flex;align-items:center;justify-content:space-between;padding:8px;border-bottom:1px dashed rgba(255,174,1)}
+.order{ background:var(--panel-bg); padding:14px; border-radius:12px; display:flex; flex-direction:column; height:85vh; gap:8px }
+.order-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px; gap:10px;}
+.order-header .small { font-size: var(--order-font-sm); transition: font-size 0.2s; } 
+.order-list{ flex:1; overflow:auto; padding-right:6px } 
+
+.order-item{display:flex;align-items:center;justify-content:space-between;padding:8px;border-bottom:1px dashed var(--divider-color)}
+.order-item strong { font-size: var(--order-font-md); transition: font-size 0.2s; }
+.order-item .small { font-size: var(--order-font-sm); transition: font-size 0.2s; }
 .item-left{display:flex;gap:10px;align-items:center}
-.qty{background:rgba(0,0,0,1);padding:6px 10px;border-radius:8px;min-width:48px;text-align:center}
+.qty{
+    background:var(--qty-bg-color);
+    color: var(--qty-text-color);
+    padding:6px 10px;
+    border-radius:8px;
+    min-width:48px;
+    text-align:center; 
+    font-size: var(--order-font-md); 
+    transition: font-size 0.2s, background-color 0.3s, color 0.3s;
+}
 .controls{display:flex;gap:8px}
-.icon-btn{background:transparent;border:1px solid rgba(0,0,0,1);padding:8px;border-radius:8px;cursor:pointer}
 
-.summary{padding:10px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));margin-top:8px}
+.icon-btn{
+    /* Buttons in der Bestellzeile: Haben keine Akzent-Rahmen-Änderung bekommen */
+    border: none;
+    padding: 8px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    color: var(--text-on-btn); /* Variable Textfarbe */
+    transition: background-color 0.15s, color 0.3s;
+    min-width: 32px;
+    text-align: center;
+}
+.order-item button[aria-label="minus"] {
+    background: #CD0000; /* Rot */
+}
+.order-item button[aria-label="plus"] {
+    background: #228B22; /* Grün */
+}
+/* Storno Mülleimer Button */
+.order-item button[aria-label="remove-item"] {
+    background: transparent;
+    color: var(--text-primary);
+    border: 1px solid var(--btn-ghost-border);
+    padding: 6px 8px;
+    font-size: 16px;
+    font-weight: normal;
+    min-width: auto;
+}
+
+
+/* Summary Styles */
+.summary{ padding:10px; border-radius:10px; background:linear-gradient(180deg, var(--panel-bg), var(--panel-bg-alt)); margin-top:8px; }
+.summary .btn-primary { margin-top: 20px; }
+.summary .small { font-size: var(--order-font-sm); transition: font-size 0.2s; }
+.summary .big { font-size: var(--order-font-lg); transition: font-size 0.2s; }
+
 .row{display:flex;justify-content:space-between;align-items:center;margin:6px 0}
-.big{font-size:20px;font-weight:700}
-input[type=number], input[type=text]{width:100%;padding:10px;border-radius:8px;border:4px solid rgba(255,255,255,1);background:transparent;color:var(--white);font-size:16px}
-.btn-primary{background:#ffae00;color:#120a05;border:none;padding:12px;border-radius:10px;font-weight:700;cursor:pointer;width:100%}
-.btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);padding:10px;border-radius:8px;color:var(--white);cursor:pointer}
-.btn-danger{background:#b32428;color:#f7f6eb;border:none;padding:12px;border-radius:10px;font-weight:700;width:100%;cursor:pointer}
+.big{font-weight:700}
+input[type=number], input[type=text]{width:100%;padding:10px;border-radius:8px;border:4px solid var(--input-border);background:transparent;color:var(--text-primary);font-size:16px}
 
-/* Coins & Bills buttons */
+/* Global Button Styles (mit neuem Rahmen) */
+.btn-primary{
+  background:var(--btn-primary-bg);
+  color:var(--btn-primary-text);
+  /* KORREKTUR: Akzentrahmen Dicke auf 1.5px */
+  border:1.5px solid var(--divider-color);
+  padding:12px;
+  border-radius:10px;
+  font-weight:700;
+  cursor:pointer;
+  width:100%;
+}
+.btn-ghost{
+  background:transparent;
+  /* KORREKTUR: Akzentrahmen Dicke auf 1.5px */
+  border:1.5px solid var(--divider-color);
+  padding:10px;
+  border-radius:8px;
+  color:var(--btn-ghost-text);
+  cursor:pointer
+}
+.btn-danger{
+  background:var(--btn-danger-bg);
+  color:var(--btn-danger-text);
+  /* KORREKTUR: Akzentrahmen Dicke auf 1.5px */
+  border:1.5px solid var(--divider-color);
+  padding:12px;
+  border-radius:10px;
+  font-weight:700;
+  width:100%;
+  cursor:pointer
+}
+
 .money-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}
-.money-btn{padding:10px;border-radius:8px;border:none;background:#333;color:#fff;font-weight:700;font-size:16px;cursor:pointer;transition:0.15s all;}
+.money-btn{
+  padding:10px;
+  border-radius:8px;
+  /* KORREKTUR: Akzentrahmen Dicke auf 1.5px */
+  border:1.5px solid var(--divider-color);
+  background:var(--money-btn-bg);
+  color:#fff;
+  font-weight:700;
+  cursor:pointer;
+  transition:0.15s all; 
+  font-size: var(--order-font-md); 
+  transition: font-size 0.2s;
+}
 .money-btn:active{transform:scale(0.95);box-shadow:0 0 10px 3px #fff;}
 
-#logModal{position:fixed;inset:0;background:rgba(2,6,23,0.8);display:none;align-items:center;justify-content:center;padding:20px;}
-.modal-content{background:#061022;padding:12px;border-radius:12px;max-width:980px;width:100%;max-height:80vh;overflow:auto;border:1px solid rgba(255,255,255,0.04)}
+/* Log View Styles */
+#logView{position:fixed;inset:0;background:rgba(2,6,23,0.8);display:none;align-items:center;justify-content:center;padding:20px;}
+.log-receipt-view { max-width: 600px; width: 100%; max-height: 80vh; overflow: auto; background:var(--modal-bg); padding:12px; border-radius:12px; border:1px solid var(--btn-ghost-border); }
 .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
 .modal-footer{display:flex;gap:8px;margin-top:8px}
-@media (max-width:880px){.app{grid-template-columns:1fr;}.order{height:60vh}}
+.log-item { border-bottom: none; padding: 8px; margin-bottom: 4px; border-radius: 8px; }
+.log-item:nth-child(even) { background: var(--panel-bg); }
+.log-item:nth-child(odd) { background: var(--panel-bg-alt); }
+.log-row { display: flex; justify-content: space-between; margin-top: 4px; } 
+
+/* Success Message Overlay Style (15x20cm und abgerundete Ecken) */
+#saveSuccessMessage {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  
+  /* NEU: Feste Größe 15cm x 20cm */
+  width: 20cm; 
+  height: 15cm; 
+  
+  /* NEU: Stark abgerundete Ecken */
+  border-radius: 20px; 
+  
+  /* Farbverlauf (Beibehalten) */
+  background: linear-gradient(135deg, #FFC125 0%, #DAA520 100%); 
+  color: #000000; 
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 10px;
+  font-size: 16px; 
+  line-height: 1.2;
+  font-weight: 700;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+#saveSuccessMessage strong {
+    font-size: 32px;
+    margin-bottom: 5px;
+}
+#saveSuccessMessage.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Media Queries (Anpassung des Rasters für mobile Ansicht) */
+@media (max-width:880px){
+  #kasseView{grid-template-columns:1fr;}
+  .order{height:75vh} 
+  .products { height: auto; }
+  header{flex-direction: column; align-items: stretch; gap: 12px;}
+  .options{align-items: stretch;}
+  .options-buttons{justify-content: flex-start;}
+  .products-header, .order-header { flex-wrap: wrap; }
+}
 </style>
 </head>
 <body>
 <div class="app" role="application">
 <header>
-<div>
-<h1>Weihnachtsmarkt 2025 — POTTSCHATZ</h1>
-<div class="small">Hausgemachte Köstlichkeiten ⚒ seit 2020 ⚒</div>
-</div>
-<div class="small">AutoSave • Local CSV Export • Druck</div>
+  <div>
+    <h1>Weihnachtsmarkt 2025 — POTTSCHATZ</h1>
+    <div class="small" id="statusRegion" aria-live="polite">AutoSave • Local CSV Export • Druck</div>
+  </div>
+  
+  <div class="options">
+    <div class="options-header">Optionen</div>
+    <div class="options-buttons">
+      <button class="btn-ghost" id="printBtn">Drucken</button>
+      <button class="btn-ghost" id="showLogBtn">Erfassungen</button>
+      <button class="btn-ghost" id="exportCsvBtn">Export CSV</button>
+      <button class="btn-ghost" id="openExportFolderBtn">Zuletzt exportierte CSV öffnen</button>
+      
+      <div class="color-switcher">
+        <button class="color-btn" data-theme="theme1" style="background: linear-gradient(45deg, #2f353b, #373f43);"></button>
+        <button class="color-btn" data-theme="theme2" style="background: #f1f5f9; border: 1px solid #3b82f6;"></button>
+        <button class="color-btn" data-theme="theme3" style="background: #141309; border: 1px solid #f4c00c;"></button>
+        <button class="color-btn" data-theme="theme4" style="background: #222629; border: 1px solid #86C232;"></button>
+        <button class="color-btn" data-theme="theme5" style="background: #fdfcf9; border: 1px solid #c05621;"></button>
+        <button class="color-btn" data-theme="theme6" style="background: #f0fdf4; border: 1px solid #22c55e;"></button>
+      </div>
+    </div>
+  </div>
 </header>
 
-<section class="products" aria-label="Produkte">
-<div class="products-header">
-<strong>Produkte</strong>
-<div class="small">Tippe, um hinzuzufügen</div>
-</div>
-<div class="grid" id="productsGrid"></div>
-<div class="options">
-<div class="options-header">Optionen</div>
-<div style="display:flex;gap:8px;flex-wrap:wrap">
-<button class="btn-ghost" id="printBtn">Drucken</button>
-<button class="btn-ghost" id="showLogBtn">Erfassungen anzeigen</button>
-<button class="btn-ghost" id="exportCsvBtn">Export CSV</button>
-</div>
-</div>
-</section>
+<main id="kasseView">
+  <section class="products" aria-label="Produkte">
+    <div class="products-header">
+      <strong>Produkte</strong>
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <div class="font-controls">
+          <button class="btn-ghost" id="productFontDecreaseBtn" style="padding: 6px 8px; line-height: 1;">A--</button>
+          <button class="btn-ghost" id="productFontIncreaseBtn" style="padding: 6px 8px; line-height: 1;">A++</button>
+        </div>
+        <div class="small">Tippe, um hinzuzufügen</div>
+      </div>
+    </div>
+    <div class="grid" id="productsGrid"></div>
+  </section>
 
-<aside class="order" aria-label="Kassenbereich">
-<button class="btn-danger" id="clearOrderBtn">Bestellung löschen</button>
-<div class="order-header">
-<strong>Bestellung</strong>
-<div class="small">Tippe Mengen manuell an oder + / −</div>
-</div>
-<div class="order-list" id="orderList" role="list" aria-live="polite"></div>
-
-<div class="summary">
-<div class="row">
-<div class="small">Gesamtsumme</div>
-<div class="big" id="totalDisplay">0,00 €</div>
-</div>
-<div class="row">
-<div style="flex:1;margin-right:8px">
-<label class="small">Gegeben (€)</label>
-<input id="givenInput" type="number" step="0.5" min="0" inputmode="decimal" placeholder="0.00">
-</div>
-<div style="width:240px">
-<label class="small">↩️ Rückgeld</label>
-<div id="changeDisplay" class="big">0,00 €</div>
-</div>
-</div>
-
-<div class="money-grid">
-<button class="money-btn" data-value="0.50">🪙 0,50 €</button>
-<button class="money-btn" data-value="1">🪙 1 €</button>
-<button class="money-btn" data-value="5">💶 5 €</button>
-<button class="money-btn" data-value="10">💶 10 €</button>
-<button class="money-btn" data-value="20">💶 20 €</button>
-<button class="money-btn" data-value="50">💶 50 €</button>
-</div>
-
-<button class="btn-primary" id="saveBtn">🤑 Zahlung erfassen</button>
-</aside>
+  <aside class="order" aria-label="Kassenbereich">
+    <button class="btn-danger" id="clearOrderBtn">Bestellung löschen</button>
+    <div class="order-header">
+      <strong>Bestellung</strong>
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <div class="font-controls">
+          <button class="btn-ghost" id="orderFontDecrease" style="padding: 6px 8px; line-height: 1;">A-</button>
+          <button class="btn-ghost" id="orderFontIncrease" style="padding: 6px 8px; line-height: 1;">A+</button>
+        </div>
+        <div class="small">Tippe Mengen manuell an</div>
+      </div>
+    </div>
+    
+    <div class="order-list" id="orderList" role="list" aria-live="polite"></div>
+    
+    <div class="summary">
+      <div class="row">
+        <div class="small">Gesamtsumme</div>
+        <div class="big" id="totalDisplay">0,00 €</div>
+      </div>
+      <div class="row">
+        <div style="flex:1;margin-right:8px">
+          <label class="small">Gegeben (€)</label>
+          <input id="givenInput" type="number" step="0.5" min="0" inputmode="decimal" placeholder="0.00">
+        </div>
+        <div style="width:240px">
+          <label class="small">↩️ Rückgeld</label>
+          <div id="changeDisplay" class="big">0,00 €</div>
+        </div>
+      </div>
+      <div class="money-grid">
+        <button class="money-btn" data-value="0.50">🪙 0,50 €</button>
+        <button class="money-btn" data-value="1">🪙 1 €</button>
+        <button class="money-btn" data-value="5">💶 5 €</button>
+        <button class="money-btn" data-value="10">💶 10 €</button>
+        <button class="money-btn" data-value="20">💶 20 €</button>
+        <button class="money-btn" data-value="50">💶 50 €</button>
+      </div>
+      <button class="btn-primary" id="saveBtn">🤑 Zahlung erfassen</button>
+    </div>
+  </aside>
+</main>
 
 <footer>
-<div>Speichert alle Vorgänge lokal im Browser (LocalStorage). Du kannst die Erfassungen als CSV herunterladen und auf deinem PC sichern.</div>
+  <div>Speichert alle Vorgänge lokal im Browser (LocalStorage).
+  Du kannst die Erfassungen als CSV herunterladen und auf deinem PC sichern.</div>
 </footer>
 
-<div id="logModal">
-<div class="modal-content">
-<div class="modal-header">
-<strong>Erfasste Zahlvorgänge</strong>
-<div><button class="btn-ghost" id="closeLogBtn">Schließen</button></div>
-</div>
-<div id="logList"></div>
-<div class="modal-footer">
-<button class="btn-primary" id="downloadAllBtn">Alle als CSV herunterladen</button>
-<button class="btn-ghost" id="clearLogBtn">Log löschen</button>
-</div>
-</div>
+<div id="logView" style="display:none;" aria-label="Erfassungen">
+  <div class="log-receipt-view" role="dialog" aria-modal="true" aria-labelledby="logModalTitle">
+    <div class="modal-header">
+      <strong id="logModalTitle">Erfasste Zahlvorgänge</strong>
+      <div><button class="btn-ghost" id="closeLogBtn">Zurück zur Kasse</button></div>
+    </div>
+    <div id="logList"></div>
+    <div class="modal-footer">
+      <button class="btn-primary" id="downloadAllBtn">Alle als CSV herunterladen</button>
+      <button class="btn-ghost" id="clearLogBtn">Log löschen</button>
+    </div>
+  </div>
 </div>
 
-<script>
-// Produkte
+<div id="saveSuccessMessage" role="alert" aria-live="assertive">
+    <strong>🚀</strong>
+    <span id="successMessageText"></span>
+</div>
+
+</div> <script>
+/* ===== Config & Data ===== */
 const PRODUCTS=[
-{id:'p1',name:'🍛 Chili con Carne',price:6.00},
-{id:'p2',name:'🍲 Käse Lauch Suppe',price:6.00},
-{id:'p3',name:'🌯 Cheeköfte Wrap',price:4.50},
-{id:'p4',name:'🍟 Steakhouse Pommes',price:3.00},
-{id:'p5',name:'🥫 Ketchup, Mayo, ...',price:0.50},
-{id:'p6',name:'🍫 Heiße Schokolade',price:3.00},
-{id:'p7',name:'🍹 Bio Glühwein',price:4.00},
-{id:'p8',name:'💥 Schuss Rum',price:1.00},
-{id:'p9',name:'🌶 ️Hot Pottschatz',price:7.00},
-{id:'p10',name:'🍭 Sweet Pottschatz',price:4.00}
+{id:'p1',emoji:'🍛',name:'Chili con Carne',price:6.00},
+{id:'p2',emoji:'🍲',name:'Käse Lauch Suppe',price:6.00},
+{id:'p3',emoji:'🌯',name:'Cheeköfte Wrap',price:4.50},
+{id:'p4',emoji:'🍟',name:'Steakhouse Pommes',price:3.00},
+{id:'p5',emoji:'🥫',name:'Ketchup, Mayo, ...',price:0.50},
+{id:'p6',emoji:'🍫',name:'Heiße Schokolade',price:3.00},
+{id:'p7',emoji:'🍹',name:'Bio Glühwein',price:4.00},
+{id:'p8',emoji:'💥',name:'Schuss Rum',price:1.00},
+{id:'p9',emoji:'🌶',name:'Hot Pottschatz',price:7.00},
+{id:'p10',emoji:'🍭',name:'Sweet Pottschatz',price:4.00}
 ];
 
 const STORAGE_KEY='pottschatz_kasse_log_v1';
-let order={};
-const fmt=num=>num.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2});
+const THEME_STORAGE_KEY = 'pottschatz_kasse_theme_v1';
+const PRODUCT_FONT_SIZE_KEY = 'pottschatz_kasse_font_product_v1';
+const ORDER_FONT_SIZE_KEY = 'pottschatz_kasse_font_order_v1';
 
-// Render Produkte
-function renderProducts(){
-const grid=document.getElementById('productsGrid'); grid.innerHTML='';
-PRODUCTS.forEach(p=>{
-const btn=document.createElement('button'); btn.className='pbtn'; btn.dataset.id=p.id;
-btn.innerHTML=`<strong>${p.name}</strong><span>${fmt(p.price)} €</span>`;
-btn.addEventListener('click',()=>{
-addProduct(p.id,1);
-btn.classList.add('active');
-setTimeout(()=>btn.classList.remove('active'),200);
-});
-grid.appendChild(btn);
-});
+const GIVEN_KEY='pottschatz_kasse_given_v1';
+const LAST_CSV_KEY='pottschatz_kasse_last_csv_v1';
+
+let order={};
+let lastExport = null;
+
+/* ===== Helpers ===== */
+const fmt=num=>num.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2});
+function localSafe(fn, fallback=null){
+  try { return fn(); } catch(e) { console.warn('LocalStorage/Operation failed:', e); return fallback; }
 }
 
-// Order functions
+/* ===== Font Size Functions (KORRIGIERT für dynamische Skalierung) ===== */
+let currentProductFontSizeStep = 0;
+// Basis in px für die manuelle Steuerung (wird nicht direkt in CSS verwendet)
+const FONT_STEP_EMOJI = 4; const FONT_BASE_EMOJI_PX = 36; 
+const FONT_STEP_NAME = 2; const FONT_BASE_NAME_PX = 20; 
+
+function setProductFontSize(step) {
+  if (step < -2) step = -2; if (step > 3) step = 3; 
+  currentProductFontSizeStep = step;
+  localStorage.setItem(PRODUCT_FONT_SIZE_KEY, step);
+  
+  // 1. Setze den VMIN-Faktor (Basis-Skalierung, dynamisch mit Schritt)
+  // vmin wird durch den Schritt um einen gewissen Prozentsatz erhöht/verringert
+  document.documentElement.style.setProperty('--pbtn-emoji-size', `${3.5 + step * 0.5}vmin`); 
+  document.documentElement.style.setProperty('--pbtn-name-size', `${2 + step * 0.3}vmin`); 
+  
+  // 2. Setze den fixen PX-Faktor (Mindestgröße für kleinere Bildschirme/Schritt)
+  const newEmojiSizePx = FONT_BASE_EMOJI_PX + (step * FONT_STEP_EMOJI);
+  const newNameSizePx = FONT_BASE_NAME_PX + (step * FONT_STEP_NAME);
+  document.documentElement.style.setProperty('--pbtn-emoji-size-px', `${newEmojiSizePx}px`); 
+  document.documentElement.style.setProperty('--pbtn-name-size-px', `${newNameSizePx}px`); 
+}
+
+function loadProductFontSize() {
+  const step = parseInt(localStorage.getItem(PRODUCT_FONT_SIZE_KEY) || '0');
+  currentProductFontSizeStep = step; 
+  setProductFontSize(step);
+}
+
+let currentOrderFontSizeStep = 0;
+const FONT_STEP_ORDER = 1; const FONT_BASE_SM = 13; const FONT_BASE_MD = 16; const FONT_BASE_LG = 20;
+
+function setOrderFontSize(step) {
+  if (step < -2) step = -2; if (step > 3) step = 3; 
+  currentOrderFontSizeStep = step;
+  localStorage.setItem(ORDER_FONT_SIZE_KEY, step);
+  const newSm = FONT_BASE_SM + (step * FONT_STEP_ORDER);
+  const newMd = FONT_BASE_MD + (step * (FONT_STEP_ORDER + 0.5)); 
+  const newLg = FONT_BASE_LG + (step * (FONT_STEP_ORDER + 1)); 
+  document.documentElement.style.setProperty('--order-font-sm', newSm + 'px');
+  document.documentElement.style.setProperty('--order-font-md', newMd + 'px');
+  document.documentElement.style.setProperty('--order-font-lg', newLg + 'px');
+}
+
+function loadOrderFontSize() {
+  const step = parseInt(localStorage.getItem(ORDER_FONT_SIZE_KEY) || '0');
+  setOrderFontSize(step);
+}
+
+/* ===== Theme Functions ===== */
+function setTheme(themeName) {
+  document.documentElement.setAttribute('data-theme', themeName);
+  localStorage.setItem(THEME_STORAGE_KEY, themeName);
+  document.querySelectorAll('.color-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.theme === themeName);
+  });
+}
+function loadTheme() {
+  const preferredTheme = localStorage.getItem(THEME_STORAGE_KEY) || 'theme1';
+  setTheme(preferredTheme);
+}
+
+/* ===== Render Products ===== */
+function renderProducts(){
+  const grid=document.getElementById('productsGrid'); grid.innerHTML='';
+  PRODUCTS.forEach(p=>{
+    const btn=document.createElement('button'); btn.className='pbtn'; btn.dataset.id=p.id;
+    btn.innerHTML=`<strong><span class="pbtn-emoji">${p.emoji}</span> <span class="pbtn-name">${p.name}</span></strong><span>${fmt(p.price)} €</span>`;
+    btn.addEventListener('click',()=>{
+      addProduct(p.id,1);
+      btn.classList.add('active');
+      // Button-Effekt nach 200ms zurücksetzen
+      setTimeout(()=>btn.classList.remove('active'),200);
+    });
+    grid.appendChild(btn);
+  });
+}
+
+/* ===== Order functions ===== */
 function addProduct(id,qty){ order[id]=(order[id]||0)+qty; if(order[id]<0) order[id]=0; renderOrder(); }
 function removeItem(id){ delete order[id]; renderOrder(); }
 function calcTotal(){ return Object.keys(order).reduce((sum,id)=>sum+PRODUCTS.find(p=>p.id===id).price*order[id],0); }
 
 function renderOrder(){
-const list=document.getElementById('orderList'); list.innerHTML='';
-const ids=Object.keys(order);
-if(ids.length===0){ list.innerHTML='<div class="small">Wähle Produkte aus, um die Bestellung zu starten.</div>'; }
-ids.forEach(id=>{
-const p=PRODUCTS.find(x=>x.id===id);
-const div=document.createElement('div'); div.className='order-item';
-div.innerHTML=`<div class="item-left"><div style="min-width:180px"><strong>${p.name}</strong><div class="small">${fmt(p.price)} €</div></div>
-<div style="display:flex;align-items:center;gap:8px">
-<button class="icon-btn" aria-label="minus">−</button>
-<div class="qty">${order[id]}</div>
-<button class="icon-btn" aria-label="plus">+</button>
-</div></div>
-<div style="text-align:right"><div>${fmt(p.price*order[id])} €</div><div style="margin-top:6px"><button class="btn-ghost" style="padding:6px 8px" data-remove="${id}">Entfernen</button></div></div>`;
-div.querySelectorAll('.icon-btn')[0].addEventListener('click',()=>addProduct(id,-1));
-div.querySelectorAll('.icon-btn')[1].addEventListener('click',()=>addProduct(id,1));
-div.querySelector('[data-remove]').addEventListener('click',()=>removeItem(id));
-list.appendChild(div);
-});
-document.getElementById('totalDisplay').textContent=fmt(calcTotal())+' €';
-updateChange();
+  const list=document.getElementById('orderList'); list.innerHTML='';
+  const ids=Object.keys(order);
+  if(ids.length===0){ list.innerHTML=`<div class="small" style="font-size: var(--order-font-md)">Wähle Produkte aus, um die Bestellung zu starten.</div>`; }
+  ids.forEach(id=>{
+    const p=PRODUCTS.find(x=>x.id===id);
+    const div=document.createElement('div'); div.className='order-item';
+    
+    // Einzelpreis entfernt, nur Name, Menge und Controls
+    div.innerHTML=`<div class="item-left"><div style="min-width:180px"><strong>${p.emoji} ${p.name}</strong><div class="small"></div></div>
+    <div style="display:flex;align-items:center;gap:8px">
+    <div class="qty">${order[id]}</div>
+    <button class="icon-btn" aria-label="remove-item" data-remove-id="${id}" style="font-size: 16px; font-weight: normal; min-width: auto;">🗑</button>
+    <button class="icon-btn" aria-label="minus" data-id="${id}">−</button>
+    <button class="icon-btn" aria-label="plus" data-id="${id}">+</button>
+    </div></div>
+    <div style="text-align:right">
+        <div>${fmt(p.price*order[id])} €</div>
+    </div>`;
+    
+    // Wichtig: Event Listener auf die neuen Buttons mit korrekter ID
+    div.querySelector('button[aria-label="minus"]').addEventListener('click',()=>addProduct(id,-1));
+    div.querySelector('button[aria-label="plus"]').addEventListener('click',()=>addProduct(id,1));
+    div.querySelector('[data-remove-id]').addEventListener('click',()=>removeItem(id));
+    
+    list.appendChild(div);
+  });
+  document.getElementById('totalDisplay').textContent=fmt(calcTotal())+' €';
+  updateChange();
 }
 
+/* ===== Change & Persist given ===== */
 function updateChange(){
-const given=parseFloat(document.getElementById('givenInput').value||0);
-document.getElementById('changeDisplay').textContent=fmt(Math.max(0,given-calcTotal()))+' €';
+  const givenInput = document.getElementById('givenInput');
+  let given = parseFloat(givenInput.value || 0);
+  if(isNaN(given)) given = 0;
+  localSafe(()=>localStorage.setItem(GIVEN_KEY, given.toString()));
+  document.getElementById('changeDisplay').textContent=fmt(Math.max(0,given-calcTotal()))+' €';
 }
 
-function loadLog(){ try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');}catch(e){return []} }
-function saveLog(entries){ localStorage.setItem(STORAGE_KEY,JSON.stringify(entries)); }
+function loadGiven(){
+  const v = localSafe(()=>localStorage.getItem(GIVEN_KEY), null);
+  if(v !== null){
+    const gi = document.getElementById('givenInput');
+    gi.value = parseFloat(v);
+    updateChange();
+  }
+}
+
+/* ===== Log (LocalStorage) ===== */
+function loadLog(){ return localSafe(()=>JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'), []); }
+function saveLog(entries){ localSafe(()=>localStorage.setItem(STORAGE_KEY,JSON.stringify(entries))); }
 function nextOrderNumber(){ const log=loadLog(); return log.length===0?1:Math.max(...log.map(x=>x.orderNr||0))+1; }
 
+/* Show Success Message Box */
+function showSuccessMessage(orderNr) {
+    const msgEl = document.getElementById('saveSuccessMessage');
+    document.getElementById('successMessageText').textContent = `Zahlung erfasst! (Nr. ${orderNr})`;
+    msgEl.classList.add('show');
+    // Blendet nach 1.5 Sekunden aus
+    setTimeout(() => {
+        msgEl.classList.remove('show');
+    }, 1500); 
+}
+
 function captureSale(){
-const total=calcTotal(); if(total<=0){ alert('Keine Produkte in der Bestellung.'); return; }
-const given=parseFloat(document.getElementById('givenInput').value||0);
-if(given<total && !confirm('Gegeben < Summe. trotzdem erfassen?')) return;
-const now=new Date();
-const entry={
-date:now.toLocaleDateString('de-DE'),
-time:now.toLocaleTimeString('de-DE'),
-orderNr:nextOrderNumber(),
-items:Object.keys(order).map(id=>{ const p=PRODUCTS.find(x=>x.id===id); return {name:p.name,qty:order[id],price:p.price}; }),
-total:total,
-given:given,
-change:Math.max(0,given-total)
-};
-const log=loadLog(); log.push(entry); saveLog(log);
-order={}; document.getElementById('givenInput').value=''; renderOrder();
-alert('Zahlung erfasst — Bestellnr. '+entry.orderNr);
+  const btn = document.getElementById('saveBtn');
+  if(btn.disabled) return;
+  btn.disabled = true;
+
+  const total=calcTotal(); 
+  if(total<=0){ 
+    alert('Keine Produkte in der Bestellung.'); 
+    btn.disabled=false; 
+    return; 
+  }
+  const given=parseFloat(document.getElementById('givenInput').value||0);
+  if(given<total && !confirm('Gegeben < Summe. trotzdem erfassen?')) { 
+    btn.disabled=false; 
+    return; 
+  }
+  const now=new Date();
+  const nextNr = nextOrderNumber();
+  const entry={
+    date:now.toLocaleDateString('de-DE'),
+    time:now.toLocaleTimeString('de-DE'),
+    orderNr:nextNr,
+    items:Object.keys(order).map(id=>{ 
+      const p=PRODUCTS.find(x=>x.id===id); 
+      return {name: `${p.emoji} ${p.name}`, qty:order[id], price:p.price}; 
+    }),
+    total:total,
+    given:given,
+    change:Math.max(0,given-total)
+  };
+  const log=loadLog(); log.push(entry); saveLog(log);
+  
+  // clear order & given
+  order={}; 
+  document.getElementById('givenInput').value=''; 
+  localSafe(()=>localStorage.removeItem(GIVEN_KEY)); 
+  renderOrder();
+  
+  // Zeige das Overlay
+  showSuccessMessage(nextNr);
+  btn.disabled=false; 
 }
 
+/* ===== CSV Export ===== */
 function downloadCsv(){
-const log=loadLog(); if(log.length===0){ alert('Keine Erfassungen vorhanden.'); return; }
-let csv='Datum;Uhrzeit;Bestellnummer;Artikel;Menge;Einzelpreis;Gesamtsumme;Gegeben;Rückgeld\n';
-log.forEach(e=>{ e.items.forEach(it=>{ csv+=`${e.date};${e.time};${e.orderNr};"${it.name}";${it.qty};${it.price.toFixed(2).replace('.',',')};${e.total.toFixed(2).replace('.',',')};${(e.given||0).toFixed(2).replace('.',',')};${e.change.toFixed(2).replace('.',',')}\n`; }); });
-const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
-const url=URL.createObjectURL(blob);
-const a=document.createElement('a'); a.href=url; a.download='erfassungen_pottschatz.csv'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+  const log = loadLog();
+  if(!log || log.length === 0){ alert('Keine Erfassungen vorhanden.'); return; }
+
+  let csv = 'Datum;Uhrzeit;Bestellnummer;Artikel;Menge;Einzelpreis;Gesamtsumme;Gegeben;Rückgeld\n';
+  log.forEach(e=>{
+    e.items.forEach(it=>{
+      csv += `${e.date};${e.time};${e.orderNr};"${it.name}";${it.qty};${it.price.toFixed(2).replace('.',',')};${e.total.toFixed(2).replace('.',',')};${(e.given||0).toFixed(2).replace('.',',')};${e.change.toFixed(2).replace('.',',')}\n`;
+    });
+  });
+
+  const filename = 'erfassungen_pottschatz.csv';
+  
+  try{
+    localStorage.setItem(LAST_CSV_KEY, JSON.stringify({ csv, filename, ts: Date.now() }));
+  }catch(e){
+    console.warn('Konnte CSV nicht in localStorage sichern:', e);
+  }
+
+  const blob = new Blob(["\ufeff", csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  lastExport = { url, filename, ts: Date.now() }; 
+
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+
+  showStatus('CSV exportiert — Datei im Downloads-Ordner.', 3000);
+
+  setTimeout(()=>{ try{ URL.revokeObjectURL(url); lastExport = null; }catch(e){} }, 10000);
 }
 
-function renderLogModal(){
-const modal=document.getElementById('logModal'); const list=document.getElementById('logList');
-const log=loadLog(); list.innerHTML='';
-if(log.length===0){ list.innerHTML='<div class="small">Keine Erfassungen vorhanden.</div>'; }
-log.forEach(e=>{
-const div=document.createElement('div'); div.style.borderBottom='1px dashed rgba(255,255,255,0.03)'; div.style.padding='8px 0';
-let itemsHtml=e.items.map(it=>`${it.qty}× ${it.name} (${it.price.toFixed(2)} €)`).join(', ');
-// HIER WAR DER FEHLER (classsmall" wurde zu class="small" korrigiert)
-div.innerHTML=`<div style="display:flex;justify-content:space-between"><div><strong>#${e.orderNr}</strong> <span class="small">${e.date} ${e.time}</span><div class="small">${itemsHtml}</div></div><div style="text-align:right"><div>${e.total.toFixed(2).replace('.',',')} €</div><div class="small">Gegeben: ${(e.given||0).toFixed(2).replace('.',',')} €</div><div class="small">Rückgeld: ${e.change.toFixed(2).replace('.',',')} €</div></div></div>`;
-list.appendChild(div);
-});
-modal.style.display='flex';
+/* ===== Re-open last export ===== */
+function reopenLastExport(){
+  if(lastExport && lastExport.url){
+    window.open(lastExport.url, '_blank');
+    return;
+  }
+  const rec = localSafe(()=>JSON.parse(localStorage.getItem(LAST_CSV_KEY)), null);
+  if(rec && rec.csv){
+    const blob = new Blob(["\ufeff", rec.csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    window.open(url, '_blank');
+    setTimeout(()=>{ try{ URL.revokeObjectURL(url); }catch(e){} }, 10000);
+    return;
+  }
+  showStatus('Keine exportierte CSV gefunden. Bitte Export CSV drücken.', 3000);
+  alert('Keine exportierte CSV gefunden. Die Datei sollte im Download-Ordner deines Geräts liegen.');
 }
 
-// Event listeners
+/* ===== Log View (modal) ===== */
+function showLogModal(){
+  const modal = document.getElementById('logView');
+  const list = document.getElementById('logList');
+  const log = loadLog(); list.innerHTML='';
+  
+  if(log.length===0){ 
+    list.innerHTML='<div class="small">Keine Erfassungen vorhanden.</div>'; 
+  } else {
+    log.slice().reverse().forEach(e=>{ 
+      const wrapper = document.createElement('div');
+      wrapper.className = 'log-item'; 
+      let html = `<div><strong>Bestellung #${e.orderNr}</strong> <span class="small" style="margin-left:8px">${e.date} ${e.time}</span></div>`;
+      html += '<div style="margin-top:6px">';
+      e.items.forEach(it => {
+        html += `<div class="log-row"><div>${it.qty}× ${it.name}</div><div>${(it.price*it.qty).toFixed(2).replace('.',',')} €</div></div>`;
+      });
+      html += `</div>`;
+      html += `<hr style="border:none;border-top:1px dashed var(--divider-color);margin:8px 0">`;
+      html += `<div class="log-row big"><div>Gesamt</div><div>${e.total.toFixed(2).replace('.',',')} €</div></div>`;
+      html += `<div class="log-row"><div class="small">Gegeben</div><div class="small">${(e.given||0).toFixed(2).replace('.',',')} €</div></div>`;
+      html += `<div class="log-row"><div class="small">Rückgeld</div><div class="small">${e.change.toFixed(2).replace('.',',')} €</div></div>`;
+      wrapper.innerHTML = html;
+      list.appendChild(wrapper);
+    });
+  }
+  
+  document.getElementById('kasseView').style.display = 'none';
+  modal.style.display = 'flex';
+}
+
+function hideLogModal(){
+  const modal = document.getElementById('logView');
+  modal.style.display = 'none';
+  document.getElementById('kasseView').style.display = 'grid';
+}
+
+/* ===== Utility: show temporary status in header ===== */
+let statusTimer = null;
+function showStatus(msg, ms = 2000){
+  const el = document.getElementById('statusRegion');
+  el.textContent = msg;
+  if(statusTimer) clearTimeout(statusTimer);
+  statusTimer = setTimeout(()=>{ el.textContent = 'AutoSave • Local CSV Export • Druck'; }, ms);
+}
+
+/* ===== Delete Log ===== */
+function clearLog(){
+  if(!confirm('!!! ACHTUNG !!!\n\nWirklich ALLE erfassten Zahlvorgänge unwiderruflich löschen?')) return;
+  saveLog([]);
+  showStatus('Alle Erfassungen gelöscht.', 2500);
+  showLogModal(); 
+}
+
+
+/* ===== Init & Events (Kombinierte Version) ===== */
 document.addEventListener('DOMContentLoaded',()=>{
-renderProducts(); renderOrder();
-document.getElementById('givenInput').addEventListener('input',updateChange);
-document.getElementById('clearOrderBtn').addEventListener('click',()=>{ if(confirm('Bestellung wirklich löschen?')){ order={}; renderOrder(); document.getElementById('givenInput').value=''; }});
-document.getElementById('saveBtn').addEventListener('click',captureSale);
-document.getElementById('exportCsvBtn').addEventListener('click',downloadCsv);
-document.getElementById('showLogBtn').addEventListener('click',renderLogModal);
-document.getElementById('closeLogBtn').addEventListener('click',()=>document.getElementById('logModal').style.display='none');
-document.getElementById('downloadAllBtn').addEventListener('click',downloadCsv);
-
-// HINZUGEFÜGT: Funktion für "Log löschen" Button mit Bestätigung
-document.getElementById('clearLogBtn').addEventListener('click', () => {
-    if (confirm('!!! ACHTUNG !!!\n\nWirklich ALLE erfassten Zahlvorgänge unwiderruflich löschen?')) {
-        saveLog([]); // Speichert ein leeres Array
-        renderLogModal(); // Aktualisiert die (jetzt leere) Ansicht
-        alert('Alle Erfassungen wurden gelöscht.');
+  loadTheme();
+  loadProductFontSize(); 
+  loadOrderFontSize(); 
+  renderProducts(); 
+  loadGiven(); 
+  renderOrder();
+  
+  document.getElementById('givenInput').addEventListener('input',updateChange);
+  document.getElementById('clearOrderBtn').addEventListener('click',()=>{ 
+    if(confirm('Bestellung wirklich löschen?')){ 
+      order={}; 
+      renderOrder(); 
+      document.getElementById('givenInput').value=''; 
+      localSafe(()=>localStorage.removeItem(GIVEN_KEY)); 
     }
-});
+  });
+  document.getElementById('saveBtn').addEventListener('click',captureSale); 
 
-// Money buttons
-document.querySelectorAll('.money-btn').forEach(btn=>{
-btn.addEventListener('click',()=>{
-const val=parseFloat(btn.dataset.value);
-const input=document.getElementById('givenInput');
-input.value=parseFloat(input.value||0)+val;
-updateChange();
-});
-});
+  document.getElementById('exportCsvBtn').addEventListener('click',downloadCsv);
+  document.getElementById('downloadAllBtn').addEventListener('click',downloadCsv);
+  
+  document.getElementById('openExportFolderBtn').addEventListener('click', reopenLastExport);
+
+  document.getElementById('showLogBtn').addEventListener('click', showLogModal);
+  document.getElementById('closeLogBtn').addEventListener('click', hideLogModal);
+  document.getElementById('clearLogBtn').addEventListener('click', clearLog);
+  document.getElementById('printBtn').addEventListener('click', ()=> { window.print(); });
+
+  document.querySelectorAll('.money-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const val=parseFloat(btn.dataset.value);
+      const input=document.getElementById('givenInput');
+      input.value=(parseFloat(input.value||0)+val).toFixed(2);
+      updateChange();
+    });
+  });
+
+  document.querySelectorAll('.color-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      setTheme(btn.dataset.theme);
+    });
+  });
+
+  // Event Listeners für Schriftgrößen
+  document.getElementById('productFontIncreaseBtn').addEventListener('click', () => {
+    setProductFontSize(currentProductFontSizeStep + 1);
+  });
+  document.getElementById('productFontDecreaseBtn').addEventListener('click', () => {
+    setProductFontSize(currentProductFontSizeStep - 1);
+  });
+  // Order Font bleibt bei alten IDs
+  document.getElementById('orderFontIncrease').addEventListener('click', () => {
+    setOrderFontSize(currentOrderFontSizeStep + 1);
+  });
+  document.getElementById('orderFontDecrease').addEventListener('click', () => {
+    setOrderFontSize(currentOrderFontSizeStep - 1);
+  });
+  
+  const rec = localSafe(()=>JSON.parse(localStorage.getItem(LAST_CSV_KEY)), null);
+  if(rec && rec.csv){
+    showStatus('Letzter CSV-Export gefunden (kann erneut geöffnet werden).', 2000);
+  }
 });
 </script>
 </body>
