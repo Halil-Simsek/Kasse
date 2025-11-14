@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-<title>Pottschatz - Kasse (V8.31) - Final</title>
+<title>Pottschatz - Kasse (V8.32) - Final</title>
 <style>
 /* --- VARIABLEN (Neue, größere Basis-Schriftgrößen) --- */
 :root {
@@ -266,17 +266,17 @@ h1{font-size:24px;margin:0}
 .order-item button[aria-label="remove-item"] { background: transparent; color: var(--text-primary); border: 1px solid var(--btn-ghost-border); padding: 8px 10px; font-size: 18px; font-weight: normal; min-width: auto; }
 
 /* =====================================================
---- SUMMARY/GELD (NEUES KOMPAKTES LAYOUT V8.31) ---
+--- SUMMARY/GELD (ANGEPASST FÜR LINKSBÜNDIGKEIT) ---
 =====================================================
 */
 .summary{ 
-  padding:10px; 
-  border-radius:10px; 
+  padding:15px; 
+  border-radius:12px; 
   background:linear-gradient(180deg, var(--panel-bg), var(--panel-bg-alt)); 
   margin-top:8px; 
-  display: flex; /* NEU: Flex-Container */
-  flex-direction: column; /* NEU: Gruppen untereinander */
-  gap: 10px; /* NEU: Abstand zwischen den Zeilen */
+  display: flex; 
+  flex-direction: column; 
+  gap: 16px; 
 }
 
 .summary .small { font-size: var(--order-font-sm); transition: font-size 0.2s; }
@@ -289,10 +289,12 @@ h1{font-size:24px;margin:0}
     align-items:center;
 } 
 
-/* NEU: Gesamtsumme (Label vergrößert, Wert skaliert) */
+/* NEU: Gesamtsumme (Label vergrößert, Wert skaliert, LINKSBÜNDIGKEIT) */
 .summary-total-row {
     padding-bottom: 10px;
     border-bottom: 2px solid var(--btn-ghost-border); /* Trennlinie */
+    justify-content: flex-start; /* HIER: Sorgt für linksbündige Anordnung */
+    gap: 20px; /* Abstand zwischen Label und Betrag */
 }
 .summary-total-row .small { /* Das Label 'Gesamtsumme' */
     font-size: var(--order-font-md); /* Vergrößert */
@@ -316,9 +318,9 @@ h1{font-size:24px;margin:0}
     gap: 5px;
     flex: 1; /* Beide Gruppen teilen sich den Platz */
 }
-/* Rechte Gruppe (Rückgeld) - Text rechtsbündig */
+/* Rechte Gruppe (Rückgeld) - Text ist jetzt LINKSBÜNDIG */
 .input-group.change-group {
-    align-items: flex-end;
+    align-items: flex-start; /* HIER: Ändert die Ausrichtung von 'Rückgeld' Label */
 }
 .input-group .small { /* Labels 'Gegeben' und 'Rückgeld' */
     font-size: var(--order-font-md); /* Vergrößert */
@@ -333,7 +335,7 @@ h1{font-size:24px;margin:0}
     border: 4px solid var(--btn-ghost-border); /* Passend zum Input, aber dezenter */
     border-radius: 10px;
     width: 100%;
-    text-align: right;
+    text-align: left; /* HIER: Macht das Rückgeld linksbündig */
     min-height: 60.5px; /* Höhe an Input-Feld anpassen */
 }
 /* NEU: Rückgeld-Anzeige bei Defizit (Rot) */
@@ -344,7 +346,7 @@ h1{font-size:24px;margin:0}
 
 .big{font-weight:700}
 
-/* Input-Feld angepasst: Größere Schrift */
+/* Input-Feld angepasst: Größere Schrift & LINKSBÜNDIGKEIT */
 input[type=number], input[type=text]{
   width:100%;
   padding:12px;
@@ -354,12 +356,23 @@ input[type=number], input[type=text]{
   color:var(--text-primary);
   font-size:var(--order-font-lg); /* Größere Schrift */
   font-weight: 700;
-  text-align: left; 
+  text-align: left; /* HIER: Macht die Eingabe linksbündig */
 }
 
-/* Money-Grid: margin-top entfernt, da gap von summary kommt */
+/* Money-Grid: Abstand reduziert (Vorschlag aus vorheriger Antwort) */
 .money-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:0px}
-.money-btn{padding:8px;border-radius:10px;border:1.5px solid var(--divider-color);background:var(--money-btn-bg);color:#fff;font-weight:700;cursor:pointer;transition:0.15s all; font-size: var(--order-font-md);}
+/* Money-Button: Padding und Font-Size reduziert (Vorschlag aus vorheriger Antwort) */
+.money-btn{
+    padding:8px; /* Reduziert von 12px */
+    border-radius:10px;
+    border:1.5px solid var(--divider-color);
+    background:var(--money-btn-bg);
+    color:#fff;
+    font-weight:700;
+    cursor:pointer;
+    transition:0.15s all; 
+    font-size: 16px; /* Feste, kleinere Schriftgröße */
+}
 .money-btn:active{transform:scale(0.95);box-shadow:0 0 10px 3px #fff;}
 
 /* --- ENDE SUMMARY ÜBERARBEITUNG --- */
@@ -383,7 +396,7 @@ input[type=number], input[type=text]{
 }
 
 
-/* --- GLOBALE BUTTONS (Dicker Rahmen) --- */
+/* --- GLOBALE BUTTONS (Dicker Rahmen, Padding angepasst) --- */
 .btn-primary{background:var(--btn-primary-bg);color:var(--btn-primary-text);border:1.5px solid var(--divider-color);padding:14px;border-radius:12px;font-weight:700;cursor:pointer;width:100%;font-size: 18px;}
 .btn-ghost{background:transparent;border:1.5px solid var(--divider-color);padding:10px;border-radius:8px;color:var(--btn-ghost-text);cursor:pointer}
 .btn-danger{background:var(--btn-danger-bg);color:var(--btn-danger-text);border:1.5px solid var(--divider-color);padding:14px;border-radius:12px;font-weight:700;width:100%;cursor:pointer;font-size: 18px;}
@@ -538,6 +551,52 @@ footer {
       text-align: left; /* Links ausrichten im mobilen Modus */
   }
 }
+
+/* --- ZUSÄTZLICHE OPTIMIERUNG FÜR KLEINERE TABLETS (z.B. 9.7 Zoll) --- */
+.compact-ui {
+  /* Kleinere Basis-Schriftgrößen (Optimiert für 9.7" iPads wie MD525FD/A) */
+  --pbtn-emoji-size: 3.5vmin; /* Von 4.5vmin reduziert */
+  --pbtn-name-size: 2.0vmin;  /* Von 2.5vmin reduziert */
+  --pbtn-emoji-size-px: 35px; /* Von 45px reduziert */
+  --pbtn-name-size-px: 20px;  /* Von 25px reduziert */
+    
+  --order-font-sm: 14px; /* Von 16px reduziert */
+  --order-font-md: 17px; /* Von 20px reduziert */
+  --order-font-lg: 22px; /* Von 28px reduziert */
+}
+
+/* Anpassung der Order-Panel Breite und Mindestbreite für 9.7" */
+.compact-ui .order {
+    min-width: 380px; /* Von 450px reduziert */
+    width: 420px; /* Von 500px reduziert */
+}
+/* Erzwingt, dass die UI im Kompakt-Modus horizontal bleibt, auch wenn der Bildschirm schmaler ist */
+@media (min-width: 840px) { /* Behält das Spalten-Layout ab 840px Breite bei */
+    .compact-ui #kasseView { 
+        flex-direction: row !important; /* WICHTIG: Bleibt horizontal */
+        flex-wrap: nowrap !important; 
+        gap: 0 !important; /* Resizer wird verwendet */
+    }
+    .compact-ui .products {
+        min-width: 300px;
+        flex-grow: 1;
+    }
+}
+@media (max-width: 839px) { /* Bricht bei 839px zusammen, wenn Kompakt-UI aktiv ist */
+    .compact-ui #kasseView { 
+        flex-direction: column !important;
+    }
+}
+/* Resizer im Kompakt-Modus immer anzeigen, wenn horizontal */
+.compact-ui #resizer {
+    display: flex;
+}
+/* Versteckt den Resizer komplett unterhalb von 840px, da es dann vertikal ist */
+@media (max-width: 839px) {
+    #resizer {
+        display: none !important;
+    }
+}
 </style>
 </head>
 <body>
@@ -555,6 +614,8 @@ footer {
       <button class="btn-ghost" id="showLogBtn">Erfassungen</button>
       <button class="btn-ghost" id="exportCsvBtn">Export CSV</button>
       <button class="btn-ghost" id="openExportFolderBtn">Zuletzt exportierte CSV öffnen</button>
+      
+      <button class="btn-ghost" id="uiModeBtn">UI: Groß (12.9)</button> 
       
       <div class="color-switcher">
         <button class="color-btn" data-theme="theme1" style="background: linear-gradient(45deg, #2f353b, #373f43);"></button>
@@ -583,7 +644,9 @@ footer {
     <div class="grid" id="productsGrid"></div>
   </section>
   
-  <div id="resizer"></div> <aside class="order" aria-label="Kassenbereich" id="orderPanel">
+  <div id="resizer"></div> 
+  
+  <aside class="order" aria-label="Kassenbereich" id="orderPanel">
     <button class="btn-danger" id="clearOrderBtn">Bestellung löschen</button>
     <div class="order-header">
       <strong>Bestellung</strong>
@@ -677,9 +740,9 @@ const THEME_STORAGE_KEY = 'pottschatz_kasse_theme_v1';
 const PRODUCT_FONT_SIZE_KEY = 'pottschatz_kasse_font_product_v1';
 const ORDER_FONT_SIZE_KEY = 'pottschatz_kasse_font_order_v1';
 const KASSE_WIDTH_KEY = 'pottschatz_kasse_width_v1'; 
-
 const GIVEN_KEY='pottschatz_kasse_given_v1';
 const LAST_CSV_KEY='pottschatz_kasse_last_csv_v1';
+const UI_MODE_KEY = 'pottschatz_ui_mode_v1'; // NEU: Schlüssel für UI-Modus
 
 let order={};
 let lastExport = null;
@@ -690,7 +753,50 @@ function localSafe(fn, fallback=null){
   try { return fn(); } catch(e) { console.warn('LocalStorage/Operation failed:', e); return fallback; }
 }
 
-/* ===== Resizer Logic (Unverändert) ===== */
+/* ===== UI Mode Toggle Logic (NEU) ===== */
+const UI_MODE_DEFAULT = 'large'; 
+const UI_MODE_COMPACT = 'compact'; 
+
+function setUiMode(mode) {
+    const htmlEl = document.documentElement;
+    const btn = document.getElementById('uiModeBtn');
+    
+    // 1. Klasse setzen
+    htmlEl.classList.toggle('compact-ui', mode === UI_MODE_COMPACT);
+    
+    // 2. Button-Text aktualisieren
+    if (mode === UI_MODE_COMPACT) {
+        btn.textContent = 'UI: Kompakt (9.7)';
+    } else {
+        btn.textContent = 'UI: Groß (12.9)';
+    }
+    
+    // 3. Status speichern
+    localSafe(() => localStorage.setItem(UI_MODE_KEY, mode));
+    
+    // 4. Stellt sicher, dass der Resizer im 'large' Modus ab 1100px angezeigt wird 
+    const resizer = document.getElementById('resizer');
+    if (mode === UI_MODE_DEFAULT && window.innerWidth >= 1100) {
+        resizer.style.display = 'flex';
+    } else if (mode === UI_MODE_DEFAULT && window.innerWidth < 1100) {
+        resizer.style.display = 'none';
+    }
+}
+
+function loadUiMode() {
+    // Lädt den gespeicherten Zustand oder den Standardmodus 'large'
+    const savedMode = localSafe(() => localStorage.getItem(UI_MODE_KEY), UI_MODE_DEFAULT);
+    setUiMode(savedMode);
+}
+
+function toggleUiMode() {
+    // Schaltet zwischen Kompakt und Groß um
+    const currentMode = document.documentElement.classList.contains('compact-ui') ? UI_MODE_COMPACT : UI_MODE_DEFAULT;
+    const newMode = currentMode === UI_MODE_COMPACT ? UI_MODE_DEFAULT : UI_MODE_COMPACT;
+    setUiMode(newMode);
+}
+
+/* ===== Resizer Logic (Angepasst, um den Kompakt-Modus zu berücksichtigen) ===== */
 function initResizer() {
     const resizer = document.getElementById('resizer');
     const orderPanel = document.getElementById('orderPanel');
@@ -705,11 +811,12 @@ function initResizer() {
     let initialX;
     let initialWidth;
 
-    const MIN_KASSE_WIDTH = 450;
+    const MIN_KASSE_WIDTH = 380; // Minimalbreite für Kompakt-UI
     const MAX_KASSE_WIDTH_PERCENT = 0.7; 
 
     resizer.addEventListener('mousedown', (e) => {
-        if (window.innerWidth < 1100) return; 
+        // Ignoriert Mousedown, wenn das Layout vertikal gestapelt ist
+        if (window.getComputedStyle(document.getElementById('kasseView')).flexDirection === 'column') return;
         isResizing = true;
         initialX = e.clientX;
         initialWidth = orderPanel.offsetWidth;
@@ -718,7 +825,8 @@ function initResizer() {
     });
     
     resizer.addEventListener('touchstart', (e) => {
-        if (window.innerWidth < 1100) return; 
+        // Ignoriert Touchstart, wenn das Layout vertikal gestapelt ist
+        if (window.getComputedStyle(document.getElementById('kasseView')).flexDirection === 'column') return;
         isResizing = true;
         initialX = e.touches[0].clientX;
         initialWidth = orderPanel.offsetWidth;
@@ -755,7 +863,8 @@ function initResizer() {
     document.addEventListener('touchcancel', stopResizing);
     
     window.addEventListener('resize', () => {
-        if (window.innerWidth < 1100) {
+        const flexDirection = window.getComputedStyle(document.getElementById('kasseView')).flexDirection;
+        if (flexDirection === 'column') {
             orderPanel.style.width = '100%';
         } else {
             const currentWidth = orderPanel.style.width;
@@ -1151,6 +1260,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   loadTheme();
   loadProductFontSize(); 
   loadOrderFontSize(); 
+  loadUiMode(); // HIER EINGEFÜGT: Lädt den UI-Modus beim Start
   initResizer(); 
   renderProducts(); 
   loadGiven(); 
@@ -1174,6 +1284,9 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.getElementById('downloadAllBtn').addEventListener('click',downloadCsv);
   
   document.getElementById('openExportFolderBtn').addEventListener('click', reopenLastExport);
+  
+  // EVENT LISTENER FÜR UI MODE
+  document.getElementById('uiModeBtn').addEventListener('click', toggleUiMode);
 
   document.getElementById('showLogBtn').addEventListener('click', showLogModal);
   document.getElementById('closeLogBtn').addEventListener('click', hideLogModal);
