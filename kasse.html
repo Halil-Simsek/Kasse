@@ -361,17 +361,17 @@ input[type=number], input[type=text]{
 
 /* Money-Grid: Abstand reduziert (Vorschlag aus vorheriger Antwort) */
 .money-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:0px}
-/* Money-Button: Padding und Font-Size reduziert (Vorschlag aus vorheriger Antwort) */
+/* Money-Button: Padding und Font-Size WEITER REDUZIERT für kompaktere Ansicht */
 .money-btn{
-    padding:8px; /* Reduziert von 12px */
-    border-radius:10px;
+    padding:6px; /* Reduziert von 8px auf 6px */
+    border-radius:100px;
     border:1.5px solid var(--divider-color);
     background:var(--money-btn-bg);
     color:#fff;
     font-weight:700;
     cursor:pointer;
     transition:0.15s all; 
-    font-size: 16px; /* Feste, kleinere Schriftgröße */
+    font-size: 14px; /* Reduziert von 16px auf 14px */
 }
 .money-btn:active{transform:scale(0.95);box-shadow:0 0 10px 3px #fff;}
 
