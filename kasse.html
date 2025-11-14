@@ -270,13 +270,13 @@ h1{font-size:24px;margin:0}
 =====================================================
 */
 .summary{ 
-  padding:15px; 
-  border-radius:12px; 
+  padding:10px; 
+  border-radius:10px; 
   background:linear-gradient(180deg, var(--panel-bg), var(--panel-bg-alt)); 
   margin-top:8px; 
   display: flex; /* NEU: Flex-Container */
   flex-direction: column; /* NEU: Gruppen untereinander */
-  gap: 16px; /* NEU: Abstand zwischen den Zeilen */
+  gap: 10px; /* NEU: Abstand zwischen den Zeilen */
 }
 
 .summary .small { font-size: var(--order-font-sm); transition: font-size 0.2s; }
@@ -354,11 +354,11 @@ input[type=number], input[type=text]{
   color:var(--text-primary);
   font-size:var(--order-font-lg); /* Größere Schrift */
   font-weight: 700;
-  text-align: right; 
+  text-align: left; 
 }
 
 /* Money-Grid: margin-top entfernt, da gap von summary kommt */
-.money-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:0px}
+.money-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:0px}
 .money-btn{padding:12px;border-radius:10px;border:1.5px solid var(--divider-color);background:var(--money-btn-bg);color:#fff;font-weight:700;cursor:pointer;transition:0.15s all; font-size: var(--order-font-md);}
 .money-btn:active{transform:scale(0.95);box-shadow:0 0 10px 3px #fff;}
 
