@@ -3,21 +3,28 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-<title>Pottschatz - Kasse (V9.2 - Final Stable)</title>
+<title>Pottschatz - Kasse (V9.4 - Endgültig Bereinigt)</title>
 <style>
-/* --- VARIABLEN --- */
+/*
+=====================================================
+CSS-BEREICH 1: VARIABLEN & THEMES
+  Definiert alle Farben, Schriftgrößen-Standards und die 6 Farbschemata.
+=====================================================
+*/
 :root {
   /* Basis Schriftgrößen (DEFAULTS FÜR IPAD PRO 12.9") */
+  /* Diese Werte werden von JS gesteuert (A++ / A--) */
   --pbtn-emoji-size: 2.5vmin; 
   --pbtn-name-size: 2.5vmin;  
   --pbtn-emoji-size-px: 25px; 
-  --pbtn-name-size-px: 15px;  
+  --pbtn-name-size-px: 25px;  
     
-  --order-font-sm: 12px; 
-  --order-font-md: 10px; 
-  --order-font-lg: 12px; 
+  /* Diese Werte werden von JS gesteuert (A+ / A-) */
+  --order-font-sm: 16px; 
+  --order-font-md: 20px; 
+  --order-font-lg: 28px; 
 
-  /* Theme 1: Original (Dark - 8.19 Basis) */
+  /* Theme 1: Original (Dark) */
   --bg-gradient-start: #2f353b;
   --bg-gradient-end: #373f43; /* Hintergrundfarbe für klebrige Elemente */
   --text-primary: #f0e5df;
@@ -47,15 +54,23 @@
   --text-change-color: #44ff44; 
   --text-change-negative-color: #ff5555; 
 }
-/* --- FARBSCHEMATA (Unverändert) --- */
+/* Theme 2 (Hell) */
 [data-theme="theme2"] { --bg-gradient-start: #f1f5f9; --bg-gradient-end: #e2e8f0; --text-primary: #1e293b; --text-muted: #475569; --panel-bg: #ffffff; --panel-bg-alt: #f8fafc; --btn-primary-bg: #3b82f6; --btn-primary-text: #ffffff; --btn-danger-bg: #ef4444; --btn-danger-text: #ffffff; --btn-ghost-border: rgba(0,0,0,0.15); --btn-ghost-text: var(--text-primary); --divider-color: #3b82f6; --input-border: #3b82f6; --modal-bg: #f1f5f9; --text-on-btn: var(--text-on-light); --qty-text-color: var(--text-on-light); --qty-bg-color: #f7f7f7; --money-btn-bg: #bbb; --pbtn-active-shadow: 0 0 10px 4px rgba(0, 0, 0, 0.4); --splitter-bg: rgba(0, 0, 0, 0.1); --splitter-color: #3b82f6; --pbtn-glass-border: rgba(0, 0, 0, 0.1); --text-total-color: var(--divider-color); --text-change-color: #009900; --text-change-negative-color: #ef4444; }
+/* Theme 3 (Kontrast) */
 [data-theme="theme3"] { --bg-gradient-start: #141309; --bg-gradient-end: #141309; --text-primary: #ffffff; --text-muted: #f4c00c; --panel-bg: rgba(255,255,255,0.05); --panel-bg-alt: rgba(255,255,255,0.08); --btn-primary-bg: #f4c00c; --btn-primary-text: #141309; --btn-danger-bg: #d93025; --btn-danger-text: #ffffff; --btn-ghost-border: rgba(255,255,255,0.2); --btn-ghost-text: var(--text-primary); --divider-color: #f4c00c; --input-border: #f4c00c; --modal-bg: #1f1e14; --text-on-btn: var(--text-on-dark); --qty-text-color: var(--text-on-dark); --money-btn-bg: #444; --pbtn-active-shadow: 0 0 10px 4px rgba(255, 255, 255, 0.6); --splitter-bg: rgba(255, 255, 255, 0.2); --splitter-color: #f4c00c; --pbtn-glass-border: rgba(255, 255, 255, 0.2); --text-total-color: var(--divider-color); --text-change-color: #44ff44; --text-change-negative-color: #ff5555; }
+/* Theme 4 (Grün/Dunkel) */
 [data-theme="theme4"] { --bg-gradient-start: #222629; --bg-gradient-end: #222629; --text-primary: #ffffff; --text-muted: #86C232; --panel-bg: #474b4f; --panel-bg-alt: #3a3e41; --btn-primary-bg: #86C232; --btn-primary-text: #000000; --btn-danger-bg: #c62828; --btn-danger-text: #ffffff; --btn-ghost-border: rgba(255,255,255,0.2); --btn-ghost-text: var(--text-primary); --divider-color: #86C232; --input-border: #86C232; --modal-bg: #3a3e41; --text-on-btn: var(--text-on-dark); --qty-text-color: var(--text-on-dark); --money-btn-bg: #444; --pbtn-active-shadow: 0 0 10px 4px rgba(255, 255, 255, 0.6); --splitter-bg: rgba(255, 255, 255, 0.2); --splitter-color: #86C232; --pbtn-glass-border: rgba(255, 255, 255, 0.2); --text-total-color: var(--divider-color); --text-change-color: #86C232; --text-change-negative-color: #c62828; }
+/* Theme 5 (Sepia) */
 [data-theme="theme5"] { --bg-gradient-start: #fdfcf9; --bg-gradient-end: #fefbec; --text-primary: #44403c; --text-muted: #78716c; --panel-bg: #ffffff; --panel-bg-alt: #fefcfb; --btn-primary-bg: #c05621; --btn-primary-text: #ffffff; --btn-danger-bg: #d9534f; --btn-danger-text: #ffffff; --btn-ghost-border: rgba(0,0,0,0.1); --btn-ghost-text: var(--text-primary); --divider-color: #c05621; --input-border: #c05621; --modal-bg: #fdfcf9; --text-on-btn: var(--text-on-light); --qty-text-color: var(--text-on-light); --qty-bg-color: #f7f7f7; --money-btn-bg: #bbb; --pbtn-active-shadow: 0 0 10px 4px rgba(0, 0, 0, 0.4); --splitter-bg: rgba(0, 0, 0, 0.1); --splitter-color: #c05621; --pbtn-glass-border: rgba(0, 0, 0, 0.1); --text-total-color: #c05621; --text-change-color: #009900; --text-change-negative-color: #d9534f; }
+/* Theme 6 (Matcha) */
 [data-theme="theme6"] { --bg-gradient-start: #f0fdf4; --bg-gradient-end: #dcfce7; --text-primary: #14532d; --text-muted: #166534; --panel-bg: #ffffff; --panel-bg-alt: #fafffb; --btn-primary-bg: #22c55e; --btn-primary-text: #ffffff; --btn-danger-bg: #ef4444; --btn-danger-text: #ffffff; --btn-ghost-border: rgba(0,0,0,0.1); --btn-ghost-text: var(--text-primary); --divider-color: #22c55e; --input-border: #22c55e; --modal-bg: #f0fdf4; --text-on-btn: var(--text-on-light); --qty-text-color: var(--text-on-light); --qty-bg-color: #f7f7f7; --money-btn-bg: #bbb; --pbtn-active-shadow: 0 0 10px 4px rgba(0, 0, 0, 0.4); --splitter-bg: rgba(0, 0, 0, 0.1); --splitter-color: #22c55e; --pbtn-glass-border: rgba(0, 0, 0, 0.1); --text-total-color: #22c55e; --text-change-color: #166534; --text-change-negative-color: #ef4444; }
 
 
-/* --- GRUND-LAYOUT --- */
+/*
+=====================================================
+CSS-BEREICH 2: GRUND-LAYOUT (FLEXBOX, SPLITTER)
+=====================================================
+*/
 *{box-sizing:border-box}
 html,body{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;background:linear-gradient(180deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);color:var(--text-primary); transition: background 0.3s, color 0.3s;overflow-x: hidden;}
 .app{
@@ -65,15 +80,15 @@ html,body{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI,Robo
     display:flex;
     flex-direction:column;
     gap:16px;
-    height: 100vh; 
+    height: 100vh; /* Nutzt die volle Bildschirmhöhe */
 }
 #kasseView{
-    flex-grow: 1; 
+    flex-grow: 1; /* Nimmt den restlichen Platz ein */
     display:flex; 
     gap:0; 
     min-height: 50px; 
 } 
-/* Splitter-Styling */
+/* Splitter-Styling (für das Ziehen der Spaltenbreite) */
 #resizer {
     width: 32px; 
     cursor: col-resize;
@@ -91,7 +106,7 @@ html,body{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI,Robo
 #resizer::before {
     content: '';
     display: block;
-    width: 8px;
+    width: 6px;
     height: 80%; 
     background-color: var(--splitter-color);
     border-radius: 6px;
@@ -102,26 +117,32 @@ header{grid-column:1/-1;display:flex;align-items:center;justify-content:space-be
 h1{font-size:24px;margin:0} 
 .small{color:var(--text-muted)}
 
-/* --- PRODUKTE (Linke Spalte) --- */
+/*
+=====================================================
+CSS-BEREICH 3: PRODUKTE (Linke Spalte)
+=====================================================
+*/
 .products{ 
     background:var(--panel-bg); 
     padding:14px; 
     border-radius:12px; 
     display:flex; 
     flex-direction:column; 
-    gap:8px; 
+    gap:6px; 
     height: 100%; 
     min-height: 50px; 
-    min-width: 50px; 
-    flex-grow: 1; 
+    min-width: 50px; /* Minimalbreite für Produkte */
+    flex-grow: 1; /* Nimmt den restlichen Platz ein */
 }
 .products-header{display:flex;justify-content:space-between;align-items:center;gap:10px;}
 .grid{ 
     flex:1; 
     overflow:auto; 
     display:grid; 
-    grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); 
-    grid-auto-rows: minmax(auto-fit, 1fr); 
+    /* PASST DIE MINDESTGRÖSSE DER BUTTONS AN (300px) */
+    grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); 
+    /* KORRIGIERT: Buttons füllen den Platz vertikal */
+    grid-auto-rows: minmax(180px, 1fr); 
     gap:6px; 
     padding-right: 6px; 
 }
@@ -144,12 +165,11 @@ h1{font-size:24px;margin:0}
   cursor: pointer;
   transition: all 0.1s ease;
 }
-/* NEU: Spezifische bunte Farben nur für Theme 1 (mit Transparenz für Glass-Effekt) */
+/* Spezifische bunte Farben nur für Theme 1 (mit Transparenz für Glass-Effekt) */
 [data-theme="theme1"] .pbtn {
     border-color: rgba(255,255,255,0.1); 
     color: var(--text-primary); 
 }
-/* Achtung: Farben sind nun leicht transparent (0.9), um den blur-Effekt zu ermöglichen! */
 [data-theme="theme1"] .pbtn[data-id="p1"]{background:rgba(181, 45, 27, 0.9);color:#f7f6eb; border-color: rgba(255,255,255,0.3);} 
 [data-theme="theme1"] .pbtn[data-id="p2"]{background:rgba(207, 204, 124, 0.9);color:#0a0a0a; border-color: rgba(0,0,0,0.3);} 
 [data-theme="theme1"] .pbtn[data-id="p3"]{background:rgba(174, 232, 97, 0.9);color:#0a0a0a; border-color: rgba(0,0,0,0.3);} 
@@ -181,12 +201,17 @@ h1{font-size:24px;margin:0}
     text-align: center;
     width: 100%;
 } 
-.pbtn-emoji { font-size: var(--pbtn-emoji-size); min-width: var(--pbtn-emoji-size-px); }
-.pbtn-name { font-size: var(--pbtn-name-size); min-width: var(--pbtn-name-size-px); }
-.pbtn span{font-size: var(--pbtn-name-size); transition: font-size 0.2s;} 
+/* KORRIGIERT: max() Funktion für funktionierende A++/A-- Buttons */
+.pbtn-emoji { font-size: max(var(--pbtn-emoji-size), var(--pbtn-emoji-size-px)); line-height: 1; transition: font-size 0.2s; }
+.pbtn-name { font-size: max(var(--pbtn-name-size), var(--pbtn-name-size-px)); line-height: 1.2; transition: font-size 0.2s; }
+.pbtn span{font-size: max(var(--pbtn-name-size), var(--pbtn-name-size-px)); transition: font-size 0.2s;} 
 
 
-/* --- BESTELLUNG (Rechte Spalte) --- */
+/*
+=====================================================
+CSS-BEREICH 4: BESTELLUNG (Rechte Spalte)
+=====================================================
+*/
 .order{ 
     background:var(--panel-bg); 
     padding:14px; 
@@ -195,10 +220,10 @@ h1{font-size:24px;margin:0}
     flex-direction:column; 
     height: 100%; 
     min-height: 50px;
-    min-width: 50px; 
-    width: 100px; 
-    gap:12px;
-    flex-shrink: 0; 
+    min-width: 50px; /* Mindestbreite beibehalten */
+    width: 50px; /* KORRIGIERT: Standardbreite */
+    gap:6px;
+    flex-shrink: 0; /* Verhindert Schrumpfen */
 }
 .options{display:flex;flex-direction:column;gap:8px;align-items:flex-end;}
 .options-header{font-weight:700;font-size: 14px;}
@@ -232,33 +257,34 @@ h1{font-size:24px;margin:0}
 .order-header .small { font-size: var(--order-font-sm); transition: font-size 0.2s; } 
 .order-list{ flex:1; overflow:auto; padding-right:6px } 
 
-/* Bestell-Items auf neue, größere Schriftgröße anpassen */
+/* Bestell-Items (Artikel in der Liste) */
 .order-item{display:flex;align-items:center;justify-content:space-between;padding:10px;border-bottom:1px dashed var(--divider-color)}
 .order-item strong { font-size: var(--order-font-md); transition: font-size 0.2s; }
 .item-left{display:flex;gap:12px;align-items:center; flex-grow: 1;} 
 
-/* NEU: Flex-Container für Quantity und Buttons, fixiert die Breite */
+/* KORRIGIERT: Stabile Button-Positionierung */
 .item-controls { 
     display: flex;
     align-items: center;
     gap: 8px;
     flex-shrink: 0; 
-    min-width: 100px; 
+    min-width: 180px; 
     justify-content: flex-end; 
 }
 
-/* HINWEIS: .qty min-width wurde zu width geändert für stabiles Layout */
 .qty{background:var(--qty-bg-color);color: var(--qty-text-color);padding:8px 12px;border-radius:10px;width:65px;text-align:center; font-size: var(--order-font-md); transition: font-size 0.2s, background-color 0.3s, color 0.3s; flex-shrink: 0;}
 .icon-btn{border: none;padding: 10px 12px;border-radius: 10px;cursor: pointer;font-weight: bold;color: var(--text-on-btn);transition: background-color 0.15s, color 0.3s;min-width: 36px;text-align: center; flex-shrink: 0;}
 .order-item button[aria-label="minus"] { background: #CD0000; }
 .order-item button[aria-label="plus"] { background: #228B22; }
 .order-item button[aria-label="remove-item"] { background: transparent; color: var(--text-primary); border: 1px solid var(--btn-ghost-border); padding: 8px 10px; font-size: 18px; font-weight: normal; min-width: auto; }
 
-/* =====================================================
---- SUMMARY/GELD ---
-===================================================== */
+/*
+=====================================================
+CSS-BEREICH 5: SUMMARY, GELD & ZAHLUNG
+=====================================================
+*/
 .summary{ 
-  padding:60px; 
+  padding:20px; /* KORRIGIERT: 60px war zu viel */
   border-radius:12px; 
   background:linear-gradient(180deg, var(--panel-bg), var(--panel-bg-alt)); 
   margin-top:8px; 
@@ -276,7 +302,7 @@ h1{font-size:24px;margin:0}
     align-items:center;
 } 
 
-/* NEU: Gesamtsumme (LINKSBÜNDIG) */
+/* Gesamtsumme (LINKSBÜNDIG) */
 .summary-total-row {
     padding-bottom: 10px;
     border-bottom: 2px solid var(--btn-ghost-border); 
@@ -293,7 +319,7 @@ h1{font-size:24px;margin:0}
     color: var(--text-total-color); 
 }
 
-/* NEU: 'Gegeben' und 'Rückgeld' nebeneinander */
+/* 'Gegeben' und 'Rückgeld' nebeneinander */
 .summary-input-row {
     display: flex;
     flex-direction: row;
@@ -312,7 +338,7 @@ h1{font-size:24px;margin:0}
     font-size: var(--order-font-md); 
     font-weight: 700;
 }
-/* NEU: Rückgeld Anzeige-Box */
+/* Rückgeld Anzeige-Box */
 .input-group #changeDisplay {
     font-size: var(--order-font-lg); 
     font-weight: 900;
@@ -322,9 +348,9 @@ h1{font-size:24px;margin:0}
     border-radius: 10px;
     width: 100%;
     text-align: right; 
-    min-height: 12px; 
+    min-height: 30px; /* Feste Höhe für stabiles Layout */
 }
-/* NEU: Rückgeld-Anzeige bei Defizit (Rot) */
+/* Rückgeld-Anzeige bei Defizit (Rot) */
 .input-group #changeDisplay.deficit {
     color: var(--text-change-negative-color) !important; 
     border-color: var(--text-change-negative-color);
@@ -350,14 +376,14 @@ input[type=number], input[type=text]{
 /* Money-Button: Kompakte Ansicht */
 .money-btn{
     padding:8px; 
-    border-radius:80px;
+    border-radius:50px;
     border:1.5px solid var(--divider-color);
     background:var(--money-btn-bg);
     color:#fff;
     font-weight:700;
     cursor:pointer;
     transition:0.15s all; 
-    font-size: 32px; 
+    font-size: 20px; 
 }
 .money-btn:active{transform:scale(0.95);box-shadow:0 0 10px 3px #fff;}
 
@@ -368,8 +394,11 @@ input[type=number], input[type=text]{
     margin-top: 0; 
     flex-direction: row; 
 }
+/* KORRIGIERT: Farben getauscht (saveOnly ist jetzt primär) */
 #saveOnlyBtn {
     flex-grow: 2; 
+    background: var(--btn-primary-bg);
+    color: var(--btn-primary-text);
 }
 #saveAndPrintBtn {
     flex-grow: 1; 
@@ -391,7 +420,11 @@ footer {
     color: var(--text-muted);
 }
 
-/* --- LOG/MODAL STYLES (Unverändert) --- */
+/*
+=====================================================
+CSS-BEREICH 6: MODALS & DRUCK
+=====================================================
+*/
 #logView, #saveSuccessMessage {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
@@ -407,17 +440,19 @@ footer {
     border-radius: 12px;
     padding: 20px;
     width: 80%;
-    max-width: 600px;
+    max-width: 700px; /* Vergrößert */
     max-height: 90vh;
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
+/* KORRIGIERT: Layout des Log-Headers (Button rechts) */
 .modal-header { 
     display: flex; 
     justify-content: space-between; 
     align-items: center;
 }
+/* KORRIGIERT: Layout des Log-Footers (Buttons nebeneinander) */
 .modal-footer {
     display: flex;
     gap: 10px; 
@@ -449,7 +484,7 @@ footer {
     font-weight: 700;
     color: var(--btn-primary-bg);
 }
-/* Styles für Success Message */
+/* Styles für Success Message (die große Box) */
 #saveSuccessMessage {
   position: fixed; top: 50%; left: 50%; 
   transform: translate(-50%, -50%);
@@ -469,7 +504,7 @@ footer {
   opacity: 1; visibility: visible; display: flex; 
 }
 
-/* WICHTIG: DRUCK-CSS */
+/* WICHTIG: DRUCK-CSS (Stellt sicher, dass nur der Bon gedruckt wird) */
 @media print {
     .app > *:not(#saveSuccessMessage) { 
         display: none !important;
@@ -482,6 +517,7 @@ footer {
         overflow: hidden; 
     }
     #saveSuccessMessage {
+        /* Bon-Formatierung beim Druck */
         position: static !important;
         transform: none !important;
         width: 100% !important; 
@@ -489,7 +525,7 @@ footer {
         border-radius: 0 !important;
         box-shadow: none !important;
         padding: 10mm !important; 
-        background: none !important; 
+        background: none !important; /* Kein Hintergrund beim Druck */
         color: #000 !important;
         display: block !important;
         visibility: visible !important;
@@ -504,7 +540,11 @@ footer {
 }
 
 
-/* --- MEDIA QUERIES (FIXED: Hintergrund für Sticky-Element) --- */
+/*
+=====================================================
+CSS-BEREICH 7: MOBILE ANPASSUNG (Media Queries)
+=====================================================
+*/
 @media (max-width:1100px){
   #kasseView{ 
     flex-direction: column; 
@@ -521,7 +561,7 @@ footer {
     top: 0; 
     z-index: 50; 
     box-shadow: 0 4px 8px rgba(0,0,0,0.4); 
-    background: var(--bg-gradient-end); /* FIX: Sorgt für einen soliden Hintergrund, damit Produkte nicht durchscheinen! */
+    background: var(--bg-gradient-end); /* Sorgt für einen soliden Hintergrund, damit Produkte nicht durchscheinen! */
 }
   .products { 
     height: auto; 
@@ -551,51 +591,6 @@ footer {
     grid-auto-rows: minmax(140px, 1fr); 
   }
 }
-
-/* --- ZUSÄTZLICHE OPTIMIERUNG FÜR KLEINERE TABLETS (z.B. 9.7 Zoll) --- */
-.compact-ui {
-  --pbtn-emoji-size: 3.5vmin; 
-  --pbtn-name-size: 2.0vmin;  
-  --pbtn-emoji-size-px: 35px; 
-  --pbtn-name-size-px: 20px;  
-    
-  --order-font-sm: 14px; 
-  --order-font-md: 17px; 
-  --order-font-lg: 22px; 
-}
-
-/* Anpassung der Order-Panel Breite und Mindestbreite für 9.7" */
-.compact-ui .order {
-    min-width: 380px; 
-    width: 420px; 
-}
-/* Erzwingt, dass die UI im Kompakt-Modus horizontal bleibt, auch wenn der Bildschirm schmaler ist */
-@media (min-width: 840px) { 
-    .compact-ui #kasseView { 
-        flex-direction: row !important; 
-        flex-wrap: nowrap !important; 
-        gap: 0 !important; 
-    }
-    .compact-ui .products {
-        min-width: 300px;
-        flex-grow: 1;
-    }
-}
-@media (max-width: 839px) { 
-    .compact-ui #kasseView { 
-        flex-direction: column !important;
-    }
-}
-/* Resizer im Kompakt-Modus immer anzeigen, wenn horizontal */
-.compact-ui #resizer {
-    display: flex;
-}
-/* Versteckt den Resizer komplett unterhalb von 840px, da es dann vertikal ist */
-@media (max-width: 839px) {
-    #resizer {
-        display: none !important;
-    }
-}
 </style>
 </head>
 <body>
@@ -613,8 +608,6 @@ footer {
       <button class="btn-ghost" id="showLogBtn">Erfassungen</button>
       <button class="btn-ghost" id="exportCsvBtn">Export CSV</button>
       <button class="btn-ghost" id="openExportFolderBtn">Zuletzt exportierte CSV öffnen</button>
-      
-      <button class="btn-ghost" id="uiModeBtn">UI: Groß (12.9)</button> 
       
       <div class="color-switcher">
         <button class="color-btn" data-theme="theme1" style="background: linear-gradient(45deg, #2f353b, #373f43);"></button>
@@ -689,7 +682,7 @@ footer {
       
       <div class="payment-buttons">
           <button class="btn-primary" id="saveOnlyBtn">💸 Nur Zahlung erfassen</button>
-          <button class="btn-primary" id="saveAndPrintBtn">🤑 Bon drucken</button>
+          <button class="btn-primary" id="saveAndPrintBtn" style="background: #444; color: white;">🤑 Bon drucken</button>
       </div>
       
     </div>
@@ -720,7 +713,11 @@ footer {
 
 </div> 
 <script>
-/* ===== Config & Data ===== */
+/*
+=====================================================
+JS-BEREICH 1: KONFIGURATION & DATEN
+=====================================================
+*/
 const PRODUCTS=[
 {id:'p1',emoji:'🍛',name:'Chili con Carne',price:6.50},
 {id:'p2',emoji:'🍲',name:'Käse Lauch Suppe',price:6.50},
@@ -734,6 +731,7 @@ const PRODUCTS=[
 {id:'p10',emoji:'🍭',name:'Sweet Pottschatz',price:4.00}
 ];
 
+// Speicher-Schlüssel
 const STORAGE_KEY='pottschatz_kasse_log_v1';
 const THEME_STORAGE_KEY = 'pottschatz_kasse_theme_v1';
 const PRODUCT_FONT_SIZE_KEY = 'pottschatz_kasse_font_product_v1';
@@ -741,60 +739,37 @@ const ORDER_FONT_SIZE_KEY = 'pottschatz_kasse_font_order_v1';
 const KASSE_WIDTH_KEY = 'pottschatz_kasse_width_v1'; 
 const GIVEN_KEY='pottschatz_kasse_given_v1';
 const LAST_CSV_KEY='pottschatz_kasse_last_csv_v1';
-const UI_MODE_KEY = 'pottschatz_ui_mode_v1'; 
 
+// Globale Variablen für den Zustand
 let order={};
 let lastExport = null;
 
-/* ===== Helpers ===== */
+/*
+=====================================================
+JS-BEREICH 2: HILFSFUNKTIONEN
+=====================================================
+*/
 const fmt=num=>num.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2});
 function localSafe(fn, fallback=null){
   try { return fn(); } catch(e) { console.warn('LocalStorage/Operation failed:', e); return fallback; }
 }
 
-/* ===== UI Mode Toggle Logic (ROBUST) ===== */
-const UI_MODE_DEFAULT = 'large'; 
-const UI_MODE_COMPACT = 'compact'; 
-
-function setUiMode(mode) {
-    const htmlEl = document.documentElement;
-    const btn = document.getElementById('uiModeBtn');
-    
-    htmlEl.classList.toggle('compact-ui', mode === UI_MODE_COMPACT);
-    
-    if (btn) { // Failsafe-Check für den Button
-        if (mode === UI_MODE_COMPACT) {
-            btn.textContent = 'UI: Kompakt (9.7)';
-        } else {
-            btn.textContent = 'UI: Groß (12.9)';
-        }
-    }
-    
-    localSafe(() => localStorage.setItem(UI_MODE_KEY, mode));
-}
-
-function loadUiMode() {
-    const savedMode = localSafe(() => localStorage.getItem(UI_MODE_KEY), UI_MODE_DEFAULT);
-    setUiMode(savedMode);
-}
-
-function toggleUiMode() {
-    const currentMode = document.documentElement.classList.contains('compact-ui') ? UI_MODE_COMPACT : UI_MODE_DEFAULT;
-    const newMode = currentMode === UI_MODE_COMPACT ? UI_MODE_DEFAULT : UI_MODE_COMPACT;
-    setUiMode(newMode);
-}
-
-/* ===== Resizer Logic (ROBUST) ===== */
+/*
+=====================================================
+JS-BEREICH 3: RESIZER-LOGIK
+=====================================================
+*/
 function initResizer() {
     const resizer = document.getElementById('resizer');
     const orderPanel = document.getElementById('orderPanel');
     const kasseView = document.getElementById('kasseView');
 
-    // Kritischer Failsafe-Check
+    // Failsafe-Check, falls Elemente nicht gefunden werden
     if (!resizer || !orderPanel || !kasseView) {
         return; 
     }
     
+    // 1. Initialbreite laden
     const savedWidth = localSafe(() => localStorage.getItem(KASSE_WIDTH_KEY), null);
     if (savedWidth) {
         orderPanel.style.width = savedWidth;
@@ -807,8 +782,10 @@ function initResizer() {
     const MIN_KASSE_WIDTH = 380; 
     const MAX_KASSE_WIDTH_PERCENT = 0.7; 
 
+    // Prüft, ob das Layout horizontal ist (basierend auf Media Query)
     const isHorizontal = () => window.getComputedStyle(kasseView).flexDirection !== 'column';
 
+    // Start des Dragging
     resizer.addEventListener('mousedown', (e) => {
         if (!isHorizontal()) return;
         isResizing = true;
@@ -825,6 +802,7 @@ function initResizer() {
         initialWidth = orderPanel.offsetWidth;
     });
 
+    // Während des Dragging
     const handleMouseMove = (clientX) => {
         if (!isResizing) return;
         
@@ -843,6 +821,7 @@ function initResizer() {
         if (e.touches.length > 0) handleMouseMove(e.touches[0].clientX);
     }, { passive: false });
 
+    // Stopp des Dragging
     const stopResizing = () => {
         if (isResizing) {
             isResizing = false;
@@ -855,8 +834,8 @@ function initResizer() {
     document.addEventListener('touchend', stopResizing);
     document.addEventListener('touchcancel', stopResizing);
     
+    // Anpassung, wenn die Fenstergröße (z.B. Rotation) sich ändert
     window.addEventListener('resize', () => {
-        // Erneuter Check, falls die Größe geändert wird, während der Resizer nicht sichtbar ist
         if (!isHorizontal()) {
             orderPanel.style.width = '100%';
         } else {
@@ -870,7 +849,11 @@ function initResizer() {
 }
 
 
-/* ===== Font Size Functions (ROBUST) ===== */
+/*
+=====================================================
+JS-BEREICH 4: SCHRIFTGRÖSSEN-STEUERUNG (A++ / A--)
+=====================================================
+*/
 let currentProductFontSizeStep = 0;
 const FONT_STEP_EMOJI = 5; const FONT_BASE_EMOJI_PX = 45; 
 const FONT_STEP_NAME = 2; const FONT_BASE_NAME_PX = 25; 
@@ -880,7 +863,6 @@ function setProductFontSize(step) {
   currentProductFontSizeStep = step;
   localSafe(() => localStorage.setItem(PRODUCT_FONT_SIZE_KEY, step));
   
-  // Diese Zeilen sind robust
   document.documentElement.style.setProperty('--pbtn-emoji-size', `${4.5 + step * 0.6}vmin`); 
   document.documentElement.style.setProperty('--pbtn-name-size', `${2.5 + step * 0.3}vmin`); 
   
@@ -905,8 +887,9 @@ function setOrderFontSize(step) {
   localSafe(() => localStorage.setItem(ORDER_FONT_SIZE_KEY, step));
   const newSm = FONT_BASE_SM + (step * FONT_STEP_ORDER);
   const newMd = FONT_BASE_MD + (step * (FONT_STEP_ORDER + 0.5)); 
+  
   const newLg = FONT_BASE_LG + (step * (FONT_STEP_ORDER + 1)); 
-  // Diese Zeilen sind robust
+  
   document.documentElement.style.setProperty('--order-font-sm', newSm + 'px');
   document.documentElement.style.setProperty('--order-font-md', newMd + 'px');
   document.documentElement.style.setProperty('--order-font-lg', newLg + 'px');
@@ -917,7 +900,11 @@ function loadOrderFontSize() {
   setOrderFontSize(step);
 }
 
-/* ===== Theme Functions (ROBUST) ===== */
+/*
+=====================================================
+JS-BEREICH 5: THEME-STEUERUNG (Farbschemata)
+=====================================================
+*/
 function setTheme(themeName) {
   document.documentElement.setAttribute('data-theme', themeName);
   localSafe(() => localStorage.setItem(THEME_STORAGE_KEY, themeName));
@@ -930,11 +917,14 @@ function loadTheme() {
   setTheme(preferredTheme);
 }
 
-/* ===== Render Products & Order functions (Kernfunktionen) ===== */
+/*
+=====================================================
+JS-BEREICH 6: BESTELL- & RENDERING-LOGIK
+=====================================================
+*/
 function renderProducts(){
   const list=document.getElementById('orderList'); 
   const grid=document.getElementById('productsGrid'); 
-  // Failsafe: Wenn productsGrid fehlt, soll die Funktion einfach abbrechen
   if (!grid) return;
 
   grid.innerHTML='';
@@ -945,7 +935,7 @@ function renderProducts(){
       addProduct(p.id,1);
       btn.classList.add('active');
       setTimeout(()=>btn.classList.remove('active'),200);
-      if(list) list.scrollTop = list.scrollHeight; // Failsafe scroll
+      if(list) list.scrollTop = list.scrollHeight; 
     });
     grid.appendChild(btn);
   });
@@ -958,8 +948,6 @@ function calcTotal(){ return Object.keys(order).reduce((sum,id)=>sum+PRODUCTS.fi
 function renderOrder(){
   const list=document.getElementById('orderList'); 
   const totalDisplay = document.getElementById('totalDisplay');
-
-  // Failsafe-Check für Listenelemente
   if (!list || !totalDisplay) return; 
 
   list.innerHTML='';
@@ -992,14 +980,14 @@ function renderOrder(){
   updateChange();
 }
 
-/* =====================================================
---- JS: 'updateChange' ---
-===================================================== */
+/*
+=====================================================
+JS-BEREICH 7: ZAHLUNGS- & RÜCKGELD-LOGIK
+=====================================================
+*/
 function updateChange(){
   const givenInput = document.getElementById('givenInput');
   const changeDisplayEl = document.getElementById('changeDisplay');
-
-  // Failsafe-Check
   if (!givenInput || !changeDisplayEl) return;
   
   let given = parseFloat(givenInput.value || 0);
@@ -1022,14 +1010,18 @@ function loadGiven(){
   const v = localSafe(()=>localStorage.getItem(GIVEN_KEY), null);
   if(v !== null){
     const gi = document.getElementById('givenInput');
-    if (gi) { // Failsafe-Check
+    if (gi) { 
       gi.value = parseFloat(v);
       updateChange();
     }
   }
 }
 
-/* ===== Log (LocalStorage) & Capture Sale (Unverändert) ===== */
+/*
+=====================================================
+JS-BEREICH 8: LOG-SPEICHERUNG & BON-DRUCK
+=====================================================
+*/
 function loadLog(){ return localSafe(()=>JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'), []); }
 function saveLog(entries){ localSafe(()=>localStorage.setItem(STORAGE_KEY,JSON.stringify(entries))); }
 function nextOrderNumber(){ const log=loadLog(); return log.length===0?1:Math.max(...log.map(x=>x.orderNr||0))+1; }
@@ -1041,7 +1033,7 @@ function showSuccessMessage(entry, shouldPrint) {
     let bonContent = '';
     
     if (shouldPrint) {
-        // --- BON-INHALT GENERIEREN ---
+        // --- 1. BON-INHALT GENERIEREN (Für Druck) ---
         bonContent += '<div class="bon-header" style="font-size: 20pt; margin-bottom: 20px;">*** POTTSCHATZ BON ***</div>';
         bonContent += `<div class="bon-header" style="font-size: 16pt;">Bestellung #${entry.orderNr}</div>`;
         bonContent += `<div style="text-align: center; margin-bottom: 20px; font-size: 14pt;">${entry.date} ${entry.time}</div>`;
@@ -1053,7 +1045,6 @@ function showSuccessMessage(entry, shouldPrint) {
         });
         
         bonContent += '<div class="bon-separator"></div>';
-
         bonContent += `<div class="bon-item-row bon-total" style="font-size: 22pt;"><span>GESAMT:</span><span>${entry.total.toFixed(2).replace('.', ',')} €</span></div>`;
         bonContent += `<div class="bon-item-row" style="font-size: 16pt;"><span>Gegeben:</span><span>${(entry.given||0).toFixed(2).replace('.', ',')} €</span></div>`;
         
@@ -1061,7 +1052,6 @@ function showSuccessMessage(entry, shouldPrint) {
         bonContent += `<div class="bon-item-row" style="font-size: 16pt;"><span>${changeText}</span><span>${entry.change.toFixed(2).replace('.', ',')} €</span></div>`;
         
         bonContent += '<div class="bon-separator"></div>';
-        
         bonContent += '<div class="bon-footer" style="margin-top: 20px; font-size: 14pt;">Vielen Dank für Ihre Bestellung!</div>';
 
         msgEl.innerHTML = bonContent;
@@ -1076,7 +1066,7 @@ function showSuccessMessage(entry, shouldPrint) {
         }, 2500); 
 
     } else {
-        // --- RAKETEN-MELDUNG GENERIEREN ---
+        // --- 2. RAKETEN-MELDUNG GENERIEREN (Nur Speichern) ---
         const totalFmt = entry.total.toFixed(2).replace('.', ',');
         msgEl.innerHTML = `
             <div style="font-size: 120px; margin-bottom: 20px;">🚀</div>
@@ -1095,12 +1085,7 @@ function showSuccessMessage(entry, shouldPrint) {
 function captureSale(shouldPrint){
   const printBtn = document.getElementById('saveAndPrintBtn');
   const saveBtn = document.getElementById('saveOnlyBtn');
-
-  // Failsafe-Check für Buttons 
-  if(!printBtn || !saveBtn) {
-      console.error("Zahlungs-Buttons nicht gefunden.");
-      return;
-  }
+  if(!printBtn || !saveBtn) { console.error("Zahlungs-Buttons nicht gefunden."); return; }
 
   if(printBtn.disabled || saveBtn.disabled) return;
   printBtn.disabled = true;
@@ -1109,18 +1094,14 @@ function captureSale(shouldPrint){
   const total=calcTotal(); 
   if(total<=0){ 
     alert('Keine Produkte in der Bestellung.'); 
-    printBtn.disabled=false;
-    saveBtn.disabled=false;
-    return; 
+    printBtn.disabled=false; saveBtn.disabled=false; return; 
   }
   const givenInput = document.getElementById('givenInput');
   const given=parseFloat(givenInput ? givenInput.value : 0 || 0);
   const change = given - total; 
 
   if(change < 0 && !confirm('Gegeben < Summe (Defizit: '+fmt(change)+' €). Trotzdem erfassen?')) { 
-    printBtn.disabled=false;
-    saveBtn.disabled=false;
-    return; 
+    printBtn.disabled=false; saveBtn.disabled=false; return; 
   }
   
   const now=new Date();
@@ -1139,7 +1120,7 @@ function captureSale(shouldPrint){
   };
   const log=loadLog(); log.push(entry); saveLog(log);
   
-  // clear order & given
+  // Bestellung zurücksetzen
   order={}; 
   if (givenInput) givenInput.value=''; 
   localSafe(()=>localStorage.removeItem(GIVEN_KEY)); 
@@ -1151,7 +1132,11 @@ function captureSale(shouldPrint){
   saveBtn.disabled=false;
 }
 
-/* ===== CSV Export (Unverändert) ===== */
+/*
+=====================================================
+JS-BEREICH 9: CSV EXPORT & LOG-MODAL
+=====================================================
+*/
 function downloadCsv(){
   const log = loadLog();
   if(!log || log.length === 0){ alert('Keine Erfassungen vorhanden.'); return; }
@@ -1180,7 +1165,6 @@ function downloadCsv(){
   setTimeout(()=>{ try{ URL.revokeObjectURL(url); lastExport = null; }catch(e){} }, 10000);
 }
 
-/* ===== Re-open last export (Unverändert) */
 function reopenLastExport(){
   if(lastExport && lastExport.url){
     window.open(lastExport.url, '_blank');
@@ -1198,7 +1182,6 @@ function reopenLastExport(){
   alert('Keine exportierte CSV gefunden. Die Datei sollte im Download-Ordner deines Geräts liegen.');
 }
 
-/* ===== Log View (modal) (Unverändert) ===== */
 function showLogModal(){
   const modal = document.getElementById('logView');
   const list = document.getElementById('logList');
@@ -1227,7 +1210,6 @@ function showLogModal(){
     });
   }
   
-  // Failsafe-Zugriff auf kasseView
   const kasseView = document.getElementById('kasseView');
   if (kasseView) kasseView.style.display = 'none';
   
@@ -1243,7 +1225,6 @@ function hideLogModal(){
   if (kasseView) kasseView.style.display = 'flex'; 
 }
 
-/* ===== Utility: show temporary status in header (Unverändert) */
 let statusTimer = null;
 function showStatus(msg, ms = 2000){
   const el = document.getElementById('statusRegion');
@@ -1253,7 +1234,6 @@ function showStatus(msg, ms = 2000){
   statusTimer = setTimeout(()=>{ el.textContent = 'AutoSave • Local CSV Export • Tool'; }, ms);
 }
 
-/* ===== Delete Log (Unverändert) ===== */
 function clearLog(){
   if(!confirm('!!! ACHTUNG !!!\n\nWirklich ALLE erfassten Zahlvorgänge unwiderruflich löschen?')) return;
   saveLog([]);
@@ -1262,22 +1242,26 @@ function clearLog(){
 }
 
 
-/* ===== Init & Events (ROBUST & KORRIGIERT) ===== */
+/*
+=====================================================
+JS-BEREICH 10: INITIALISIERUNG & EVENT LISTENER
+=====================================================
+*/
 document.addEventListener('DOMContentLoaded',()=>{
   
+  // 1. Laden der Einstellungen (Alle sind 'safe' - blockieren nicht)
   localSafe(loadTheme);
   localSafe(loadProductFontSize); 
   localSafe(loadOrderFontSize); 
-  localSafe(loadUiMode); 
   localSafe(initResizer); 
   
-  // Kernfunktionen müssen laufen
+  // 2. Kernfunktionen ausführen
   renderProducts(); 
   localSafe(loadGiven); 
   renderOrder();
   
-  // Event Listener: Wir prüfen die Existenz von Elementen bevor wir Listener anhängen
-  const givenInput = document.getElementById('givenInput'); // <--- Hier deklariert
+  // 3. Event Listener zuweisen (mit Failsafe-Prüfungen)
+  const givenInput = document.getElementById('givenInput'); 
   if(givenInput) givenInput.addEventListener('input',updateChange);
   
   const clearOrderBtn = document.getElementById('clearOrderBtn');
@@ -1290,17 +1274,16 @@ document.addEventListener('DOMContentLoaded',()=>{
     }
   });
 
-  // EVENT LISTENER FÜR ZAHLUNG
+  // Zahlungs-Events
   const saveAndPrintBtn = document.getElementById('saveAndPrintBtn');
   const saveOnlyBtn = document.getElementById('saveOnlyBtn');
   if(saveAndPrintBtn) saveAndPrintBtn.addEventListener('click',()=>captureSale(true)); 
   if(saveOnlyBtn) saveOnlyBtn.addEventListener('click',()=>captureSale(false));
 
-  // EVENT LISTENER FÜR LOG / EXPORT
+  // Log/Export-Events
   const exportCsvBtn = document.getElementById('exportCsvBtn');
   const downloadAllBtn = document.getElementById('downloadAllBtn');
   const openExportFolderBtn = document.getElementById('openExportFolderBtn');
-  const uiModeBtn = document.getElementById('uiModeBtn');
   const showLogBtn = document.getElementById('showLogBtn');
   const closeLogBtn = document.getElementById('closeLogBtn');
   const clearLogBtn = document.getElementById('clearLogBtn');
@@ -1313,24 +1296,23 @@ document.addEventListener('DOMContentLoaded',()=>{
   if(exportCsvBtn) exportCsvBtn.addEventListener('click',downloadCsv);
   if(downloadAllBtn) downloadAllBtn.addEventListener('click',downloadCsv);
   if(openExportFolderBtn) openExportFolderBtn.addEventListener('click', reopenLastExport);
-  if(uiModeBtn) uiModeBtn.addEventListener('click', toggleUiMode);
+
   if(showLogBtn) showLogBtn.addEventListener('click', showLogModal);
   if(closeLogBtn) closeLogBtn.addEventListener('click', hideLogModal);
   if(clearLogBtn) clearLogBtn.addEventListener('click', clearLog);
   if(printBtn) printBtn.addEventListener('click', ()=> { window.print(); });
 
-  // EVENT LISTENER FÜR SCHRIFTGRÖßEN
+  // Schriftgrößen-Events
   if(prodFontInc) prodFontInc.addEventListener('click', () => { setProductFontSize(currentProductFontSizeStep + 1); });
   if(prodFontDec) prodFontDec.addEventListener('click', () => { setProductFontSize(currentProductFontSizeStep - 1); });
   if(orderFontInc) orderFontInc.addEventListener('click', () => { setOrderFontSize(currentOrderFontSizeStep + 1); });
   if(orderFontDec) orderFontDec.addEventListener('click', () => { setOrderFontSize(currentOrderFontSizeStep - 1); });
 
 
-  // EVENT LISTENER FÜR GELDBUTTONS / THEMES
+  // Geld- und Theme-Buttons
   document.querySelectorAll('.money-btn').forEach(btn=>{
     btn.addEventListener('click',()=>{
       const val=parseFloat(btn.dataset.value);
-      // 🔥 FIX: 'givenInput' anstelle von 'input' verwenden
       if(givenInput) givenInput.value=(parseFloat(givenInput.value||0)+val).toFixed(2);
       updateChange();
     });
@@ -1344,6 +1326,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 
   // Status-Update
   const rec = localSafe(()=>JSON.parse(localStorage.getItem(LAST_CSV_KEY)), null);
+  
   if(rec && rec.csv){
     showStatus('Letzter CSV-Export gefunden (kann erneut geöffnet werden).', 2000);
   }
