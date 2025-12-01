@@ -3,33 +3,30 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-<title>Pottschatz - Kasse (V9.5 - Layout Revertiert & Total Rechts)</title>
+<title>Pottschatz - Kasse (V9.6 - Mit Daten-Rettung)</title>
 <style>
 /*
 =====================================================
 CSS-BEREICH 1: VARIABLEN & THEMES
-  Definiert alle Farben, Schriftgrößen-Standards und die 6 Farbschemata.
 =====================================================
 */
 :root {
   /* Basis Schriftgrößen (DEFAULTS FÜR IPAD PRO 12.9") */
-event  /* Diese Werte werden von JS gesteuert (A++ / A--) */
   --pbtn-emoji-size: 4.5vmin; 
   --pbtn-name-size: 2.5vmin;  
   --pbtn-emoji-size-px: 45px; 
   --pbtn-name-size-px: 25px;  
     
-  /* Diese Werte werden von JS gesteuert (A+ / A-) */
   --order-font-sm: 16px; 
   --order-font-md: 20px; 
   --order-font-lg: 28px; 
 
-  /* Theme 1: Original (Dark - 8.19 Basis) */
+  /* Theme 1: Original (Dark) */
   --bg-gradient-start: #2f353b;
-  --bg-gradient-end: #373f43; /* Hintergrundfarbe für klebrige Elemente */
+  --bg-gradient-end: #373f43; 
   --text-primary: #f0e5df;
   --text-muted: #f7f6eb;
-  --panel-bg: rgba(255,255,255,0.05); /* Transparenter Panel-Hintergrund */
+  --panel-bg: rgba(255,255,255,0.05); 
   --panel-bg-alt: rgba(255,255,255,0.10); 
   --btn-primary-bg: #ffae00;
   --btn-primary-text: #120a05;
@@ -65,111 +62,41 @@ event  /* Diese Werte werden von JS gesteuert (A++ / A--) */
 /* Theme 6 (Matcha) */
 [data-theme="theme6"] { --bg-gradient-start: #f0fdf4; --bg-gradient-end: #dcfce7; --text-primary: #14532d; --text-muted: #166534; --panel-bg: #ffffff; --panel-bg-alt: #fafffb; --btn-primary-bg: #22c55e; --btn-primary-text: #ffffff; --btn-danger-bg: #ef4444; --btn-danger-text: #ffffff; --btn-ghost-border: rgba(0,0,0,0.1); --btn-ghost-text: var(--text-primary); --divider-color: #22c55e; --input-border: #22c55e; --modal-bg: #f0fdf4; --text-on-btn: var(--text-on-light); --qty-text-color: var(--text-on-light); --qty-bg-color: #f7f7f7; --money-btn-bg: #bbb; --pbtn-active-shadow: 0 0 10px 4px rgba(0, 0, 0, 0.4); --splitter-bg: rgba(0, 0, 0, 0.1); --splitter-color: #22c55e; --pbtn-glass-border: rgba(0, 0, 0, 0.1); --text-total-color: #22c55e; --text-change-color: #166534; --text-change-negative-color: #ef4444; }
 
-
 /*
 =====================================================
-CSS-BEREICH 2: GRUND-LAYOUT (FLEXBOX, SPLITTER)
+CSS-BEREICH 2: GRUND-LAYOUT
 =====================================================
 */
 *{box-sizing:border-box}
 html,body{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;background:linear-gradient(180deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);color:var(--text-primary); transition: background 0.3s, color 0.3s;overflow-x: hidden;}
-.app{
-    width: 100%;
-    margin:0; 
-    padding:12px;
-    display:flex;
-    flex-direction:column;
-    gap:16px;
-    height: 100vh; /* Nutzt die volle Bildschirmhöhe */
-}
-#kasseView{
-    flex-grow: 1; /* Nimmt den restlichen Platz ein */
-    display:flex; 
-    gap:0; 
-    min-height: 50px; 
-} 
-/* Splitter-Styling (für das Ziehen der Spaltenbreite) */
+.app{width: 100%; margin:0; padding:12px; display:flex; flex-direction:column; gap:16px; height: 100vh;}
+#kasseView{flex-grow: 1; display:flex; gap:0; min-height: 50px;} 
 #resizer {
-    width: 32px; 
-    cursor: col-resize;
-    position: relative;
-    z-index: 10;
-    transition: background-color 0.2s;
-    flex-shrink: 0; 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: 32px; cursor: col-resize; position: relative; z-index: 10; transition: background-color 0.2s; flex-shrink: 0; display: flex; justify-content: center; align-items: center;
 }
-#resizer:hover {
-    background-color: var(--splitter-bg);
-}
-#resizer::before {
-    content: '';
-    display: block;
-    width: 8px;
-    height: 80%; 
-    background-color: var(--splitter-color);
-    border-radius: 6px;
-    opacity: 0.8;
-}
-
+#resizer:hover {background-color: var(--splitter-bg);}
+#resizer::before {content: ''; display: block; width: 8px; height: 80%; background-color: var(--splitter-color); border-radius: 6px; opacity: 0.8;}
 header{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between}
 h1{font-size:24px;margin:0} 
 .small{color:var(--text-muted)}
 
 /*
 =====================================================
-CSS-BEREICH 3: PRODUKTE (Linke Spalte)
+CSS-BEREICH 3: PRODUKTE (LINKS)
 =====================================================
 */
-.products{ 
-    background:var(--panel-bg); 
-    padding:14px; 
-    border-radius:12px; 
-    display:flex; 
-    flex-direction:column; 
-    gap:8px; 
-    height: 100%; 
-    min-height: 50px; 
-    min-width: 300px; /* Minimalbreite für Produkte */
-    flex-grow: 1; /* Nimmt den restlichen Platz ein */
-}
+.products{background:var(--panel-bg); padding:14px; border-radius:12px; display:flex; flex-direction:column; gap:8px; height: 100%; min-height: 50px; min-width: 300px; flex-grow: 1;}
 .products-header{display:flex;justify-content:space-between;align-items:center;gap:10px;}
-.grid{ 
-    flex:1; 
-    overflow:auto; 
-    display:grid; 
-    /* PASST DIE MINDESTGRÖSSE DER BUTTONS AN (300px) */
-    grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); 
-    /* KORRIGIERT: Buttons füllen den Platz vertikal */
-    grid-auto-rows: minmax(100px, 1fr); 
-    gap:6px; 
-    padding-right: 6px; 
-}
+.grid{flex:1; overflow:auto; display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); grid-auto-rows: minmax(100px, 1fr); gap:6px; padding-right: 6px;}
 
-/* WICHTIG: Produktschalter Farben & Style (Glassmorphism) */
 .pbtn {
-  backdrop-filter: blur(8px); 
-  -webkit-backdrop-filter: blur(8px); 
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); 
-  background: var(--panel-bg-alt); 
-  color: var(--text-primary);
-  border: 1px solid var(--pbtn-glass-border); 
-  border-radius:12px; 
-  padding:20px 10px; 
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between; 
-  height: 100%; 
-  min-height: 60px;
-  cursor: pointer;
-  transition: all 0.1s ease;
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); 
+  background: var(--panel-bg-alt); color: var(--text-primary); border: 1px solid var(--pbtn-glass-border); 
+  border-radius:12px; padding:20px 10px; display: flex; flex-direction: column; justify-content: space-between; 
+  height: 100%; min-height: 60px; cursor: pointer; transition: all 0.1s ease;
 }
-/* Spezifische bunte Farben nur für Theme 1 (mit Transparenz für Glass-Effekt) */
-[data-theme="theme1"] .pbtn {
-    border-color: rgba(255,255,255,0.1); 
-    color: var(--text-primary); 
-}
+/* Theme 1 Spezifische Farben */
+[data-theme="theme1"] .pbtn { border-color: rgba(255,255,255,0.1); color: var(--text-primary); }
 [data-theme="theme1"] .pbtn[data-id="p1"]{background:rgba(181, 45, 27, 0.9);color:#f7f6eb; border-color: rgba(255,255,255,0.3);} 
 [data-theme="theme1"] .pbtn[data-id="p2"]{background:rgba(207, 204, 124, 0.9);color:#0a0a0a; border-color: rgba(0,0,0,0.3);} 
 [data-theme="theme1"] .pbtn[data-id="p3"]{background:rgba(174, 232, 97, 0.9);color:#0a0a0a; border-color: rgba(0,0,0,0.3);} 
@@ -181,97 +108,34 @@ CSS-BEREICH 3: PRODUKTE (Linke Spalte)
 [data-theme="theme1"] .pbtn[data-id="p9"]{background:rgba(28, 28, 28, 0.9);color:#d4652f; border-color: rgba(255,255,255,0.3);} 
 [data-theme="theme1"] .pbtn[data-id="p10"]{background:rgba(28, 28, 28, 0.9);color:#8fbc8f; border-color: rgba(255,255,255,0.3);} 
 
-/* Hover/Active States */
-.pbtn:hover {
-    filter: brightness(1.15);
-}
-.pbtn:active, .pbtn.active{ 
-  background: var(--btn-primary-bg) !important; 
-  color: var(--btn-primary-text) !important;
-  box-shadow: var(--pbtn-active-shadow);
-  border-color: var(--btn-primary-bg) !important;
-}
-
-.pbtn strong{
-    font-weight: 700;
-    display:flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    text-align: center;
-    width: 100%;
-} 
-/* KORRIGIERT: max() Funktion für funktionierende A++/A-- Buttons */
+.pbtn:hover { filter: brightness(1.15); }
+.pbtn:active, .pbtn.active{ background: var(--btn-primary-bg) !important; color: var(--btn-primary-text) !important; box-shadow: var(--pbtn-active-shadow); border-color: var(--btn-primary-bg) !important; }
+.pbtn strong{ font-weight: 700; display:flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; width: 100%; } 
 .pbtn-emoji { font-size: max(var(--pbtn-emoji-size), var(--pbtn-emoji-size-px)); line-height: 1; transition: font-size 0.2s; }
 .pbtn-name { font-size: max(var(--pbtn-name-size), var(--pbtn-name-size-px)); line-height: 1.2; transition: font-size 0.2s; }
 .pbtn span{font-size: max(var(--pbtn-name-size), var(--pbtn-name-size-px)); transition: font-size 0.2s;} 
 
-
 /*
 =====================================================
-CSS-BEREICH 4: BESTELLUNG (Rechte Spalte)
+CSS-BEREICH 4: BESTELLUNG (RECHTS)
 =====================================================
 */
-.order{ 
-    background:var(--panel-bg); 
-    padding:14px; 
-    border-radius:12px; 
-    display:flex; 
-    flex-direction:column; 
-    height: 100%; 
-    min-height: 50px;
-    min-width: 450px; /* Mindestbreite beibehalten */
-    width: 500px; /* KORRIGIERT: Standardbreite */
-    gap:12px;
-    flex-shrink: 0; /* Verhindert Schrumpfen */
-}
+.order{ background:var(--panel-bg); padding:14px; border-radius:12px; display:flex; flex-direction:column; height: 100%; min-height: 50px; min-width: 450px; width: 500px; gap:12px; flex-shrink: 0; }
 .options{display:flex;flex-direction:column;gap:8px;align-items:flex-end;}
 .options-header{font-weight:700;font-size: 14px;}
 .options-buttons{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
-
-/* Runder und größerer Farbwähler */
-.color-switcher {
-    display: flex;
-    gap: 8px; 
-    align-items: center;
-    border-left: 1px solid var(--btn-ghost-border);
-    padding-left: 12px;
-}
-.color-btn {
-    width: 30px; 
-    height: 30px; 
-    border-radius: 50%; 
-    border: 2px solid transparent; 
-    cursor: pointer;
-    transition: transform 0.2s, border-color 0.2s;
-    padding: 0;
-    flex-shrink: 0;
-}
-.color-btn.active {
-    transform: scale(1.1);
-    border-color: var(--btn-primary-bg); 
-    box-shadow: 0 0 0 3px var(--bg-gradient-start); 
-}
+.color-switcher { display: flex; gap: 8px; align-items: center; border-left: 1px solid var(--btn-ghost-border); padding-left: 12px; }
+.color-btn { width: 30px; height: 30px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; transition: transform 0.2s, border-color 0.2s; padding: 0; flex-shrink: 0; }
+.color-btn.active { transform: scale(1.1); border-color: var(--btn-primary-bg); box-shadow: 0 0 0 3px var(--bg-gradient-start); }
 
 .order-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:0; gap:10px;}
 .order-header .small { font-size: var(--order-font-sm); transition: font-size 0.2s; } 
 .order-list{ flex:1; overflow:auto; padding-right:6px } 
 
-/* Bestell-Items (Artikel in der Liste) */
 .order-item{display:flex;align-items:center;justify-content:space-between;padding:10px;border-bottom:1px dashed var(--divider-color)}
 .order-item strong { font-size: var(--order-font-md); transition: font-size 0.2s; }
 .item-left{display:flex;gap:12px;align-items:center; flex-grow: 1;} 
-
-/* KORRIGIERT: Stabile Button-Positionierung */
-.item-controls { 
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-shrink: 0; 
-    min-width: 180px; 
-    justify-content: flex-end; 
-}
-
+.item-controls { display: flex; align-items: center; gap: 8px; flex-shrink: 0; min-width: 180px; justify-content: flex-end; }
 .qty{background:var(--qty-bg-color);color: var(--qty-text-color);padding:8px 12px;border-radius:10px;width:65px;text-align:center; font-size: var(--order-font-md); transition: font-size 0.2s, background-color 0.3s, color 0.3s; flex-shrink: 0;}
 .icon-btn{border: none;padding: 10px 12px;border-radius: 10px;cursor: pointer;font-weight: bold;color: var(--text-on-btn);transition: background-color 0.15s, color 0.3s;min-width: 36px;text-align: center; flex-shrink: 0;}
 .order-item button[aria-label="minus"] { background: #CD0000; }
@@ -280,316 +144,77 @@ CSS-BEREICH 4: BESTELLUNG (Rechte Spalte)
 
 /*
 =====================================================
-CSS-BEREICH 5: SUMMARY, GELD & ZAHLUNG
+CSS-BEREICH 5: SUMMARY & ZAHLUNG
 =====================================================
 */
-.summary{ 
-  padding:15px; /* KORRIGIERT: 60px war zu viel */
-  border-radius:12px; 
-  background:linear-gradient(180deg, var(--panel-bg), var(--panel-bg-alt)); 
-  margin-top:8px; 
-  display: flex; 
-  flex-direction: column; 
-  gap: 16px; 
-}
-
+.summary{ padding:15px; border-radius:12px; background:linear-gradient(180deg, var(--panel-bg), var(--panel-bg-alt)); margin-top:8px; display: flex; flex-direction: column; gap: 16px; }
 .summary .small { font-size: var(--order-font-sm); transition: font-size 0.2s; }
 .summary .big { font-size: var(--order-font-lg); transition: font-size 0.2s; }
-
-.row{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-} 
-
-/* Gesamtsumme */
-.summary-total-row {
-    padding-bottom: 10px;
-    border-bottom: 2px solid var(--btn-ghost-border); 
-    justify-content: space-between; /* <--- HIER GEÄNDERT: Trennt "Gesamtsumme" und "Betrag" */
-    gap: 20px; 
-}
-.summary-total-row .small { 
-    font-size: var(--order-font-md); 
-    font-weight: 700;
-}
-.summary-total-row .big { 
-    font-size: calc(var(--order-font-lg) * 1.3); 
-    font-weight: 900;
-    color: var(--text-total-color); 
-}
-
-/* 'Gegeben' und 'Rückgeld' nebeneinander */
-.summary-input-row {
-    display: flex;
-    flex-direction: row;
-    gap: 12px;
-}
-.input-group {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    flex: 1; 
-}
-.input-group.change-group {
-    align-items: flex-start; 
-}
-.input-group .small { 
-    font-size: var(--order-font-md); 
-    font-weight: 700;
-}
-/* Rückgeld Anzeige-Box */
-.input-group #changeDisplay {
-    font-size: var(--order-font-lg); 
-    font-weight: 900;
-    color: var(--text-change-color); 
-    padding: 12px; 
-    border: 4px solid var(--btn-ghost-border); 
-    border-radius: 10px;
-    width: 100%;
-    text-align: right; 
-    min-height: 60px; /* Feste Höhe für stabiles Layout */
-}
-/* Rückgeld-Anzeige bei Defizit (Rot) */
-.input-group #changeDisplay.deficit {
-    color: var(--text-change-negative-color) !important; 
-    border-color: var(--text-change-negative-color);
-}
-
+.row{ display:flex; justify-content:space-between; align-items:center; } 
+.summary-total-row { padding-bottom: 10px; border-bottom: 2px solid var(--btn-ghost-border); justify-content: space-between; gap: 20px; }
+.summary-total-row .small { font-size: var(--order-font-md); font-weight: 700; }
+.summary-total-row .big { font-size: calc(var(--order-font-lg) * 1.3); font-weight: 900; color: var(--text-total-color); }
+.summary-input-row { display: flex; flex-direction: row; gap: 12px; }
+.input-group { display: flex; flex-direction: column; gap: 5px; flex: 1; }
+.input-group.change-group { align-items: flex-start; }
+.input-group .small { font-size: var(--order-font-md); font-weight: 700; }
+.input-group #changeDisplay { font-size: var(--order-font-lg); font-weight: 900; color: var(--text-change-color); padding: 12px; border: 4px solid var(--btn-ghost-border); border-radius: 10px; width: 100%; text-align: right; min-height: 12px; }
+.input-group #changeDisplay.deficit { color: var(--text-change-negative-color) !important; border-color: var(--text-change-negative-color); }
 .big{font-weight:700}
-
-/* Input-Feld angepasst: Größere Schrift & LINKSBÜNDIGKEIT */
-input[type=number], input[type=text]{
-  width:100%;
-  padding:12px;
-  border-radius:10px;
-  border:4px solid var(--input-border);
-  background:transparent;
-  color:var(--text-primary);
-  font-size:var(--order-font-lg); 
-  font-weight: 700;
-  text-align: left; 
-}
-
-/* Money-Grid: Abstand reduziert */
+input[type=number], input[type=text]{ width:100%; padding:12px; border-radius:10px; border:4px solid var(--input-border); background:transparent; color:var(--text-primary); font-size:var(--order-font-lg); font-weight: 700; text-align: left; }
 .money-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:0px}
-/* Money-Button: Kompakte Ansicht */
-.money-btn{
-    padding:8px; 
-    border-radius:25px;
-    border:1.5px solid var(--divider-color);
-    background:var(--money-btn-bg);
-    color:#fff;
-    font-weight:700;
-    cursor:pointer;
-    transition:0.15s all; 
-    font-size: 20px; /* <--- HIER KORRIGIERT: Jetzt wieder kleiner */
-}
+.money-btn{ padding:8px; border-radius:80px; border:1.5px solid var(--divider-color); background:var(--money-btn-bg); color:#fff; font-weight:700; cursor:pointer; transition:0.15s all; font-size: 24px; }
 .money-btn:active{transform:scale(0.95);box-shadow:0 0 10px 3px #fff;}
+.payment-buttons { display: flex; gap: 12px; margin-top: 0; flex-direction: row; }
+#saveOnlyBtn { flex-grow: 2; background: var(--btn-primary-bg); color: var(--btn-primary-text); }
+#saveAndPrintBtn { flex-grow: 1; background: #444; color: white; }
 
-/* Flex-Container für die beiden Zahlungs-Buttons */
-.payment-buttons {
-    display: flex;
-    gap: 6px;
-    margin-top: 0; 
-    flex-direction: row; 
-}
-/* KORRIGIERT: Farben getauscht (saveOnly ist jetzt primär) */
-#saveOnlyBtn {
-    flex-grow: 2; 
-    background: var(--btn-primary-bg);
-    color: var(--btn-primary-text);
-}
-#saveAndPrintBtn {
-    flex-grow: 1; 
-    background: #444; 
-    color: white;
-}
-
-
-/* --- GLOBALE BUTTONS --- */
+/* Globale Buttons */
 .btn-primary{background:var(--btn-primary-bg);color:var(--btn-primary-text);border:1.5px solid var(--divider-color);padding:14px;border-radius:12px;font-weight:700;cursor:pointer;width:100%;font-size: 18px;}
 .btn-ghost{background:transparent;border:1.5px solid var(--divider-color);padding:10px;border-radius:8px;color:var(--btn-ghost-text);cursor:pointer}
 .btn-danger{background:var(--btn-danger-bg);color:var(--btn-danger-text);border:1.5px solid var(--divider-color);padding:14px;border-radius:12px;font-weight:700;width:100%;cursor:pointer;font-size: 18px;}
+footer { grid-column: 1 / -1; text-align: center; padding: 8px 0; font-size: var(--order-font-sm); color: var(--text-muted); }
 
-footer {
-    grid-column: 1 / -1;
-    text-align: center;
-    padding: 8px 0;
-    font-size: var(--order-font-sm);
-    color: var(--text-muted);
-}
+/* --- MODALS & LOGS --- */
+#logView, #saveSuccessMessage, #rescueView { position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 1000; display: none; background: rgba(0, 0, 0, 0.9); align-items: center; justify-content: center; padding: 20px; }
+#logView > div, #rescueView > div { background: var(--modal-bg); border-radius: 12px; padding: 20px; width: 80%; max-width: 700px; max-height: 90vh; display: flex; flex-direction: column; gap: 15px; }
+.modal-header { display: flex; justify-content: space-between; align-items: center; }
+.modal-footer { display: flex; gap: 10px; }
+.modal-footer button { flex: 1; }
+#logList { flex-grow: 1; overflow-y: auto; padding-right: 10px; }
+.log-item { border-bottom: 1px solid var(--btn-ghost-border); padding: 10px 0; }
+.log-item:last-child { border-bottom: none; }
+.log-row { display: flex; justify-content: space-between; margin-top: 4px; font-size: var(--order-font-sm); }
+.log-row.big { font-size: var(--order-font-md); font-weight: 700; color: var(--btn-primary-bg); }
+#saveSuccessMessage { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 20cm; height: 15cm; border-radius: 20px; background: linear-gradient(135deg, #FFC125 0%, #DAA520 100%); color: #000000; display: block; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px; font-size: 16px; line-height: 1.2; font-weight: 700; z-index: 1000; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s; }
+#saveSuccessMessage.show { opacity: 1; visibility: visible; display: flex; }
+#rescueText { width: 100%; height: 300px; background: #111; color: #0f0; border: 1px solid #555; padding: 10px; font-family: monospace; }
 
-/*
-=====================================================
-CSS-BEREICH 6: MODALS & DRUCK
-=====================================================
-*/
-#logView, #saveSuccessMessage {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    z-index: 1000;
-    display: none;
-    background: rgba(0, 0, 0, 0.9);
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-}
-#logView > div {
-    background: var(--modal-bg);
-    border-radius: 12px;
-    padding: 20px;
-    width: 80%;
-    max-width: 700px; /* Vergrößert */
-    max-height: 90vh;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-/* KORRIGIERT: Layout des Log-Headers (Button rechts) */
-.modal-header { 
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center;
-}
-/* KORRIGIERT: Layout des Log-Footers (Buttons nebeneinander) */
-.modal-footer {
-    display: flex;
-    gap: 10px; 
-}
-.modal-footer button {
-    flex: 1; 
-}
-
-#logList {
-    flex-grow: 1;
-    overflow-y: auto;
-    padding-right: 10px;
-}
-.log-item {
-    border-bottom: 1px solid var(--btn-ghost-border);
-    padding: 10px 0;
-}
-.log-item:last-child {
-    border-bottom: none;
-}
-.log-row {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 4px;
-    font-size: var(--order-font-sm);
-}
-.log-row.big {
-    font-size: var(--order-font-md);
-    font-weight: 700;
-    color: var(--btn-primary-bg);
-}
-/* Styles für Success Message (die große Box) */
-#saveSuccessMessage {
-  position: fixed; top: 50%; left: 50%; 
-  transform: translate(-50%, -50%);
-  width: 20cm; 
-  height: 15cm; 
-  border-radius: 20px;
-  background: linear-gradient(135deg, #FFC125 0%, #DAA520 100%); 
-  color: #000000; 
-  display: block; 
-  flex-direction: column; justify-content: center; align-items: center;
-  text-align: center; padding: 20px; 
-  font-size: 16px; line-height: 1.2; font-weight: 700; z-index: 1000;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-  opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s;
-}
-#saveSuccessMessage.show {
-  opacity: 1; visibility: visible; display: flex; 
-}
-
-/* WICHTIG: DRUCK-CSS (Stellt sicher, dass nur der Bon gedruckt wird) */
+/* WICHTIG: DRUCK-CSS */
 @media print {
-    .app > *:not(#saveSuccessMessage) { 
-        display: none !important;
-    }
-    html, body {
-        background: #fff !important; 
-        color: #000 !important;
-        margin: 0;
-        padding: 0;
-        overflow: hidden; 
-    }
-    #saveSuccessMessage {
-        /* Bon-Formatierung beim Druck */
-        position: static !important;
-        transform: none !important;
-        width: 100% !important; 
-        height: auto !important;
-        border-radius: 0 !important;
-        box-shadow: none !important;
-        padding: 10mm !important; 
-        background: none !important; /* Kein Hintergrund beim Druck */
-        color: #000 !important;
-        display: block !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        font-family: monospace; 
-        font-size: 10pt;
-    }
+    .app > *:not(#saveSuccessMessage) { display: none !important; }
+    html, body { background: #fff !important; color: #000 !important; margin: 0; padding: 0; overflow: hidden; }
+    #saveSuccessMessage { position: static !important; transform: none !important; width: 100% !important; height: auto !important; border-radius: 0 !important; box-shadow: none !important; padding: 10mm !important; background: none !important; color: #000 !important; display: block !important; visibility: visible !important; opacity: 1 !important; font-family: monospace; font-size: 10pt; }
     .bon-header, .bon-footer { text-align: center; margin-bottom: 5mm; }
     .bon-item-row { display: flex; justify-content: space-between; line-height: 1.5; }
     .bon-separator { border-top: 1px dashed #000; margin: 5px 0; }
     .bon-total { font-weight: bold; font-size: 12pt; }
 }
 
-
-/*
-=====================================================
-CSS-BEREICH 7: MOBILE ANPASSUNG (Media Queries)
-=====================================================
-*/
+/* --- MOBILE --- */
 @media (max-width:1100px){
-  #kasseView{ 
-    flex-direction: column; 
-    gap: 16px;
-    padding-bottom: 50px; 
-  }
-  .order{
-    height:auto; 
-    min-height: auto; 
-    min-width: auto; 
-    width: 100%;
-    order: 1; 
-    position: sticky; 
-    top: 0; 
-    z-index: 50; 
-    box-shadow: 0 4px 8px rgba(0,0,0,0.4); 
-    background: var(--bg-gradient-end); /* Sorgt für einen soliden Hintergrund, damit Produkte nicht durchscheinen! */
-}
-  .products { 
-    height: auto; 
-    min-width: auto;
-    order: 2; 
-  }
+  #kasseView{ flex-direction: column; gap: 16px; padding-bottom: 50px; }
+  .order{ height:auto; min-height: auto; min-width: auto; width: 100%; order: 1; position: sticky; top: 0; z-index: 50; box-shadow: 0 4px 8px rgba(0,0,0,0.4); background: var(--bg-gradient-end); }
+  .products { height: auto; min-width: auto; order: 2; }
   #resizer { display: none; } 
   header{flex-direction: column; align-items: stretch; gap: 12px;}
   .options{align-items: stretch;}
   .options-buttons{justify-content: flex-start;}
   .products-header, .order-header { flex-wrap: wrap; }
-  
-  /* Im mobilen Modus "Gegeben" und "Rückgeld" untereinander */
-  .summary-input-row {
-      flex-direction: column;
-  }
-  .input-group.change-group {
-      align-items: flex-start; 
-  }
-  .input-group #changeDisplay {
-      text-align: left; 
-  }
-  
-  /* Anpassung der Produktdichte für Telefone (iPhone) */
-  .grid {
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); 
-    grid-auto-rows: minmax(140px, 1fr); 
-  }
+  .summary-input-row { flex-direction: column; }
+  .input-group.change-group { align-items: flex-start; }
+  .input-group #changeDisplay { text-align: left; }
+  .grid { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); grid-auto-rows: minmax(140px, 1fr); }
 }
 </style>
 </head>
@@ -606,6 +231,7 @@ CSS-BEREICH 7: MOBILE ANPASSUNG (Media Queries)
     <div class="options-buttons">
       <button class="btn-ghost" id="printBtn">Drucken (Kasse)</button>
       <button class="btn-ghost" id="showLogBtn">Erfassungen</button>
+      <button class="btn-ghost" id="rescueDataBtn" style="color: #ff5555; border-color: #ff5555;">🆘 Daten retten</button>
       <button class="btn-ghost" id="exportCsvBtn">Export CSV</button>
       <button class="btn-ghost" id="openExportFolderBtn">Zuletzt exportierte CSV öffnen</button>
       
@@ -690,8 +316,7 @@ CSS-BEREICH 7: MOBILE ANPASSUNG (Media Queries)
 </main>
 
 <footer>
-  <div>Speichert alle Vorgänge lokal im Browser (LocalStorage).
-  Du kannst die Erfassungen als CSV herunterladen und auf deinem PC sichern.</div>
+  <div>Speichert alle Vorgänge lokal im Browser (LocalStorage).</div>
 </footer>
 
 <div id="logView" style="display:none;" aria-label="Erfassungen">
@@ -708,22 +333,31 @@ CSS-BEREICH 7: MOBILE ANPASSUNG (Media Queries)
   </div>
 </div>
 
+<div id="rescueView" style="display:none;" aria-label="Datenrettung">
+  <div role="dialog" aria-modal="true">
+    <div class="modal-header">
+      <strong>🆘 NOTFALL DATEN-RETTUNG</strong>
+      <button class="btn-ghost" id="closeRescueBtn">Schließen</button>
+    </div>
+    <div>
+      <p>Kopiere den gesamten Text unten und speichere ihn in einer Datei, falls der CSV-Export nicht geht.</p>
+      <textarea id="rescueText" readonly></textarea>
+    </div>
+  </div>
+</div>
+
 <div id="saveSuccessMessage" role="alert" aria-live="assertive">
 </div>
 
 </div> 
 <script>
-/*
-=====================================================
-JS-BEREICH 1: KONFIGURATION & DATEN
-=====================================================
-*/
+/* CONFIG */
 const PRODUCTS=[
-{id:'p1',emoji:'🍛',name:'Chili con Carne',price:6.00},
-{id:'p2',emoji:'🍲',name:'Käse Lauch Suppe',price:6.00},
+{id:'p1',emoji:'🍛',name:'Chili con Carne',price:6.50},
+{id:'p2',emoji:'🍲',name:'Käse Lauch Suppe',price:6.50},
 {id:'p3',emoji:'🌯',name:'Cheeköfte Wrap',price:4.50},
-{id:'p4',emoji:'🍟',name:'Steakhouse Pommes',price:3.50},
-{id:'p5',emoji:'🥫',name:'Ketchup, Mayo, ...',price:0.50},
+{id:'p4',emoji:'🍟',name:'Steakhouse Pommes',price:4.00},
+{id:'p5',emoji:'🥫',name:'Ketchup, Mayo, Sahne',price:0.50},
 {id:'p6',emoji:'🍫',name:'Heiße Schokolade',price:3.50},
 {id:'p7',emoji:'🍹',name:'Bio Glühwein',price:4.00},
 {id:'p8',emoji:'💥',name:'Schuss Rum',price:1.00},
@@ -731,202 +365,138 @@ const PRODUCTS=[
 {id:'p10',emoji:'🍭',name:'Sweet Pottschatz',price:4.00}
 ];
 
-// Speicher-Schlüssel
 const STORAGE_KEY='pottschatz_kasse_log_v1';
-const THEME_STORAGE_KEY = 'pottschatz_kasse_theme_v1';
-const PRODUCT_FONT_SIZE_KEY = 'pottschatz_kasse_font_product_v1';
-const ORDER_FONT_SIZE_KEY = 'pottschatz_kasse_font_order_v1';
-const KASSE_WIDTH_KEY = 'pottschatz_kasse_width_v1'; 
+const THEME_STORAGE_KEY='pottschatz_kasse_theme_v1';
+const PRODUCT_FONT_SIZE_KEY='pottschatz_kasse_font_product_v1';
+const ORDER_FONT_SIZE_KEY='pottschatz_kasse_font_order_v1';
+const KASSE_WIDTH_KEY='pottschatz_kasse_width_v1'; 
 const GIVEN_KEY='pottschatz_kasse_given_v1';
 const LAST_CSV_KEY='pottschatz_kasse_last_csv_v1';
 
-// Globale Variablen für den Zustand
 let order={};
-let lastExport = null;
+let lastExport=null;
 
-/*
-=====================================================
-JS-BEREICH 2: HILFSFUNKTIONEN
-=====================================================
-*/
 const fmt=num=>num.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2});
-function localSafe(fn, fallback=null){
-  try { return fn(); } catch(e) { console.warn('LocalStorage/Operation failed:', e); return fallback; }
-}
+function localSafe(fn,fallback=null){try{return fn();}catch(e){console.warn('LS Error',e);return fallback;}}
 
-/*
-=====================================================
-JS-BEREICH 3: RESIZER-LOGIK
-=====================================================
-*/
+/* RESIZER */
 function initResizer() {
-    const resizer = document.getElementById('resizer');
-    const orderPanel = document.getElementById('orderPanel');
-    const kasseView = document.getElementById('kasseView');
-
-    // Failsafe-Check, falls Elemente nicht gefunden werden
-    if (!resizer || !orderPanel || !kasseView) {
-        return; 
-    }
+    const resizer=document.getElementById('resizer');
+    const orderPanel=document.getElementById('orderPanel');
+    const kasseView=document.getElementById('kasseView');
+    if(!resizer||!orderPanel||!kasseView)return;
     
-    // 1. Initialbreite laden
-    const savedWidth = localSafe(() => localStorage.getItem(KASSE_WIDTH_KEY), null);
-    if (savedWidth) {
-        orderPanel.style.width = savedWidth;
-    }
+    const savedWidth=localSafe(()=>localStorage.getItem(KASSE_WIDTH_KEY),null);
+    if(savedWidth) orderPanel.style.width=savedWidth;
     
-    let isResizing = false;
+    let isResizing=false;
     let initialX;
     let initialWidth;
+    const MIN_KASSE_WIDTH=380; 
+    const MAX_KASSE_WIDTH_PERCENT=0.7; 
 
-    const MIN_KASSE_WIDTH = 380; 
-    const MAX_KASSE_WIDTH_PERCENT = 0.7; 
+    const isHorizontal=()=>window.getComputedStyle(kasseView).flexDirection!=='column';
 
-    // Prüft, ob das Layout horizontal ist (basierend auf Media Query)
-    const isHorizontal = () => window.getComputedStyle(kasseView).flexDirection !== 'column';
-
-    // Start des Dragging
-    resizer.addEventListener('mousedown', (e) => {
-        if (!isHorizontal()) return;
-        isResizing = true;
-        initialX = e.clientX;
-        initialWidth = orderPanel.offsetWidth;
-        document.body.style.userSelect = 'none'; 
-        document.body.style.cursor = 'col-resize';
-    });
-    
-    resizer.addEventListener('touchstart', (e) => {
-        if (!isHorizontal()) return;
-        isResizing = true;
-        initialX = e.touches[0].clientX;
-        initialWidth = orderPanel.offsetWidth;
-    });
-
-    // Während des Dragging
-    const handleMouseMove = (clientX) => {
-        if (!isResizing) return;
-        
-        const deltaX = clientX - initialX;
-        let newWidth = initialWidth - deltaX; 
-        
-        const maxKasseWidth = window.innerWidth * MAX_KASSE_WIDTH_PERCENT;
-        newWidth = Math.max(MIN_KASSE_WIDTH, Math.min(newWidth, maxKasseWidth));
-
-        orderPanel.style.width = `${newWidth}px`;
-        localSafe(() => localStorage.setItem(KASSE_WIDTH_KEY, `${newWidth}px`));
+    const startResize=(clientX)=>{
+        if(!isHorizontal())return;
+        isResizing=true;
+        initialX=clientX;
+        initialWidth=orderPanel.offsetWidth;
+        document.body.style.userSelect='none'; 
+        document.body.style.cursor='col-resize';
     };
+    resizer.addEventListener('mousedown',(e)=>startResize(e.clientX));
+    resizer.addEventListener('touchstart',(e)=>startResize(e.touches[0].clientX));
 
-    document.addEventListener('mousemove', (e) => handleMouseMove(e.clientX));
-    document.addEventListener('touchmove', (e) => {
-        if (e.touches.length > 0) handleMouseMove(e.touches[0].clientX);
-    }, { passive: false });
+    const doResize=(clientX)=>{
+        if(!isResizing)return;
+        const deltaX=clientX-initialX;
+        let newWidth=initialWidth-deltaX; 
+        const maxKasseWidth=window.innerWidth*MAX_KASSE_WIDTH_PERCENT;
+        newWidth=Math.max(MIN_KASSE_WIDTH,Math.min(newWidth,maxKasseWidth));
+        orderPanel.style.width=`${newWidth}px`;
+        localSafe(()=>localStorage.setItem(KASSE_WIDTH_KEY,`${newWidth}px`));
+    };
+    document.addEventListener('mousemove',(e)=>doResize(e.clientX));
+    document.addEventListener('touchmove',(e)=>{if(e.touches.length>0)doResize(e.touches[0].clientX);},{passive:false});
 
-    // Stopp des Dragging
-    const stopResizing = () => {
-        if (isResizing) {
-            isResizing = false;
-            document.body.style.userSelect = '';
-            document.body.style.cursor = '';
+    const stopResize=()=>{
+        if(isResizing){
+            isResizing=false;
+            document.body.style.userSelect='';
+            document.body.style.cursor='';
         }
     };
+    document.addEventListener('mouseup',stopResize);
+    document.addEventListener('touchend',stopResize);
+    document.addEventListener('touchcancel',stopResize);
     
-    document.addEventListener('mouseup', stopResizing);
-    document.addEventListener('touchend', stopResizing);
-    document.addEventListener('touchcancel', stopResizing);
-    
-    // Anpassung, wenn die Fenstergröße (z.B. Rotation) sich ändert
-    window.addEventListener('resize', () => {
-        if (!isHorizontal()) {
-            orderPanel.style.width = '100%';
-        } else {
-            const currentWidth = orderPanel.style.width;
-            const targetWidth = localSafe(() => localStorage.getItem(KASSE_WIDTH_KEY), '500px');
-            if (currentWidth === '100%' || currentWidth === 'auto' || currentWidth === '') {
-                orderPanel.style.width = targetWidth;
-            }
+    window.addEventListener('resize',()=>{
+        if(!isHorizontal()) orderPanel.style.width='100%';
+        else {
+            const cw=orderPanel.style.width;
+            const tw=localSafe(()=>localStorage.getItem(KASSE_WIDTH_KEY),'500px');
+            if(cw==='100%'||cw==='auto'||cw==='') orderPanel.style.width=tw;
         }
     });
 }
 
-
-/*
-=====================================================
-JS-BEREICH 4: SCHRIFTGRÖSSEN-STEUERUNG (A++ / A--)
-=====================================================
-*/
-let currentProductFontSizeStep = 0;
-const FONT_STEP_EMOJI = 5; const FONT_BASE_EMOJI_PX = 45; 
-const FONT_STEP_NAME = 2; const FONT_BASE_NAME_PX = 25; 
+/* FONT SIZES */
+let currentProductFontSizeStep=0;
+const FONT_STEP_EMOJI=5; const FONT_BASE_EMOJI_PX=45; 
+const FONT_STEP_NAME=2; const FONT_BASE_NAME_PX=25; 
 
 function setProductFontSize(step) {
-  if (step < -2) step = -2; if (step > 3) step = 3; 
-  currentProductFontSizeStep = step;
-  localSafe(() => localStorage.setItem(PRODUCT_FONT_SIZE_KEY, step));
-  
-  document.documentElement.style.setProperty('--pbtn-emoji-size', `${4.5 + step * 0.6}vmin`); 
-  document.documentElement.style.setProperty('--pbtn-name-size', `${2.5 + step * 0.3}vmin`); 
-  
-  const newEmojiSizePx = FONT_BASE_EMOJI_PX + (step * FONT_STEP_EMOJI);
-  const newNameSizePx = FONT_BASE_NAME_PX + (step * FONT_STEP_NAME);
-  document.documentElement.style.setProperty('--pbtn-emoji-size-px', `${newEmojiSizePx}px`); 
-  document.documentElement.style.setProperty('--pbtn-name-size-px', `${newNameSizePx}px`); 
+  if(step<-2)step=-2; if(step>3)step=3; 
+  currentProductFontSizeStep=step;
+  localSafe(()=>localStorage.setItem(PRODUCT_FONT_SIZE_KEY,step));
+  document.documentElement.style.setProperty('--pbtn-emoji-size',`${4.5+step*0.6}vmin`); 
+  document.documentElement.style.setProperty('--pbtn-name-size',`${2.5+step*0.3}vmin`); 
+  document.documentElement.style.setProperty('--pbtn-emoji-size-px',`${FONT_BASE_EMOJI_PX+(step*FONT_STEP_EMOJI)}px`); 
+  document.documentElement.style.setProperty('--pbtn-name-size-px',`${FONT_BASE_NAME_PX+(step*FONT_STEP_NAME)}px`); 
 }
-
-function loadProductFontSize() {
-  const step = parseInt(localSafe(() => localStorage.getItem(PRODUCT_FONT_SIZE_KEY) || '0', '0'));
-  currentProductFontSizeStep = step; 
+function loadProductFontSize(){
+  const step=parseInt(localSafe(()=>localStorage.getItem(PRODUCT_FONT_SIZE_KEY)||'0','0'));
   setProductFontSize(step);
 }
 
-let currentOrderFontSizeStep = 0;
-const FONT_STEP_ORDER = 1; const FONT_BASE_SM = 16; const FONT_BASE_MD = 20; const FONT_BASE_LG = 28; 
+let currentOrderFontSizeStep=0;
+const FONT_STEP_ORDER=1; const FONT_BASE_SM=16; const FONT_BASE_MD=20; const FONT_BASE_LG=28; 
 
 function setOrderFontSize(step) {
-  if (step < -2) step = -2; if (step > 3) step = 3; 
-  currentOrderFontSizeStep = step;
-  localSafe(() => localStorage.setItem(ORDER_FONT_SIZE_KEY, step));
-  const newSm = FONT_BASE_SM + (step * FONT_STEP_ORDER);
-  const newMd = FONT_BASE_MD + (step * (FONT_STEP_ORDER + 0.5)); 
-  
-  const newLg = FONT_BASE_LG + (step * (FONT_STEP_ORDER + 1)); 
-  
-  document.documentElement.style.setProperty('--order-font-sm', newSm + 'px');
-  document.documentElement.style.setProperty('--order-font-md', newMd + 'px');
-  document.documentElement.style.setProperty('--order-font-lg', newLg + 'px');
+  if(step<-2)step=-2; if(step>3)step=3; 
+  currentOrderFontSizeStep=step;
+  localSafe(()=>localStorage.setItem(ORDER_FONT_SIZE_KEY,step));
+  const newSm=FONT_BASE_SM+(step*FONT_STEP_ORDER);
+  const newMd=FONT_BASE_MD+(step*(FONT_STEP_ORDER+0.5)); 
+  const newLg=FONT_BASE_LG+(step*(FONT_STEP_ORDER+1)); 
+  document.documentElement.style.setProperty('--order-font-sm',newSm+'px');
+  document.documentElement.style.setProperty('--order-font-md',newMd+'px');
+  document.documentElement.style.setProperty('--order-font-lg',newLg+'px');
 }
-
-function loadOrderFontSize() {
-  const step = parseInt(localSafe(() => localStorage.getItem(ORDER_FONT_SIZE_KEY) || '0', '0'));
+function loadOrderFontSize(){
+  const step=parseInt(localSafe(()=>localStorage.getItem(ORDER_FONT_SIZE_KEY)||'0','0'));
   setOrderFontSize(step);
 }
 
-/*
-=====================================================
-JS-BEREICH 5: THEME-STEUERUNG (Farbschemata)
-=====================================================
-*/
+/* THEME */
 function setTheme(themeName) {
-  document.documentElement.setAttribute('data-theme', themeName);
-  localSafe(() => localStorage.setItem(THEME_STORAGE_KEY, themeName));
-  document.querySelectorAll('.color-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.theme === themeName);
+  document.documentElement.setAttribute('data-theme',themeName);
+  localSafe(()=>localStorage.setItem(THEME_STORAGE_KEY,themeName));
+  document.querySelectorAll('.color-btn').forEach(btn=>{
+    btn.classList.toggle('active',btn.dataset.theme===themeName);
   });
 }
 function loadTheme() {
-  const preferredTheme = localSafe(() => localStorage.getItem(THEME_STORAGE_KEY), 'theme1') || 'theme1';
+  const preferredTheme=localSafe(()=>localStorage.getItem(THEME_STORAGE_KEY),'theme1')||'theme1';
   setTheme(preferredTheme);
 }
 
-/*
-=====================================================
-JS-BEREICH 6: BESTELL- & RENDERING-LOGIK
-=====================================================
-*/
+/* CORE FUNCTIONS */
 function renderProducts(){
   const list=document.getElementById('orderList'); 
   const grid=document.getElementById('productsGrid'); 
-  if (!grid) return;
-
+  if(!grid)return;
   grid.innerHTML='';
   PRODUCTS.forEach(p=>{
     const btn=document.createElement('button'); btn.className='pbtn'; btn.dataset.id=p.id;
@@ -935,28 +505,25 @@ function renderProducts(){
       addProduct(p.id,1);
       btn.classList.add('active');
       setTimeout(()=>btn.classList.remove('active'),200);
-      if(list) list.scrollTop = list.scrollHeight; 
+      if(list) list.scrollTop=list.scrollHeight; 
     });
     grid.appendChild(btn);
   });
 }
 
-function addProduct(id,qty){ order[id]=(order[id]||0)+qty; if(order[id]<0) order[id]=0; renderOrder(); }
+function addProduct(id,qty){ order[id]=(order[id]||0)+qty; if(order[id]<0)order[id]=0; renderOrder(); }
 function removeItem(id){ delete order[id]; renderOrder(); }
 function calcTotal(){ return Object.keys(order).reduce((sum,id)=>sum+PRODUCTS.find(p=>p.id===id).price*order[id],0); }
 
 function renderOrder(){
   const list=document.getElementById('orderList'); 
-  const totalDisplay = document.getElementById('totalDisplay');
-  if (!list || !totalDisplay) return; 
+  const totalDisplay=document.getElementById('totalDisplay');
+  if(!list||!totalDisplay)return; 
 
   list.innerHTML='';
-  const ids=Object.keys(order);
-  if(ids.length===0){ list.innerHTML=`<div class="small" style="font-size: var(--order-font-md)">Wähle Produkte aus, um die Bestellung zu starten.</div>`; }
-  ids.forEach(id=>{
+  Object.keys(order).forEach(id=>{
     const p=PRODUCTS.find(x=>x.id===id);
     const div=document.createElement('div'); div.className='order-item';
-    
     div.innerHTML=`<div class="item-left">
         <div style="flex-grow:1;"><strong>${p.emoji} ${p.name}</strong><div class="small"></div></div>
         <div class="item-controls">
@@ -966,146 +533,107 @@ function renderOrder(){
             <button class="icon-btn" aria-label="plus" data-id="${id}">+</button>
         </div>
     </div>
-    <div style="text-align:right">
-        <div>${fmt(p.price*order[id])} €</div>
-    </div>`;
+    <div style="text-align:right"><div>${fmt(p.price*order[id])} €</div></div>`;
     
     div.querySelector('button[aria-label="minus"]').addEventListener('click',()=>addProduct(id,-1));
     div.querySelector('button[aria-label="plus"]').addEventListener('click',()=>addProduct(id,1));
     div.querySelector('[data-remove-id]').addEventListener('click',()=>removeItem(id));
-    
     list.appendChild(div);
   });
   totalDisplay.textContent=fmt(calcTotal())+' €';
   updateChange();
 }
 
-/*
-=====================================================
-JS-BEREICH 7: ZAHLUNGS- & RÜCKGELD-LOGIK
-=====================================================
-*/
 function updateChange(){
-  const givenInput = document.getElementById('givenInput');
-  const changeDisplayEl = document.getElementById('changeDisplay');
-  if (!givenInput || !changeDisplayEl) return;
+  const givenInput=document.getElementById('givenInput');
+  const changeDisplayEl=document.getElementById('changeDisplay');
+  if(!givenInput||!changeDisplayEl)return;
   
-  let given = parseFloat(givenInput.value || 0);
-  if(isNaN(given)) given = 0;
-  localSafe(()=>localStorage.setItem(GIVEN_KEY, given.toString()));
+  let given=parseFloat(givenInput.value||0);
+  if(isNaN(given))given=0;
+  localSafe(()=>localStorage.setItem(GIVEN_KEY,given.toString()));
 
-  const total = calcTotal();
-  const change = given - total; 
+  const total=calcTotal();
+  const change=given-total; 
   
-  changeDisplayEl.textContent = fmt(change) + ' €';
-
-  if (change < 0) {
-    changeDisplayEl.classList.add('deficit');
-  } else {
-    changeDisplayEl.classList.remove('deficit');
-  }
+  changeDisplayEl.textContent=fmt(change)+' €';
+  if(change<0) changeDisplayEl.classList.add('deficit');
+  else changeDisplayEl.classList.remove('deficit');
 }
 
 function loadGiven(){
-  const v = localSafe(()=>localStorage.getItem(GIVEN_KEY), null);
-  if(v !== null){
-    const gi = document.getElementById('givenInput');
-    if (gi) { 
-      gi.value = parseFloat(v);
+  const v=localSafe(()=>localStorage.getItem(GIVEN_KEY),null);
+  if(v!==null){
+    const gi=document.getElementById('givenInput');
+    if(gi){ 
+      gi.value=parseFloat(v);
       updateChange();
     }
   }
 }
 
-/*
-=====================================================
-JS-BEREICH 8: LOG-SPEICHERUNG & BON-DRUCK
-=====================================================
-*/
-function loadLog(){ return localSafe(()=>JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'), []); }
+/* LOGGING & SALES */
+function loadLog(){ return localSafe(()=>JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]'),[]); }
 function saveLog(entries){ localSafe(()=>localStorage.setItem(STORAGE_KEY,JSON.stringify(entries))); }
 function nextOrderNumber(){ const log=loadLog(); return log.length===0?1:Math.max(...log.map(x=>x.orderNr||0))+1; }
 
-function showSuccessMessage(entry, shouldPrint) {
-    const msgEl = document.getElementById('saveSuccessMessage');
-    if (!msgEl) return;
+function showSuccessMessage(entry,shouldPrint) {
+    const msgEl=document.getElementById('saveSuccessMessage');
+    if(!msgEl)return;
     
-    let bonContent = '';
-    
-    if (shouldPrint) {
-        // --- 1. BON-INHALT GENERIEREN (Für Druck) ---
-        bonContent += '<div class="bon-header" style="font-size: 20pt; margin-bottom: 20px;">*** POTTSCHATZ BON ***</div>';
-        bonContent += `<div class="bon-header" style="font-size: 16pt;">Bestellung #${entry.orderNr}</div>`;
-        bonContent += `<div style="text-align: center; margin-bottom: 20px; font-size: 14pt;">${entry.date} ${entry.time}</div>`;
-        bonContent += '<div class="bon-separator"></div>';
-
-        entry.items.forEach(it => {
-            const itemTotal = (it.price * it.qty).toFixed(2).replace('.', ',');
-            bonContent += `<div class="bon-item-row" style="font-size: 14pt;"><span>${it.qty}x ${it.name}</span><span>${itemTotal} €</span></div>`;
+    let bonContent='';
+    if(shouldPrint){
+        bonContent+='<div class="bon-header" style="font-size: 20pt; margin-bottom: 20px;">*** POTTSCHATZ BON ***</div>';
+        bonContent+=`<div class="bon-header" style="font-size: 16pt;">Bestellung #${entry.orderNr}</div>`;
+        bonContent+=`<div style="text-align: center; margin-bottom: 20px; font-size: 14pt;">${entry.date} ${entry.time}</div>`;
+        bonContent+='<div class="bon-separator"></div>';
+        entry.items.forEach(it=>{
+            const itemTotal=(it.price*it.qty).toFixed(2).replace('.',',');
+            bonContent+=`<div class="bon-item-row" style="font-size: 14pt;"><span>${it.qty}x ${it.name}</span><span>${itemTotal} €</span></div>`;
         });
-        
-        bonContent += '<div class="bon-separator"></div>';
-        bonContent += `<div class="bon-item-row bon-total" style="font-size: 22pt;"><span>GESAMT:</span><span>${entry.total.toFixed(2).replace('.', ',')} €</span></div>`;
-        bonContent += `<div class="bon-item-row" style="font-size: 16pt;"><span>Gegeben:</span><span>${(entry.given||0).toFixed(2).replace('.', ',')} €</span></div>`;
-        
-        const changeText = entry.change < 0 ? "Schulden:" : "Rückgeld:";
-        bonContent += `<div class="bon-item-row" style="font-size: 16pt;"><span>${changeText}</span><span>${entry.change.toFixed(2).replace('.', ',')} €</span></div>`;
-        
-        bonContent += '<div class="bon-separator"></div>';
-        bonContent += '<div class="bon-footer" style="margin-top: 20px; font-size: 14pt;">Vielen Dank für Ihre Bestellung!</div>';
+        bonContent+='<div class="bon-separator"></div>';
+        bonContent+=`<div class="bon-item-row bon-total" style="font-size: 22pt;"><span>GESAMT:</span><span>${entry.total.toFixed(2).replace('.',',')} €</span></div>`;
+        bonContent+=`<div class="bon-item-row" style="font-size: 16pt;"><span>Gegeben:</span><span>${(entry.given||0).toFixed(2).replace('.',',')} €</span></div>`;
+        const changeText=entry.change<0?"Schulden:":"Rückgeld:";
+        bonContent+=`<div class="bon-item-row" style="font-size: 16pt;"><span>${changeText}</span><span>${entry.change.toFixed(2).replace('.',',')} €</span></div>`;
+        bonContent+='<div class="bon-separator"></div>';
+        bonContent+='<div class="bon-footer" style="margin-top: 20px; font-size: 14pt;">Vielen Dank für Ihre Bestellung!</div>';
 
-        msgEl.innerHTML = bonContent;
-        
-        // DRUCK AUSLÖSEN (Direkt)
+        msgEl.innerHTML=bonContent;
         window.print();
-        
-        // OVERLAY ANZEIGEN (Optional: falls Druck abgebrochen wird)
         msgEl.classList.add('show');
-        setTimeout(() => {
-            msgEl.classList.remove('show');
-        }, 2500); 
-
-    } else {
-        // --- 2. RAKETEN-MELDUNG GENERIEREN (Nur Speichern) ---
-        const totalFmt = entry.total.toFixed(2).replace('.', ',');
-        msgEl.innerHTML = `
-            <div style="font-size: 120px; margin-bottom: 20px;">🚀</div>
-            <div style="font-size: 40px; margin-bottom: 10px; font-weight: 900;">Zahlung erfasst!</div>
-            <div style="font-size: 30px; font-weight: 700;">#${entry.orderNr} / ${totalFmt} €</div>
-        `;
-        
-        // OVERLAY ANZEIGEN
+        setTimeout(()=>{msgEl.classList.remove('show');},2500); 
+    }else{
+        const totalFmt=entry.total.toFixed(2).replace('.',',');
+        msgEl.innerHTML=`<div style="font-size: 120px; margin-bottom: 20px;">🚀</div><div style="font-size: 40px; margin-bottom: 10px; font-weight: 900;">Zahlung erfasst!</div><div style="font-size: 30px; font-weight: 700;">#${entry.orderNr} / ${totalFmt} €</div>`;
         msgEl.classList.add('show');
-        setTimeout(() => {
-            msgEl.classList.remove('show');
-        }, 1500); 
+        setTimeout(()=>{msgEl.classList.remove('show');},1500); 
     }
 }
 
 function captureSale(shouldPrint){
-  const printBtn = document.getElementById('saveAndPrintBtn');
-  const saveBtn = document.getElementById('saveOnlyBtn');
-  if(!printBtn || !saveBtn) { console.error("Zahlungs-Buttons nicht gefunden."); return; }
+  const printBtn=document.getElementById('saveAndPrintBtn');
+  const saveBtn=document.getElementById('saveOnlyBtn');
+  if(!printBtn||!saveBtn)return;
 
-  if(printBtn.disabled || saveBtn.disabled) return;
-  printBtn.disabled = true;
-  saveBtn.disabled = true;
+  if(printBtn.disabled||saveBtn.disabled)return;
+  printBtn.disabled=true; saveBtn.disabled=true;
 
   const total=calcTotal(); 
   if(total<=0){ 
     alert('Keine Produkte in der Bestellung.'); 
     printBtn.disabled=false; saveBtn.disabled=false; return; 
   }
-  const givenInput = document.getElementById('givenInput');
-  const given=parseFloat(givenInput ? givenInput.value : 0 || 0);
-  const change = given - total; 
+  const givenInput=document.getElementById('givenInput');
+  const given=parseFloat(givenInput?givenInput.value:0||0);
+  const change=given-total; 
 
-  if(change < 0 && !confirm('Gegeben < Summe (Defizit: '+fmt(change)+' €). Trotzdem erfassen?')) { 
+  if(change<0 && !confirm('Gegeben < Summe (Defizit: '+fmt(change)+' €). Trotzdem erfassen?')){ 
     printBtn.disabled=false; saveBtn.disabled=false; return; 
   }
   
   const now=new Date();
-  const nextNr = nextOrderNumber();
+  const nextNr=nextOrderNumber();
   const entry={
     date:now.toLocaleDateString('de-DE'),
     time:now.toLocaleTimeString('de-DE'),
@@ -1114,201 +642,149 @@ function captureSale(shouldPrint){
       const p=PRODUCTS.find(x=>x.id===id); 
       return {name: `${p.emoji} ${p.name}`, qty:order[id], price:p.price}; 
     }),
-    total:total,
-    given:given,
-    change:change 
+    total:total, given:given, change:change 
   };
   const log=loadLog(); log.push(entry); saveLog(log);
   
-  // Bestellung zurücksetzen
   order={}; 
-  if (givenInput) givenInput.value=''; 
+  if(givenInput) givenInput.value=''; 
   localSafe(()=>localStorage.removeItem(GIVEN_KEY)); 
   renderOrder(); 
   
   showSuccessMessage(entry, shouldPrint);
 
-  printBtn.disabled=false; 
-  saveBtn.disabled=false;
+  printBtn.disabled=false; saveBtn.disabled=false;
 }
 
-/*
-=====================================================
-JS-BEREICH 9: CSV EXPORT & LOG-MODAL
-=====================================================
-*/
+/* LOG VIEW & EXPORT */
 function downloadCsv(){
-  const log = loadLog();
-  if(!log || log.length === 0){ alert('Keine Erfassungen vorhanden.'); return; }
-  let csv = 'Datum;Uhrzeit;Bestellnummer;Artikel;Menge;Einzelpreis;Gesamtsumme;Gegeben;Rückgeld\n';
+  const log=loadLog();
+  if(!log||log.length===0){alert('Keine Erfassungen.');return;}
+  let csv='Datum;Uhrzeit;Bestellnummer;Artikel;Menge;Einzelpreis;Gesamtsumme;Gegeben;Rückgeld\n';
   log.forEach(e=>{
     e.items.forEach(it=>{
-      csv += `${e.date};${e.time};${e.orderNr};"${it.name}";${it.qty};${it.price.toFixed(2).replace('.',',')};${e.total.toFixed(2).replace('.',',')};${(e.given||0).toFixed(2).replace('.',',')};${e.change.toFixed(2).replace('.',',')}\n`;
+      csv+=`${e.date};${e.time};${e.orderNr};"${it.name}";${it.qty};${it.price.toFixed(2).replace('.',',')};${e.total.toFixed(2).replace('.',',')};${(e.given||0).toFixed(2).replace('.',',')};${e.change.toFixed(2).replace('.',',')}\n`;
     });
   });
-  const filename = 'erfassungen_pottschatz.csv';
-  try{
-    localStorage.setItem(LAST_CSV_KEY, JSON.stringify({ csv, filename, ts: Date.now() }));
-  }catch(e){
-    console.warn('Konnte CSV nicht in localStorage sichern:', e);
-  }
-  const blob = new Blob(["\ufeff", csv], { type: 'text/csv;charset=utf-8;' });
-  const url = URL.createObjectURL(blob);
-  lastExport = { url, filename, ts: Date.now() }; 
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  showStatus('CSV exportiert — Datei im Downloads-Ordner.', 3000);
-  setTimeout(()=>{ try{ URL.revokeObjectURL(url); lastExport = null; }catch(e){} }, 10000);
+  const filename='erfassungen_pottschatz.csv';
+  try{localSafe(()=>localStorage.setItem(LAST_CSV_KEY,JSON.stringify({csv,filename,ts:Date.now()})));}catch(e){}
+  const blob=new Blob(["\ufeff",csv],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  lastExport={url,filename,ts:Date.now()}; 
+  const a=document.createElement('a'); a.href=url; a.download=filename;
+  document.body.appendChild(a); a.click(); a.remove();
+  showStatus('CSV exportiert.',3000);
 }
 
 function reopenLastExport(){
-  if(lastExport && lastExport.url){
-    window.open(lastExport.url, '_blank');
+  if(lastExport&&lastExport.url){ window.open(lastExport.url,'_blank'); return; }
+  const rec=localSafe(()=>JSON.parse(localStorage.getItem(LAST_CSV_KEY)),null);
+  if(rec&&rec.csv){
+    const blob=new Blob(["\ufeff",rec.csv],{type:'text/csv;charset=utf-8;'});
+    const url=URL.createObjectURL(blob);
+    window.open(url,'_blank');
     return;
   }
-  const rec = localSafe(()=>JSON.parse(localStorage.getItem(LAST_CSV_KEY)), null);
-  if(rec && rec.csv){
-    const blob = new Blob(["\ufeff", rec.csv], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    window.open(url, '_blank');
-    setTimeout(()=>{ try{ URL.revokeObjectURL(url); }catch(e){} }, 10000);
-    return;
-  }
-  showStatus('Keine exportierte CSV gefunden. Bitte Export CSV drücken.', 3000);
-  alert('Keine exportierte CSV gefunden. Die Datei sollte im Download-Ordner deines Geräts liegen.');
+  alert('Kein Export gefunden.');
 }
 
+/* NEW: RESCUE DATA MODAL */
+function showRescueModal(){
+    const modal=document.getElementById('rescueView');
+    const txtArea=document.getElementById('rescueText');
+    const log=localStorage.getItem(STORAGE_KEY);
+    txtArea.value=log?log:"KEINE DATEN GEFUNDEN";
+    modal.style.display='flex';
+}
+function hideRescueModal(){ document.getElementById('rescueView').style.display='none'; }
+
 function showLogModal(){
-  const modal = document.getElementById('logView');
-  const list = document.getElementById('logList');
-  if (!modal || !list) return; // Failsafe-Check
-  const log = loadLog(); list.innerHTML='';
+  const modal=document.getElementById('logView');
+  const list=document.getElementById('logList');
+  const log=loadLog(); list.innerHTML='';
   
-  if(log.length===0){ 
-    list.innerHTML='<div class="small">Keine Erfassungen vorhanden.</div>'; 
-  } else {
+  if(log.length===0) list.innerHTML='<div class="small">Keine Erfassungen vorhanden.</div>';
+  else {
     log.slice().reverse().forEach(e=>{ 
-      const wrapper = document.createElement('div');
-      wrapper.className = 'log-item'; 
-      let html = `<div><strong>Bestellung #${e.orderNr}</strong> <span class="small" style="margin-left:8px">${e.date} ${e.time}</span></div>`;
-      html += '<div style="margin-top:6px">';
-      e.items.forEach(it => {
-        html += `<div class="log-row"><div>${it.qty}× ${it.name}</div><div>${(it.price*it.qty).toFixed(2).replace('.',',')} €</div></div>`;
-      });
-      html += `</div>`;
-      html += `<hr style="border:none;border-top:1px dashed var(--divider-color);margin:8px 0">`;
-      html += `<div class="log-row big"><div>Gesamt</div><div>${e.total.toFixed(2).replace('.',',')} €</div></div>`;
-      html += `<div class="log-row"><div class="small">Gegeben</div><div class="small">${(e.given||0).toFixed(2).replace('.',',')} €</div></div>`;
-      const changeText = e.change < 0 ? "Schulden:" : "Rückgeld:";
-      html += `<div class="log-row"><div class="small">${changeText}</div><div class="small" style="${e.change < 0 ? 'color: var(--text-change-negative-color);' : ''}">${e.change.toFixed(2).replace('.',',')} €</div></div>`;
-      wrapper.innerHTML = html;
+      const wrapper=document.createElement('div'); wrapper.className='log-item'; 
+      let html=`<div><strong>Bestellung #${e.orderNr}</strong> <span class="small" style="margin-left:8px">${e.date} ${e.time}</span></div>`;
+      html+='<div style="margin-top:6px">';
+      e.items.forEach(it=>{ html+=`<div class="log-row"><div>${it.qty}× ${it.name}</div><div>${(it.price*it.qty).toFixed(2).replace('.',',')} €</div></div>`; });
+      html+='</div>';
+      html+=`<hr style="border:none;border-top:1px dashed var(--divider-color);margin:8px 0">`;
+      html+=`<div class="log-row big"><div>Gesamt</div><div>${e.total.toFixed(2).replace('.',',')} €</div></div>`;
+      const changeText=e.change<0?"Schulden":"Rückgeld";
+      html+=`<div class="log-row"><div class="small">${changeText}</div><div class="small" style="${e.change<0?'color:red':''}">${e.change.toFixed(2).replace('.',',')} €</div></div>`;
+      wrapper.innerHTML=html;
       list.appendChild(wrapper);
     });
   }
-  
-  const kasseView = document.getElementById('kasseView');
-  if (kasseView) kasseView.style.display = 'none';
-  
-  modal.style.display = 'flex';
+  document.getElementById('kasseView').style.display='none';
+  modal.style.display='flex';
 }
 
 function hideLogModal(){
-  const modal = document.getElementById('logView');
-  if (!modal) return; // Failsafe-Check
-  modal.style.display = 'none';
-  
-  const kasseView = document.getElementById('kasseView');
-  if (kasseView) kasseView.style.display = 'flex'; 
+  document.getElementById('logView').style.display='none';
+  document.getElementById('kasseView').style.display='flex'; 
 }
 
-let statusTimer = null;
-function showStatus(msg, ms = 2000){
-  const el = document.getElementById('statusRegion');
-  if (!el) return; // Failsafe-Check
-  el.textContent = msg;
-  if(statusTimer) clearTimeout(statusTimer);
-  statusTimer = setTimeout(()=>{ el.textContent = 'AutoSave • Local CSV Export • Tool'; }, ms);
+let statusTimer=null;
+function showStatus(msg,ms=2000){
+  const el=document.getElementById('statusRegion');
+  if(!el)return;
+  el.textContent=msg;
+  if(statusTimer)clearTimeout(statusTimer);
+  statusTimer=setTimeout(()=>{el.textContent='AutoSave • Local CSV Export • Tool';},ms);
 }
 
 function clearLog(){
-  if(!confirm('!!! ACHTUNG !!!\n\nWirklich ALLE erfassten Zahlvorgänge unwiderruflich löschen?')) return;
+  if(!confirm('Alles löschen?'))return;
   saveLog([]);
-  showStatus('Alle Erfassungen gelöscht.', 2500);
+  showStatus('Gelöscht.',2500);
   showLogModal(); 
 }
 
-
-/*
-=====================================================
-JS-BEREICH 10: INITIALISIERUNG & EVENT LISTENER
-=====================================================
-*/
+/* INIT */
 document.addEventListener('DOMContentLoaded',()=>{
-  // 1. Laden der Einstellungen (Alle sind 'safe' - blockieren nicht)
   localSafe(loadTheme);
   localSafe(loadProductFontSize); 
   localSafe(loadOrderFontSize); 
   localSafe(initResizer); 
-  
-  // 2. Kernfunktionen ausführen
   renderProducts(); 
   localSafe(loadGiven); 
   renderOrder();
   
-  // 3. Event Listener zuweisen (mit Failsafe-Prüfungen)
-  const givenInput = document.getElementById('givenInput'); 
+  const givenInput=document.getElementById('givenInput'); 
   if(givenInput) givenInput.addEventListener('input',updateChange);
   
-  const clearOrderBtn = document.getElementById('clearOrderBtn');
+  const clearOrderBtn=document.getElementById('clearOrderBtn');
   if(clearOrderBtn) clearOrderBtn.addEventListener('click',()=>{ 
-    if(confirm('Bestellung wirklich löschen?')){ 
-      order={}; 
-      renderOrder(); 
+    if(confirm('Bestellung löschen?')){ 
+      order={}; renderOrder(); 
       if(givenInput) givenInput.value=''; 
       localSafe(()=>localStorage.removeItem(GIVEN_KEY)); 
     }
   });
 
-  // Zahlungs-Events
-  const saveAndPrintBtn = document.getElementById('saveAndPrintBtn');
-  const saveOnlyBtn = document.getElementById('saveOnlyBtn');
-  if(saveAndPrintBtn) saveAndPrintBtn.addEventListener('click',()=>captureSale(true)); 
-  if(saveOnlyBtn) saveOnlyBtn.addEventListener('click',()=>captureSale(false));
+  document.getElementById('saveAndPrintBtn').addEventListener('click',()=>captureSale(true)); 
+  document.getElementById('saveOnlyBtn').addEventListener('click',()=>captureSale(false));
 
-  // Log/Export-Events
-  const exportCsvBtn = document.getElementById('exportCsvBtn');
-  const downloadAllBtn = document.getElementById('downloadAllBtn');
-  const openExportFolderBtn = document.getElementById('openExportFolderBtn');
-  const showLogBtn = document.getElementById('showLogBtn');
-  const closeLogBtn = document.getElementById('closeLogBtn');
-  const clearLogBtn = document.getElementById('clearLogBtn');
-  const printBtn = document.getElementById('printBtn');
-  const prodFontInc = document.getElementById('productFontIncreaseBtn');
-  const prodFontDec = document.getElementById('productFontDecreaseBtn');
-  const orderFontInc = document.getElementById('orderFontIncrease');
-  const orderFontDec = document.getElementById('orderFontDecrease');
+  document.getElementById('exportCsvBtn').addEventListener('click',downloadCsv);
+  document.getElementById('downloadAllBtn').addEventListener('click',downloadCsv);
+  document.getElementById('openExportFolderBtn').addEventListener('click',reopenLastExport);
+  document.getElementById('rescueDataBtn').addEventListener('click',showRescueModal);
+  document.getElementById('closeRescueBtn').addEventListener('click',hideRescueModal);
 
-  if(exportCsvBtn) exportCsvBtn.addEventListener('click',downloadCsv);
-  if(downloadAllBtn) downloadAllBtn.addEventListener('click',downloadCsv);
-  if(openExportFolderBtn) openExportFolderBtn.addEventListener('click', reopenLastExport);
+  document.getElementById('showLogBtn').addEventListener('click',showLogModal);
+  document.getElementById('closeLogBtn').addEventListener('click',hideLogModal);
+  document.getElementById('clearLogBtn').addEventListener('click',clearLog);
+  document.getElementById('printBtn').addEventListener('click',()=>window.print());
 
-  if(showLogBtn) showLogBtn.addEventListener('click', showLogModal);
-  if(closeLogBtn) closeLogBtn.addEventListener('click', hideLogModal);
-  if(clearLogBtn) clearLogBtn.addEventListener('click', clearLog);
-  if(printBtn) printBtn.addEventListener('click', ()=> { window.print(); });
+  document.getElementById('productFontIncreaseBtn').addEventListener('click',()=>setProductFontSize(currentProductFontSizeStep+1));
+  document.getElementById('productFontDecreaseBtn').addEventListener('click',()=>setProductFontSize(currentProductFontSizeStep-1));
+  document.getElementById('orderFontIncrease').addEventListener('click',()=>setOrderFontSize(currentOrderFontSizeStep+1));
+  document.getElementById('orderFontDecrease').addEventListener('click',()=>setOrderFontSize(currentOrderFontSizeStep-1));
 
-  // Schriftgrößen-Events
-  if(prodFontInc) prodFontInc.addEventListener('click', () => { setProductFontSize(currentProductFontSizeStep + 1); });
-  if(prodFontDec) prodFontDec.addEventListener('click', () => { setProductFontSize(currentProductFontSizeStep - 1); });
-  if(orderFontInc) orderFontInc.addEventListener('click', () => { setOrderFontSize(currentOrderFontSizeStep + 1); });
-  if(orderFontDec) orderFontDec.addEventListener('click', () => { setOrderFontSize(currentOrderFontSizeStep - 1); });
-
-
-  // Geld- und Theme-Buttons
   document.querySelectorAll('.money-btn').forEach(btn=>{
     btn.addEventListener('click',()=>{
       const val=parseFloat(btn.dataset.value);
@@ -1317,18 +793,12 @@ document.addEventListener('DOMContentLoaded',()=>{
     });
   });
 
-  document.querySelectorAll('.color-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      setTheme(btn.dataset.theme);
-    });
+  document.querySelectorAll('.color-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{setTheme(btn.dataset.theme);});
   });
 
-  // Status-Update
-  const rec = localSafe(()=>JSON.parse(localStorage.getItem(LAST_CSV_KEY)), null);
-  
-  if(rec && rec.csv){
-    showStatus('Letzter CSV-Export gefunden (kann erneut geöffnet werden).', 2000);
-  }
+  const rec=localSafe(()=>JSON.parse(localStorage.getItem(LAST_CSV_KEY)),null);
+  if(rec&&rec.csv) showStatus('CSV vorhanden.',2000);
 });
 </script>
 </body>
