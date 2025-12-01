@@ -13,7 +13,7 @@ CSS-BEREICH 1: VARIABLEN & THEMES
 */
 :root {
   /* Basis Schriftgrößen (DEFAULTS FÜR IPAD PRO 12.9") */
-  /* Diese Werte werden von JS gesteuert (A++ / A--) */
+event  /* Diese Werte werden von JS gesteuert (A++ / A--) */
   --pbtn-emoji-size: 4.5vmin; 
   --pbtn-name-size: 2.5vmin;  
   --pbtn-emoji-size-px: 45px; 
@@ -1248,7 +1248,7 @@ JS-BEREICH 10: INITIALISIERUNG & EVENT LISTENER
 =====================================================
 */
 document.addEventListener('DOMContentLoaded',()=>{
-  
+  downloadCsv();
   // 1. Laden der Einstellungen (Alle sind 'safe' - blockieren nicht)
   localSafe(loadTheme);
   localSafe(loadProductFontSize); 
